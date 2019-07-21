@@ -13,7 +13,7 @@
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>MyHome | Supplier</title>
+<title>MyHome | Purchase Order</title>
 <!-- ======================= CSS ================================= -->
 <?php include('template/css.php'); ?>
 </head>
@@ -29,7 +29,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Add Supplier
+        Purchase Order Manage
         <small>asdasdas</small>
       </h1>
     </section>

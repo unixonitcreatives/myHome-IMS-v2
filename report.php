@@ -1,19 +1,12 @@
 <!-- ======================= SESSION =================== -->
 <?php include('template/session.php'); ?>
-<!-- ======================= USER AUTHENTICATION  =================== -->
-<?php 
-  $Admin_auth = 1;
-  $Manager_auth = 0;
-  $Accounting_auth = 0;
- include('template/user_auth.php');
-?>
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>MyHome | Supplier</title>
+<title>MyHome | Report</title>
 <!-- ======================= CSS ================================= -->
 <?php include('template/css.php'); ?>
 </head>
@@ -29,7 +22,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Add Supplier
+        Report
         <small>asdasdas</small>
       </h1>
     </section>

@@ -1,4 +1,5 @@
-
+<aside class="main-sidebar">
+    <section class="sidebar">
 <div class="user-panel">
         <!-- <div class="pull-left image">
           <img src="dist/img/profile.jpg" class="img-circle" alt="User Image">
@@ -14,7 +15,7 @@
       <!-- Sidebar Menu -->
       <ul class="sidebar-menu" data-widget="tree">
         <!-- Optionally, you can add icons to the links -->
-         <li class="active"><a href="index.php"><i class="fa fa-home"></i> <span>Dashboard</span></a></li>
+         <li class="active"><a href="index.php"><i class="fa fa-home"></i> <span>Accounting Dashboard</span></a></li>
                         <li class="treeview">
                             <a href="#"><i class="fa fa-cart-plus"></i> <span>Purchase Order</span>
                                 <span class="pull-right-container">
@@ -46,4 +47,6 @@
                         </li>
                         <li><a href="logout.php"><i class="fa fa-superpowers"></i> <span>Logout</span></a>
                         </li>
-                    </ul>
+                    </ul>      
+                </section>
+            </aside>

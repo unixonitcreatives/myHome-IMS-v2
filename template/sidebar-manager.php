@@ -1,4 +1,5 @@
-
+<aside class="main-sidebar">
+    <section class="sidebar">
 <div class="user-panel">
         <!-- <div class="pull-left image">
           <img src="dist/img/profile.jpg" class="img-circle" alt="User Image">
@@ -14,7 +15,9 @@
       <!-- Sidebar Menu -->
       <ul class="sidebar-menu" data-widget="tree">
         <!-- Optionally, you can add icons to the links -->
-         <li class="active"><a href="index.php"><i class="fa fa-home"></i> <span>Dashboard</span></a></li>
+         <li class="active"><a href="index.php"><i class="fa fa-home"></i> <span>Manager Dashboard</span></a></li>
+
+
                         <li class="treeview">
                             <a href="#"><i class="fa fa-cart-plus"></i> <span>Purchase Order</span>
                                 <span class="pull-right-container">
@@ -28,7 +31,7 @@
 
                             </ul>
                         </li>
-
+                        
                         <li class="treeview">
                             <a href="#"><i class="fa fa-th"></i> <span>Products</span>
                                 <span class="pull-right-container">
@@ -36,9 +39,9 @@
                                 </span>
                             </a>
                             <ul class="treeview-menu">
-                                <li><a href="manager-product-add.php">Add Products</a></li>
-                                <li><a href="manager-product-manage.php">Manage Products</a></li>
-                                <li><a href="manager-product-aging.php">Aging Products</a></li>
+                                <li><a href="product-add.php">Add Products</a></li>
+                                <li><a href="product-manage.php">Manage Products</a></li>
+                                <li><a href="product-aging.php">Aging Products</a></li>
                             </ul>
                         </li>
 
@@ -49,16 +52,18 @@
                                 </span>
                             </a>
                             <ul class="treeview-menu">
-                                <li><a href="manager-customer-add.php">Add Customers</a></li>
-                                <li><a href="manager-customer-manage.php">Manage Customers</a></li>
+                                <li><a href="customer-add.php">Add Customers</a></li>
+                                <li><a href="customer-manage.php">Manage Customers</a></li>
                             </ul>
                         </li>
 
-                        <li><a href="manager-report.php"><i class="fa fa-pie-chart"></i> <span>Reports</span></a>
+                        <li><a href="report.php"><i class="fa fa-pie-chart"></i> <span>Reports</span></a>
                         </li>
 
                         <li><a href="support.php"><i class="fa fa-superpowers"></i> <span>Support</span></a>
                         </li>
-                        <li><a href="logout.php"><i class="fa fa-superpowers"></i> <span>Logout</span></a>
+                        <li><a href="logout.php"><i class="fa fa-close"></i> <span>Logout</span></a>
                         </li>
-                    </ul>
+                    </ul>      
+                </section>
+            </aside>
