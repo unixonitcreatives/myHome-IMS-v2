@@ -1,5 +1,12 @@
 <!-- ======================= SESSION =================== -->
 <?php include('template/session.php'); ?>
+<!-- ======================= USER AUTHENTICATION  =================== -->
+<?php 
+  $Admin_auth = 1;
+  $Manager_auth = 1;
+  $Accounting_auth = 1;
+ include('template/user_auth.php');
+?>
 
 <!DOCTYPE html>
 <html>

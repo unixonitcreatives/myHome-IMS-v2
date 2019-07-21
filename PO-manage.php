@@ -3,8 +3,8 @@
 <!-- ======================= USER AUTHENTICATION  =================== -->
 <?php 
   $Admin_auth = 1;
-  $Manager_auth = 0;
-  $Accounting_auth = 0;
+  $Manager_auth = 1;
+  $Accounting_auth = 1;
  include('template/user_auth.php');
 ?>
 
