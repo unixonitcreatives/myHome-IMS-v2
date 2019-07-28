@@ -7,6 +7,55 @@
   $Accounting_auth = 0;
  include('template/user_auth.php');
 ?>
+<!-- ========================== ADD FORM TO THE DATABASE ====================================== -->
+<?php
+// Define variables and initialize with empty values
+$category=$alertMessage="";
+
+require_once "config.php";
+
+//If the form is submitted or not.
+//If the form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST"){
+  //Assigning posted values to variables.
+  $category = test_input($_POST['category']);
+
+    // Validate category
+
+    if(empty($category)){
+        $alertMessage = "Please enter a category.";
+    }
+
+
+    // Check input errors before inserting in database
+    if(empty($alertMessage)){
+
+      //Checking the values are existing in the database or not
+    $query = "INSERT INTO categories (category) VALUES ('$category')";
+    $result = mysqli_query($link, $query) or die(mysqli_error($link));
+
+    if($result){
+      $alertMessage = "<div class='alert alert-success' role='alert'>
+New category successfully added in database.
+</div>";
+
+    }else{
+        $alertMessage = "<div class='alert alert-danger fade in' role='alert'>
+  Error Adding data in Database.
+</div>";}
+
+    }
+    mysqli_close($link);
+  }
+
+function test_input($data) {
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+}
+?>
+<!-- ================================================================ -->
 
 <!DOCTYPE html>
 <html>
@@ -36,11 +85,36 @@
   <!-- ======================== MAIN CONTENT ======================= -->
     <!-- Main content -->
     <section class="content">
-      <?php  echo $_SESSION['usertype']; ?>
+        <div class="col-md-6">
+          <!-- general form elements -->
+          <div class="box box-success">
+            <div class="box-header with-border">
+              <h3 class="box-title">Product Category</h3>
+              <br><a href="category-manage.php" class="text-center">View Categories</a>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <form  method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+                <div class="box-body">
+                  <div class="form-group">
+                  <label>Category Name</label>
+                  <input type="text" class="form-control" placeholder="Category e.g: Chairs, Tables, Cabinets" oninput="upperCaseF(this)" name="category" required>
+                </div>
+            </div>
+              <!-- /.box-body -->
+
+              <div class="box-footer">
+                <button type="submit" class="btn btn-success" onclick="this.disabled=true;this.value='Submitting...'; this.form.submit();" >Save</button>
+              </div>
+            </form>
+          </div>
+          <!-- /.box -->
+
+
+        </div>
     </section>
   <!-- /.content-wrapper -->
 </div>
-
 
 <!-- =========================== FOOTER =========================== -->
   <footer class="main-footer">
@@ -143,6 +217,8 @@ $(document).ready(function () {
     }, 1);
 }
 </script>
+
+<?php include('template/disable_button.php'); ?>
 
 </body>
 </html>

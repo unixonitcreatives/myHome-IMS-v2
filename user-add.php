@@ -7,7 +7,78 @@
   $Accounting_auth = 0;
  include('template/user_auth.php');
 ?>
+<!-- ========================== ADD FORM TO THE DATABASE ====================================== -->
+<?php// Define variables and initialize with empty values
+// Define variables and initialize with empty values
+$username=$password=$usertype=$alertMessage="";
 
+require_once "config.php";
+
+//If the form is submitted or not.
+//If the form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST"){
+    //Assigning posted values to variables.
+    $username = test_input($_POST['username']);
+    $password = test_input($_POST['password']);
+    $usertype = test_input($_POST['usertype']);
+
+    // Validate username
+
+    if(empty($username)){
+        $alertMessage = "Please enter a username.";
+    }
+
+    // Validate password
+
+    if(empty($password)){
+        $alertMessage = "Please enter a password.";
+    }
+
+    // Validate user type
+
+    if(empty($usertype)){
+        $alertMessage = "Please enter a user type.";
+    }
+
+
+    // Check input errors before inserting in database
+    if(empty($alertMessage)){
+
+    //$hash = password_hash($password, PASSWORD_DEFAULT);
+    //Checking the values are existing in the database or not
+    $query = "INSERT INTO users (username, password, usertype, time_created) VALUES ('$username', '$password', '$usertype', CURRENT_TIMESTAMP)";
+    $result = mysqli_query($link, $query) or die(mysqli_error($link));
+
+    if($result){
+         $alertMessage = "<div class='alert alert-success' role='alert'>
+  Newuser successfully added in database.
+</div>";
+    }else{
+        $alertMessage = "<div class='alert alert-danger' role='alert'>
+  Error Adding data in Database.
+</div>";}
+
+// remove all session variables
+//session_unset();
+// destroy the session
+//session_destroy();
+
+// Close connection
+mysqli_close($link);
+
+    }
+  }
+
+function test_input($data) {
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+}
+
+?>
+
+<!-- ================================================================ -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -36,7 +107,46 @@
   <!-- ======================== MAIN CONTENT ======================= -->
     <!-- Main content -->
     <section class="content">
-      <?php  echo $_SESSION['usertype']; ?>
+      <div class="col-md-6">
+          <!-- general form elements -->
+          <div class="box box-success">
+            <div class="box-header with-border">
+              <h3 class="box-title">User's Information</h3>
+              <br><a href="user-manage.php" class="text-center">View User</a>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <form  method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+              <div class="box-body">
+                <div class="form-group">
+                  <label>Username</label>
+                  <input type="text" class="form-control" placeholder="Username" name="username" required>
+                </div>
+
+                <div class="form-group">
+                  <label>Password</label>
+                  <input type="password" class="form-control" placeholder="Password" name="password" required>
+                </div>
+
+                <div class="form-group">
+                <label>User Type</label>
+                <select class="form-control select2" style="width: 100%;" name="usertype" required>
+                  <option>Administrator</option>
+                  <option>Manager</option>
+                  <option>Accounting</option>
+                </select>
+              </div>
+              <!-- /.box-body -->
+            </div>
+              <div class="box-footer">
+                <button type="submit" class="btn btn-success" onclick="this.disabled=true;this.value='Submitting...'; this.form.submit();" >Save</button>
+              </div>
+            </form>
+          </div>
+          <!-- /.box -->
+
+
+        </div>
     </section>
   <!-- /.content-wrapper -->
 </div>
@@ -70,7 +180,7 @@ $(document).ready(function () {
 <script>
   $(function () {
     //Initialize Select2 Elements
-    $('.select2').select2()
+    //$('.select2').select2()
 
     //Datemask dd/mm/yyyy
     $('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
@@ -143,6 +253,6 @@ $(document).ready(function () {
     }, 1);
 }
 </script>
-
+<?php include('template/disable_button.php'); ?>
 </body>
 </html>

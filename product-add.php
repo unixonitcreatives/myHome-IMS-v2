@@ -36,7 +36,122 @@
   <!-- ======================== MAIN CONTENT ======================= -->
     <!-- Main content -->
     <section class="content">
-      <?php  echo $_SESSION['usertype']; ?>
+        <div class="col-md-12">
+          <!-- general form elements -->
+          <div class="box box-success">
+            <div class="box-header with-border">
+              <h3 class="box-title">Product's Information</h3>
+              <br><a href="product-manage.php" class="text-center">View Products</a>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <div class="box-body">
+              <div class="row">
+
+            <form  method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+                <div class="col-md-6">
+                    <!-- 1st column content -->
+                    <div class="form-group">
+                      <label>Supplier</label> <a href="supplier-add.php">+ add new product</a>
+                      <select class="form-control select2" style="width: 100%;" name="supplier_name" >
+                        <?php
+                        require_once "config.php";
+                        $query = "select supplier_name from suppliers order by supplier_name";
+                        $result = mysqli_query($link, $query);
+
+                        $supplier_name = $_POST['supplier_name'];
+
+                        while ($row = mysqli_fetch_assoc($result)) { ?>
+                          <option value="<?php echo $row['supplier_name']; ?>"><?php echo $row['supplier_name']; ?></option>
+                        <?php } ?>
+                      </select>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Category</label> <a href="category-add.php">+add new</a>
+                      <select class="form-control select2" style="width: 100%;" name="category">
+                        <?php
+                        require_once "config.php";
+                        $query = "select category from categories order by category";
+                        $result = mysqli_query($link, $query);
+
+                        $category = $_POST['category'];
+
+                        while ($row = mysqli_fetch_assoc($result)) { ?>
+                          <option value="<?php echo $row['category']; ?>"><?php echo $row['category']; ?></option>
+                        <?php } ?>
+                      </select>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Branch</label> <a href="branch-add.php">+add new</a>
+                      <select class="form-control select2" style="width: 100%;" name="branch_name">
+                        <?php
+                        require_once "config.php";
+                        $query = "select branch_name from branches order by branch_name";
+                        $result = mysqli_query($link, $query);
+
+                        $branch_name = $_POST['branch_name'];
+
+                        while ($row = mysqli_fetch_assoc($result)) { ?>
+                          <option value="<?php echo $row['branch_name']; ?>"><?php echo $row['branch_name']; ?></option>
+                        <?php } ?>
+                      </select>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Product Description</label>
+                      <input type="text" class="form-control" placeholder="Product Description" name="product_description">
+                    </div>
+
+                    <div class="form-group">
+                      <label>Model</label>
+                      <input type="text" class="form-control" placeholder="Model No." name="model">
+                    </div>
+
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>PO Number</label>
+                      <input type="number" class="form-control" placeholder="PO Number" name="po_number">
+                    </div>
+
+                    <div class="form-group">
+                      <label>Quantity</label>
+                      <input type="number" class="form-control" placeholder="Quantity" name="qty">
+                    </div>
+
+                    <div class="form-group">
+                      <label>Retail Price</label>
+                      <input type="number" class="form-control" placeholder="Retail Price" name="retail_price">
+                    </div>
+
+                    <div class="form-group">
+                      <label>Supplier Price</label>
+                      <input type="number" class="form-control" placeholder="Cost Price" name="cost_price">
+                    </div>
+
+                    <div class="form-group">
+                      <label>Date Arrival</label>
+                      <input type="date" class="form-control" placeholder="Date Arrival" name="date_arriv">
+                    </div>
+
+                  </div>
+                </div>
+
+              <!-- /.box-body -->
+            </div>
+              <div class="box-footer">
+                <button type="submit" class="btn btn-success" onclick="this.disabled=true;this.value='Submitting...'; this.form.submit();" >Save</button>
+              </div>
+             </div>
+            </form>
+          </div>
+          <!-- /.box -->
+
+
+        </div>
     </section>
   <!-- /.content-wrapper -->
 </div>
@@ -70,7 +185,7 @@ $(document).ready(function () {
 <script>
   $(function () {
     //Initialize Select2 Elements
-    $('.select2').select2()
+    //$('.select2').select2()
 
     //Datemask dd/mm/yyyy
     $('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })

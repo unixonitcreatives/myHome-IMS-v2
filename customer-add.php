@@ -8,6 +8,82 @@
  include('template/user_auth.php');
 ?>
 
+
+<!-- ========================== ADD FORM TO THE DATABASE ====================================== -->
+<?php
+require_once "config.php";
+
+$customers_lname=$customers_fname=$customers_contact=$customers_email=$customers_address=$alertMessage="";
+
+
+//If the form is submitted or not.
+//If the form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST"){
+    //Assigning posted values to variables.
+    $customers_name = test_input($_POST['customer_name']);
+    $customers_contact = test_input($_POST['customer_contact']);
+    $customers_email = test_input($_POST['customer_email']);
+    $customers_address = test_input($_POST['customer_address']);
+
+    // Validate category
+    if(empty($customers_name)){
+        $alertMessage = "Please enter a fullname.";
+    }
+    if(empty($customers_contact)){
+        $alertMessage = "Please enter a contact number.";
+    }
+    if(empty($customers_email)){
+        $alertMessage = "Please enter a email address.";
+    }
+    if(empty($customers_address)){
+        $alertMessage = "Please enter a address.";
+    }
+
+
+    // Check input errors before inserting in database
+    if(empty($alertMessage)){
+    //Checking the values are existing in the database or not
+    $query = "INSERT INTO customers (customer_name,customer_contact,customer_email,customer_address, created_at) VALUES ('$customers_name','$customers_contact','$customers_email','$customers_address', CURRENT_TIMESTAMP)";
+
+    //logs query
+
+    $logsquery = "INSERT INTO logs (user,description,created_at) VALUES ('" . htmlspecialchars($_SESSION["username"]) . "','Added customer $customers_name', CURRENT_TIMESTAMP)";
+
+    $logsquery = "INSERT INTO logs (user,description) VALUES ('" . htmlspecialchars($_SESSION["username"]) . "','Added customer $customers_name')";
+
+    $logsresult = mysqli_query($link, $logsquery) or die(mysqli_error($link));
+
+
+
+    $result = mysqli_query($link, $query) or die(mysqli_error($link));
+
+    if($result){
+         $alertMessage = "<div class='alert alert-success' role='alert'>
+  New customer successfully added in database.
+</div>";
+
+
+
+    }else {
+        $alertMessage = "<div class='alert alert-danger' role='alert'>
+  Error Adding data in Database.
+</div>";
+    }
+    }
+  }
+function test_input($data) {
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+}
+
+// Close connection
+mysqli_close($link);
+
+?>
+<!-- ================================================================ -->
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -36,7 +112,47 @@
   <!-- ======================== MAIN CONTENT ======================= -->
     <!-- Main content -->
     <section class="content">
-      <?php  echo $_SESSION['usertype']; ?>
+      <div class="col-md-6">
+          <!-- general form elements -->
+          <div class="box box-success">
+            <div class="box-header with-border">
+              <h3 class="box-title">Customer's Information</h3>
+              <br><a href="customer-manage.php" class="text-center">View Customers</a>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <form  method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+              <div class="box-body">
+                <div class="form-group">
+                  <label>Customer Name</label>
+                  <input type="text" class="form-control" placeholder="Fullname" name="customer_name" required>
+                </div>
+
+                <div class="form-group">
+                <label>Phone</label>
+                  <input type="text" class="form-control" placeholder="Phone" name="customer_contact" data-inputmask='"mask": "(999) 999-9999"' data-mask>
+                </div>
+
+                <div class="form-group">
+                  <label>Email</label>
+                  <input type="email" class="form-control" placeholder="Email" name="customer_email" required>
+                </div>
+
+                <div class="form-group">
+                  <label>Address</label>
+                  <input type="text" class="form-control" placeholder="Address" name="customer_address" required>
+                </div>
+              <!-- /.box-body -->
+            </div>
+              <div class="box-footer">
+                <button type="submit" class="btn btn-success" onclick="this.disabled=true;this.value='Submitting...'; this.form.submit();" >Save</button>
+              </div>
+            </form>
+          </div>
+          <!-- /.box -->
+
+
+        </div>
     </section>
   <!-- /.content-wrapper -->
 </div>
@@ -143,6 +259,7 @@ $(document).ready(function () {
     }, 1);
 }
 </script>
+<?php include('template/disable_button.php'); ?>
 
 </body>
 </html>

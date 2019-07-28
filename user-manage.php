@@ -36,7 +36,63 @@
   <!-- ======================== MAIN CONTENT ======================= -->
     <!-- Main content -->
     <section class="content">
-      <?php  echo $_SESSION['usertype']; ?>
+        <div class="col-md-12">
+          <!-- general form elements -->
+          <div class="box box-success">
+            <div class="box-header with-border">
+              <h3 class="box-title">Search for User Information</h3>
+              <br><a href="user-add.php" class="text-center">+ add new user</a>
+            </div>
+
+            <div class="box-body">
+              <table id="example1" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
+                      <thead>
+                        <tr>
+                          <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Username</th>
+                          <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">User Type</th>
+                          <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">User Created</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <?php
+                        // Include config file
+                        require_once 'config.php';
+
+                        // Attempt select query execution
+                        $query = "SELECT * FROM users";
+                        if($result = mysqli_query($link, $query)){
+                          if(mysqli_num_rows($result) > 0){
+
+                            while($row = mysqli_fetch_array($result)){
+                              echo "<tr>";
+                              echo "<td>" . $row['username'] . "</td>";
+                              echo "<td>" . $row['usertype'] . "</td>";
+                              echo "<td>" . $row['time_created'] . "</td>";
+                              echo "<td>";
+                              echo "<a href='user-update.php?id=". $row['id'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
+                              echo " &nbsp; <a href='user-delete.php?id=". $row['id'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
+                              echo "</td>";
+                              echo "</tr>";
+                            }
+
+                            // Free result set
+                            mysqli_free_result($result);
+                          } else{
+                            echo "<p class='lead'><em>No records were found.</em></p>";
+                          }
+                        } else{
+                          echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
+                        }
+
+                        // Close connection
+                        mysqli_close($link);
+                        ?>
+                      </tbody>
+                    </table>
+            </div>
+          </div>
+      </div>
     </section>
   <!-- /.content-wrapper -->
 </div>
