@@ -5,7 +5,7 @@
   $Admin_auth = 1;
   $Manager_auth = 1;
   $Accounting_auth = 0;
- include('template/user_auth.php');
+  include('template/user_auth.php');
 ?>
 
 <!DOCTYPE html>
