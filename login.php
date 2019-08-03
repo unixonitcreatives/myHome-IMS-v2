@@ -27,9 +27,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
   $query="SELECT * FROM users WHERE username='$username' AND password='$password'";
   $result = mysqli_query($link, $query) or die(mysqli_error($link));
 
-if($result){
+  if($result){
 
   $rows = mysqli_fetch_array($result);
+
+
 
   //Direct pages with different user levels
   if ($rows['usertype'] == "Administrator") {
@@ -38,7 +40,7 @@ if($result){
     // Store data in session variables
     $_SESSION["loggedin"] = true;
     $_SESSION["username"] = $username;
-    $_SESSION["usertype"] = $rows;
+    $_SESSION["usertype"] = "Administrator";
     header('location: index.php');
     exit;
   }
@@ -48,8 +50,8 @@ if($result){
     // Store data in session variables
     $_SESSION["loggedin"] = true;
     $_SESSION["username"] = $username;
-    $_SESSION["usertype"] = $rows;
-    header('location: ../myHome-IMS/manager-dashboard.php');
+    $_SESSION["usertype"] = "Manager";
+    header('location: index.php');
     exit;
 
   }
@@ -57,8 +59,8 @@ if($result){
   if ($rows['usertype'] == 'Accounting') {
     $_SESSION["loggedin"] = true;
     $_SESSION["username"] = $username;
-    $_SESSION["usertype"] = $rows;
-    header('location: ../myHome-IMS/accounting-dashboard.php');
+    $_SESSION["usertype"] = "Accounting";
+    header('location: index.php');
 
   }
   else

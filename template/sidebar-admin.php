@@ -15,7 +15,7 @@
       <!-- Sidebar Menu -->
       <ul class="sidebar-menu" data-widget="tree">
         <!-- Optionally, you can add icons to the links -->
-         <li class="active"><a href="index.php"><i class="fa fa-home"></i> <span>Dashboard</span></a></li>
+         <li class="active"><a href="index.php"><i class="fa fa-home"></i> <span>Admin Dashboard</span></a></li>
                         <li class="treeview">
                             <a href="#"><i class="fa fa-id-card-o"></i> <span>Suppliers</span>
                                 <span class="pull-right-container">
@@ -122,7 +122,7 @@
 
                         <li><a href="support.php"><i class="fa fa-superpowers"></i> <span>Support</span></a>
                         </li>
-                        <li><a href="logout.php"><i class="fa fa-superpowers"></i> <span>Logout</span></a>
+                        <li><a href="logout.php"><i class="fa fa-close"></i> <span>Logout</span></a>
                         </li>
                     </ul>      
                 </section>

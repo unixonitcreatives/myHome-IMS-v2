@@ -16,7 +16,7 @@
   <!-- ======================= MENU BAR =========================== -->
   <?php include('template/menu-bar.php'); ?>
   <!-- ======================= SIDEBAR ============================ -->
-  <?php include ('template/sidebar-admin.php'); ?>
+  <?php include('template/sidebar-manage.php'); ?>
   <!-- ======================== HEADER CONTENT ==================== -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -29,7 +29,7 @@
   <!-- ======================== MAIN CONTENT ======================= -->
     <!-- Main content -->
     <section class="content">
-
+      <?php  echo $_SESSION['usertype']; ?>
     </section>
   <!-- /.content-wrapper -->
 </div>

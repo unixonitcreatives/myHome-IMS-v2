@@ -8,12 +8,45 @@
  include('template/user_auth.php');
 ?>
 
+
+<!-- ========================== ADD FORM TO THE DATABASE ====================================== -->
+<?php
+require_once "config.php";
+
+$branchName=$branchAddress=$alertMessage="";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST"){
+    $branchName = test_input($_POST['branch_name']);
+    $branchAddress = test_input($_POST['branch_address']);
+    $query = "INSERT INTO branches (branch_name, branch_address, created_at) VALUES ('$branchName', '$branchAddress', CURRENT_TIMESTAMP)";
+    $result = mysqli_query($link, $query) or die(mysqli_error($link));
+
+    if($result){
+         $alertMessage = "<div class='alert alert-success' role='alert'>
+                            New branch successfully added in Database.
+                          </div>";
+    }else {
+        $alertMessage = "<div class='alert alert-danger' role='alert'>
+                            Error Adding data in Database.
+                          </div>";
+    }
+}
+function test_input($data) {
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+}
+// Close connection
+mysqli_close($link);
+?>
+<!-- ================================================================ -->
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>MyHome | Supplier</title>
+<title>MyHome | Branch</title>
 <!-- ======================= CSS ================================= -->
 <?php include('template/css.php'); ?>
 </head>
@@ -29,14 +62,45 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Add Supplier
+        Branch Add
         <small>asdasdas</small>
       </h1>
     </section>
   <!-- ======================== MAIN CONTENT ======================= -->
     <!-- Main content -->
     <section class="content">
-      <?php  echo $_SESSION['usertype']; ?>
+      <div class="col-md-6">
+          <!-- general form elements -->
+          <div class="box box-success">
+            <div class="box-header with-border">
+              <h3 class="box-title">Branch's Information</h3>
+              <br><a href="branch-manage.php" class="text-center">View Branches</a>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <form  method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+              <div class="box-body">
+                <div class="form-group">
+                  <label>Branch Name</label>
+                  <input type="text" class="form-control" placeholder="Branch Name" name="branch_name" required>
+                </div>
+
+                <div class="form-group">
+                  <label>Address</label>
+                  <input type="text" class="form-control" placeholder="Address" name="branch_address" required>
+                </div>
+              </div>
+              <!-- /.box-body -->
+
+              <div class="box-footer">
+                <button type="submit" class="btn btn-success" onclick="this.disabled=true;this.value='Submitting...'; this.form.submit();" >Save</button>
+              </div>
+            </form>
+          </div>
+          <!-- /.box -->
+
+
+        </div>
     </section>
   <!-- /.content-wrapper -->
 </div>
@@ -44,7 +108,7 @@
 
 <!-- =========================== FOOTER =========================== -->
   <footer class="main-footer">
-      <?php include('template/footer.php'); ?>
+      
   </footer>
 
 
@@ -143,6 +207,23 @@ $(document).ready(function () {
     }, 1);
 }
 </script>
+
+<script>
+  $(function () {
+    $('#example1').DataTable()
+    $('#example2').DataTable({
+      'paging'      : true,
+      'lengthChange': false,
+      'searching'   : true,
+      'ordering'    : true,
+      'info'        : true,
+      'autoWidth'   : false
+    })
+  })
+ </script>
+
+<?php include('template/disable_button.php'); ?>
+
 
 </body>
 </html>

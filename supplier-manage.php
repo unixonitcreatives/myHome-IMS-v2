@@ -1,5 +1,12 @@
 <!-- ======================= SESSION =================== -->
 <?php include('template/session.php'); ?>
+<!-- ======================= USER AUTHENTICATION  =================== -->
+<?php 
+  $Admin_auth = 1;
+  $Manager_auth = 0;
+  $Accounting_auth = 0;
+ include('template/user_auth.php');
+?>
 
 <!DOCTYPE html>
 <html>
@@ -16,7 +23,7 @@
   <!-- ======================= MENU BAR =========================== -->
   <?php include('template/menu-bar.php'); ?>
   <!-- ======================= SIDEBAR ============================ -->
-  <?php include ('template/sidebar-admin.php'); ?>
+  <?php include('template/sidebar-manage.php'); ?>
   <!-- ======================== HEADER CONTENT ==================== -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -29,7 +36,7 @@
   <!-- ======================== MAIN CONTENT ======================= -->
     <!-- Main content -->
     <section class="content">
-
+      <?php  echo $_SESSION['usertype']; ?>
     </section>
   <!-- /.content-wrapper -->
 </div>
