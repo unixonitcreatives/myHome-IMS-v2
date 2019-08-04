@@ -64,12 +64,13 @@
                             $j = 0;
                             while($row = mysqli_fetch_array($result)){
                               $j += 1;
-                              echo "<tr>";
+                              echo "<tr id='".$row['id']."'>";
                               echo "<td>" . $row['category'] . "</td>";
                               echo "<td>";
                               echo "<a href='category-update.php?id=". $row['id'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
                               echo " &nbsp; <a href='category-delete.php?id=". $row['id'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash remove'></span></a>";
-                              echo "<input type='button' id='".$row['id']."' class='button' data-toggle='modal' data-target='#modal-default' class='btn-default' value='Test'>";
+
+                              echo "<input type='button' id='modelbox' class='button' data-toggle='modal' data-target='#myModal' href='#myModal' class='btn-default' value='Test'>";
                               echo "</td>";
                               echo "</tr>";
                             }
@@ -94,27 +95,26 @@
   <!-- /.content-wrapper -->
 </div>
 <!-- =========================== MODAL =========================== -->
-        <div class="modal fade" id="modal-default">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Default Modal</h4>
-              </div>
-              <div class="modal-body">
-                <p>One fine body&hellip;</p>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-              </div>
-            </div>
-            <!-- /.modal-content -->
-          </div>
-          <!-- /.modal-dialog -->
-        </div>
-        <!-- /.modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Choose words. You can add words, delete words </h4>
+      </div>
+      <div class="modal-body">
+      <div class="modal-body-inner">
+        
+      </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id = "modelformbuttonclick" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
 
 <!-- =========================== FOOTER =========================== -->
   <footer class="main-footer">
@@ -137,10 +137,7 @@ $(document).ready(function () {
       $(this).remove();
     });
   }, 1000);
-
 });
-
-
 </script>
 
 <script>
