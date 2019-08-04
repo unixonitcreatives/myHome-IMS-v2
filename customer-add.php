@@ -248,7 +248,7 @@ $(document).ready(function () {
     $('.timepicker').timepicker({
       showInputs: false
     })
-  })
+  });
 </script>
 
 <script>

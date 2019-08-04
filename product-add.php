@@ -52,7 +52,7 @@
                 <div class="col-md-6">
                     <!-- 1st column content -->
                     <div class="form-group">
-                      <label>Supplier</label> <a href="supplier-add.php">+ add new product</a>
+                      <label>Supplier</label> <a href="supplier-add.php">+ add new</a>
                       <select class="form-control select2" style="width: 100%;" name="supplier_name" >
                         <?php
                         require_once "config.php";
