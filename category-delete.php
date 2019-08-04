@@ -9,8 +9,6 @@ if ($result){
 }else {
     echo "Error deleteing record: " . mysqli_error($link);
 }
-
-
 // Close connection
 mysqli_close($link);
 ?>
