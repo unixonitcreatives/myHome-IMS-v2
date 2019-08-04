@@ -1,3 +1,5 @@
+<?php require_once "config.php"; ?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -72,7 +74,7 @@
             </td>
             <td>
               <div class="form-group"><!--QTY-->
-                <input type="number" name="quantity[]" id="quantity<?php echo $x; ?>" onkeyup="getTotal(<?php echo $x; ?>)" autocomplete="off" class="form-control" min="1">
+                <input type="text" name="quantity[]" id="quantity<?php echo $x; ?>" onkeyup="getTotal(<?php echo $x; ?>)" autocomplete="off" class="form-control" min="1">
               </div>
             </td>
             <td>
@@ -86,16 +88,16 @@
               <div class="form-group"><!--TOTAL PRICE-->
                 <input type="text" name="total[]" id="total<?php echo $x; ?>" autocomplete="off" class="form-control" disabled="true" />
                 <!--==para saan kaya hidden input==-->
-                <input type="hidden" name="totalValue[]" id="totalValue<?php echo $x; ?>" autocomplete="off" class="form-control" />
+              <input type="text" name="total[]" id="total<?php echo $x; ?>" autocomplete="off" class="form-control" disabled="true" />
               </div>
             </td>
-            <td>
+            <!--<td>
               <div class="form-group">
                 <button type="button" class="btn btn-default" onclick="addRow()" id="addRowBtn" data-loading-text="Loading..."> <i class="glyphicon glyphicon-plus-sign"></i> Add Row </button>
               </div>
-            </td>
+            </td>-->
           </tr>
-          <?php $arrayNumber++; }//end loop ?>
+          <?php $arrayNumber++; $x++;}//end loop ?>
         </tbody>
         <tfoot>
             <div class="form-group">  <!--subamount-->
@@ -253,12 +255,15 @@ $(function () {
 })
 </script>
 
-<script>
+
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
 
 
 
-
-</script>
 
 <!-- Alert animation -->
 <script type="text/javascript">
