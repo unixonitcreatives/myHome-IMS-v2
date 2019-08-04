@@ -126,13 +126,16 @@ include('template/user_auth.php');
                               echo "<td>" . $row['category'] . "</td>";
                               echo "<td>" . $row['model'] . "</td>";
                               echo "<td>" . $row['qty'] . " pc(s)</td>";
+                              if($row['qty'] <= 0){
+                              echo "<td><input type='text' class='form-control qty' name='qty' value='No Stock Count' disabled/></td>";
+                              } else {
+                              echo "<td><input type='text' class='form-control qty' name='qty' value='' /></td>";
+                              }
 
-                              echo "<td><input type='text' class='qty' name='qty' value='' /></td>";
-
-                              echo "<td><input type='text' class='price' name='price' value='".$row['cost_price']."'></td>";
+                              echo "<td><input type='text' class='form-control price' name='price' value='".$row['cost_price']."'></td>";
 
                               
-                              echo "<td><input type='text' class='subtot' name='subtot' type='text' value='0' /></td>";
+                              echo "<td><input type='text' class='form-control subtot' name='subtot' type='text' value='0' /></td>";
 
                               echo "</tr>";
                             }
