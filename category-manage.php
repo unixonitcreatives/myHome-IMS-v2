@@ -36,7 +36,7 @@
   <!-- ======================== MAIN CONTENT ======================= -->
     <!-- Main content -->
     <section class="content">
-      <div class="col-md-12">
+      <div class="col-md-6">
           <!-- general form elements -->
           <div class="box box-success">
             <div class="box-header with-border">
@@ -58,22 +58,22 @@
                         require_once "config.php";
 
                         // Attempt select query execution
-                        $query = "SELECT * FROM categories";
+                        $query = "SELECT * FROM categories order by category asc";
                         if($result = mysqli_query($link, $query)){
                           if(mysqli_num_rows($result) > 0){
                             $j = 0;
                             while($row = mysqli_fetch_array($result)){
                               $j += 1;
-                              echo "<tr>";
+                              echo "<tr id='".$row['id']."'>";
                               echo "<td>" . $row['category'] . "</td>";
                               echo "<td>";
                               echo "<a href='category-update.php?id=". $row['id'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
-
                               echo " &nbsp; <a href='category-delete.php?id=". $row['id'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash remove'></span></a>";
+
+                              echo "<input type='button' id='modelbox' class='button' data-toggle='modal' data-target='#myModal' href='#myModal' class='btn-default' value='Test'>";
                               echo "</td>";
                               echo "</tr>";
                             }
-
                             // Free result set
                             mysqli_free_result($result);
                           } else{
@@ -95,7 +95,26 @@
   <!-- /.content-wrapper -->
 </div>
 <!-- =========================== MODAL =========================== -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Choose words. You can add words, delete words </h4>
+      </div>
+      <div class="modal-body">
+      <div class="modal-body-inner">
+        
+      </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id = "modelformbuttonclick" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
 
+  </div>
+</div>
 
 <!-- =========================== FOOTER =========================== -->
   <footer class="main-footer">
@@ -118,10 +137,7 @@ $(document).ready(function () {
       $(this).remove();
     });
   }, 1000);
-
 });
-
-
 </script>
 
 <script>
