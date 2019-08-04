@@ -18,6 +18,37 @@ include('template/user_auth.php');
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>MyHome | Purchase Order</title>
+  <script src="jquery-1.11.1.min.js"></script>         
+  <script type="text/javascript">
+        $(function () {
+            $('.pnm, .price, .subtot, .grdtot').prop('readonly', true);
+            var $tblrows = $("#example2 tbody tr");
+
+            $tblrows.each(function (index) {
+                var $tblrow = $(this);
+
+                $tblrow.find('.qty').on('change', function () {
+
+                    var qty = $tblrow.find("[name=qty]").val();
+                    var price = $tblrow.find("[name=price]").val();
+                    var subTotal = parseInt(qty, 10) * parseFloat(price);
+
+                    if (!isNaN(subTotal)) {
+
+                        $tblrow.find('.subtot').val(subTotal.toFixed(2));
+                        var grandTotal = 0;
+
+                        $(".subtot").each(function () {
+                            var stval = parseFloat($(this).val());
+                            grandTotal += isNaN(stval) ? 0 : stval;
+                        });
+
+                        $('.grdtot').val(grandTotal.toFixed(2));
+                    }
+                });
+            });
+        });
+    </script>
   <!-- ======================= CSS ================================= -->
   <?php include('template/css.php'); ?>
 </head>
@@ -40,36 +71,95 @@ include('template/user_auth.php');
       <!-- ======================== MAIN CONTENT ======================= -->
       <!-- Main content -->
       <section class="content">
-      <div class="col-md-6">
+      <div class="col-md-12">
           <!-- general form elements -->
           <div class="box box-success">
             <div class="box-header with-border">
-              <h3 class="box-title">Select Supplier</h3>
-              <?php
-              echo "asdasdasd";
 
-              $id = $_GET['id'];
-              echo $id;
+              <?php
+              $users_id = $_GET['id'];
+              $query = "SELECT * from suppliers WHERE id='$users_id'";
+              $result = mysqli_query($link, $query) or die(mysqli_error($link));
+              if (mysqli_num_rows($result) > 0) {
+                  while ($row = mysqli_fetch_assoc($result)){
+                      $supplier_name = $row['supplier_name'];
+                  }
+              }else {
+                  echo "Theres nothing to see here.";
+              }
               ?>
+
+              <h3 class="box-title">Supplier: <?php echo $supplier_name; ?></h3>
             </div>
             <!-- /.box-header -->
             <!-- form start -->
             <form  method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
               <div class="box-body">
-                <div class="form-group">
-                   <select id="selectSupplier" class="form-control" style="width: 100%;" name='po_supplier' onchange="requestPO();">
+                <table id="example2" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
+                      <thead>
+                        <tr>
+                          <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">No</th>
+                          <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Product Name</th>
+                          <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Category</th>
+                          <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Model No.</th>
+                          <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Stock Count</th>
+                          <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Quantity</th>
+                          <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Cost Price</th>
+                          <th>Amount</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <?php
+                        // Include config file
+                        require_once "config.php";
 
-                      <?php
-                      $query = "SELECT * FROM suppliers WHERE supplier_name='$id'";
-                      $result = mysqli_query($link, $query);                      
-                      while ($row = mysqli_fetch_assoc($result)) {
-                        echo "<option value='PO-request-2-view.php?id=".$row['id']."'>".$row['supplier_name']."</option>";
-                      }
+                        // Attempt select query execution
+                        $query = "SELECT * FROM inventory WHERE supplier_name = '$supplier_name' ";
+                        if($result = mysqli_query($link, $query)){
+                          if(mysqli_num_rows($result) > 0){
+                            $j = 0;
+                            while($row = mysqli_fetch_array($result)){
+                              $j += 1;
+                              echo "<tr>";
+                              echo "<td> $j </td>";
+                              echo "<td>" . $row['product_description'] . "</td>";
+                              echo "<td>" . $row['category'] . "</td>";
+                              echo "<td>" . $row['model'] . "</td>";
+                              echo "<td>" . $row['qty'] . " pc(s)</td>";
 
-                     ?>
+                              echo "<td><input type='text' class='qty' name='qty' value='' /></td>";
 
-                   </select>
-                </div>
+                              echo "<td><input type='text' class='price' name='price' value='".$row['cost_price']."'></td>";
+
+                              
+                              echo "<td><input type='text' class='subtot' name='subtot' type='text' value='0' /></td>";
+
+                              echo "</tr>";
+                            }
+
+                              echo "<tfoot>";
+                              echo "<td></td>";
+                              echo "<td></td>";
+                              echo "<td></td>";
+                              echo "<td></td>";
+                              echo "<td></td>";
+                              echo "<td></td>";
+                              echo "<td>Grand Total:</td>";
+                              echo "<td><input class='grdtot' type='text' value='0' /></td>";
+                              echo "</tfoot>";
+                            mysqli_free_result($result);
+                          } else{
+                            echo "<p class='lead'><em>No records were found.</em></p>";
+                          }
+                        } else{
+                          echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
+                        }
+
+                        // Close connection
+                        mysqli_close($link);
+                        ?>
+                      </tbody>
+                    </table>
               <!-- /.box-body -->
             </div>
               <div class="box-footer">
@@ -224,6 +314,9 @@ include('template/user_auth.php');
 
 
       </script>
+
+
+
 
     </body>
     </html>
