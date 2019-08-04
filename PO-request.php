@@ -1,11 +1,84 @@
 <!-- ======================= SESSION =================== -->
 <?php include('template/session.php'); ?>
+<?php include('config.php'); ?>
 <!-- ======================= USER AUTHENTICATION  =================== -->
 <?php
 $Admin_auth = 1;
 $Manager_auth = 1;
 $Accounting_auth = 0;
 include('template/user_auth.php');
+
+// Define variables and initialize with empty values
+$inv_num=
+$po_supplier_name=
+$po_qty=
+$po_unit=
+$po_description=
+$po_unit_price=
+$po_total_amount=
+$totalPrice=
+$remarks=
+$user=
+$paymentTerms=
+$transID=
+$alertMessage="";
+
+
+require_once "config.php";
+
+//If the form is submitted
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+  $po_supplier_name =$_POST['po_supplier'];
+  $paymentTerms =$_POST['paymentTerms'];
+  $totalPrice =$_POST['totalPrice'];
+
+  $query = "INSERT INTO po_transactions (inv_date, supplier_name, paymentTerms, totalPrice, po_status) VALUES ( CURRENT_TIMESTAMP, '$po_supplier_name', '$paymentTerms', '$totalPrice', 1)";
+  $result = mysqli_query($link, $query) or die(mysqli_error($link));
+
+
+  if ($result) {
+    $j = 0;
+    $count = sizeof($_POST['po_qty']);
+
+    // Use insert_id property
+    $po_trans_id = $link->insert_id;
+    $user  = $_SESSION["username"];
+
+    for ($j = 0; $j < $count; $j++) {
+
+      $query = "INSERT INTO request_po (po_trans_id,po_qty,po_unit,po_description,po_unit_price,po_total_amount,user) VALUES (
+        '".$po_trans_id."',
+        '".$_POST['po_qty'][$j]."',
+        '".$_POST['po_unit'][$j]."',
+        '".$_POST['po_description'][$j]."',
+        '".$_POST['po_unit_price'][$j]."',
+        '".$_POST['po_total_amount'][$j]."',
+        '".$user."')";
+
+        if("" == trim($_POST['qty']))
+        {
+
+        }
+        else {
+          $result = mysqli_multi_query($link, $query) or die(mysqli_error($link));
+        }
+
+      }
+
+      if($result){
+        $alertMessage = "<div class='alert alert-success' role='alert'>
+        New user successfully added in database.
+        </div>";
+      }else{
+        $alertMessage = "<div class='alert alert-danger' role='alert'>
+        Error Adding data in Database.
+        </div>";}
+
+
+        //mysqli_close($link);
+
+      }
+    }
 ?>
 
 <!DOCTYPE html>
@@ -36,8 +109,6 @@ include('template/user_auth.php');
       <!-- ======================== MAIN CONTENT ======================= -->
       <!-- Main content -->
       <section class="content">
-        <?php  echo $_SESSION['usertype']; ?>
-
         <!-- ========================= FORM ============================ -->
         <div class="box box-success">
           <div class="box-header with-border">
@@ -56,8 +127,6 @@ include('template/user_auth.php');
                     <select class="form-control" style="width: 100%;" name='po_supplier' onchange="showUser(this.value)">
                       <option>--SELECT SUPPLIER--</option>
                       <?php
-
-                      include "config.php";
 
                       $query = "select po_trans_id, supplier_name from po_transactions";
                       $result = mysqli_query($link, $query);
@@ -79,8 +148,66 @@ include('template/user_auth.php');
 
                 </div>
 
-                <div class="col-md-12" id="txtHint">
-                  <!-- 2nd row content -->
+                <div class="col-md-12" ><!--id="txtHint"-->
+                  <div class="table-responsive">
+                    <!--Table-->
+                    <table class="table table-bordered" id="productTable">
+                      <thead>
+                        <tr>
+                          <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Model</th>
+                          <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Stock Count</th>
+                          <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Retail Price</th>
+                          <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Total</th>
+                          <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Action</th>
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                        <?php $arrayNumber = 0;
+
+                        for($x = 1; $x < 8; $x++){ ?><!-- for loop start -->
+                          <tr id="row<?php echo $x; ?>" class="<?php echo $arrayNumber; ?>">
+                            <td>
+                              <div class="form-group">
+                                <select class="form-control" style="width: 100%;" name="po_supplier[]" id="po_supplier<?php echo $x; ?>" onchange="getProductData(<?php echo $x; ?>)">
+                                  <option>--SELECT SUPPLIER--</option>
+                                  <?php
+
+                                  $query = "SELECT * FROM inventory";
+                                  $result = mysqli_query($link, $query);
+
+                                  $po_supplier_name = $_POST['supplier_name'];
+
+                                  while ($row = mysqli_fetch_array($result)) { ?>
+                                    <option value="<?php echo $row['product_description']; ?>"><?php echo $row['product_description']; ?></option>
+                                  <?php } ?>
+                                </select>
+                              </div>
+                            </td>
+                            <td>
+                              <input type="number" class="form-control" name="qty[]" id="qty<?php echo $x; ?>" onkeyup="getTotal(<?php echo $x; ?>)" autocomplete="off"  min="1">
+                            </td>
+                            <td>
+                              <input type="text" class="form-control" placeholder="Notes" name="srp[]" id="srp<?php echo $x; ?>" >
+                            </td>
+                            <td>
+                              <input type="text" class="form-control" placeholder="Notes" name="total[]" id="total<?php echo $x; ?>" >
+                            </td>
+                            <td>
+                              <button class="btn btn-success">Add</button>
+                            </td>
+
+                          </tr>
+                          <?php $arrayNumber++; $x++; } ?> <!-- For Loop End -->
+                      </tbody>
+
+
+                    </table>
+                    <!--/table-->
+
+
+                  </div>
+                  <!-- /.content-wrapper -->
 
                 </div>
               </div>
