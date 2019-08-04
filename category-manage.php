@@ -61,12 +61,14 @@
                         $query = "SELECT * FROM categories";
                         if($result = mysqli_query($link, $query)){
                           if(mysqli_num_rows($result) > 0){
-
+                            $j = 0;
                             while($row = mysqli_fetch_array($result)){
+                              $j += 1;
                               echo "<tr>";
                               echo "<td>" . $row['category'] . "</td>";
                               echo "<td>";
                               echo "<a href='category-update.php?id=". $row['id'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
+
                               echo " &nbsp; <a href='category-delete.php?id=". $row['id'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash remove'></span></a>";
                               echo "</td>";
                               echo "</tr>";
@@ -92,6 +94,7 @@
     </section>
   <!-- /.content-wrapper -->
 </div>
+<!-- =========================== MODAL =========================== -->
 
 
 <!-- =========================== FOOTER =========================== -->
@@ -117,6 +120,8 @@ $(document).ready(function () {
   }, 1000);
 
 });
+
+
 </script>
 
 <script>
