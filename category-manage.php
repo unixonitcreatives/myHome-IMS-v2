@@ -73,7 +73,6 @@
                               echo "</td>";
                               echo "</tr>";
                             }
-
                             // Free result set
                             mysqli_free_result($result);
                           } else{
