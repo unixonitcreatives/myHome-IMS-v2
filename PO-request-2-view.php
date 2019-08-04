@@ -148,7 +148,7 @@ include('template/user_auth.php');
                               echo "<td></td>";
                               echo "<td></td>";
                               echo "<td>Grand Total:</td>";
-                              echo "<td><input class='grdtot' type='text' value='0' /></td>";
+                              echo "<td><input class='form-control grdtot' type='text' value='0' /></td>";
                               echo "</tfoot>";
                             mysqli_free_result($result);
                           } else{
