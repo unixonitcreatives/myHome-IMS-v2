@@ -10,6 +10,8 @@
 
 <!-- ========================== ADD FORM TO THE DATABASE ====================================== -->
 <?php
+
+require_once "config.php";
 $supplier_name=$supplier_contact_person=$supplier_email=$supplier_number=$supplier_address=$alertMessage="";
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
   $supplier_name = test_input($_POST['supplier_name']);
