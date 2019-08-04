@@ -7,12 +7,26 @@
   $Accounting_auth = 0;
  include('template/user_auth.php');
 ?>
-<!-- ========================== ADD FORM TO THE DATABASE ====================================== -->
+<!-- ======================= UPDATE  =================== -->
 <?php
 // Define variables and initialize with empty values
-$username=$password=$usertype=$alertMessage="";
+$username=$time_created=$alertMessage=$password=$usertype="";
 
 require_once "config.php";
+
+
+$users_id = $_GET['id'];
+$query = "SELECT * from users WHERE id='$users_id'";
+$result = mysqli_query($link, $query) or die(mysqli_error($link));
+if (mysqli_num_rows($result) > 0) {
+    while ($row = mysqli_fetch_assoc($result)){
+        $username               =   $row['username'];
+        $password               =   $row['password'];
+        $usertype               =   $row['userType'];
+    }
+}else {
+    $alertMessage="<div class='alert alert-danger' role='alert'>Theres Nothing to see Here.</div>";
+}
 
 //If the form is submitted or not.
 //If the form is submitted
@@ -20,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     //Assigning posted values to variables.
     $username = test_input($_POST['username']);
     $password = test_input($_POST['password']);
-    $usertype = test_input($_POST['usertype']);
+    $usertype = test_input($_POST['userType']);
 
     // Validate username
 
@@ -34,28 +48,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
         $alertMessage = "Please enter a password.";
     }
 
-    // Validate user type
+    // Validate usertype
 
     if(empty($usertype)){
-        $alertMessage = "Please enter a user type.";
+        $alertMessage = "Please enter a usertype.";
     }
 
 
     // Check input errors before inserting in database
     if(empty($alertMessage)){
-
-    //$hash = password_hash($password, PASSWORD_DEFAULT);
+    $hash = password_hash($password, PASSWORD_DEFAULT);
     //Checking the values are existing in the database or not
-    $query = "INSERT INTO users (username, password, usertype, time_created) VALUES ('$username', '$password', '$usertype', CURRENT_TIMESTAMP)";
+    $query = "UPDATE users SET username='$username', password='$hash', userType='$usertype' WHERE id='$users_id'";
     $result = mysqli_query($link, $query) or die(mysqli_error($link));
-
     if($result){
-         $alertMessage = "<div class='alert alert-success' role='alert'>
-  Newuser successfully added in database.
+        $alertMessage = "<div class='alert alert-success' role='alert'>
+  User data successfully updated in database.
 </div>";
-    }else{
-        $alertMessage = "<div class='alert alert-danger' role='alert'>
-  Error Adding data in Database.
+    }else {
+        $alertMessage = "<div class='alert alert-success' role='alert'>
+  Error updating record.
 </div>";}
 
 // remove all session variables
@@ -65,9 +77,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
 // Close connection
 mysqli_close($link);
-
+}
     }
-  }
 
 function test_input($data) {
     $data = trim($data);
@@ -75,16 +86,14 @@ function test_input($data) {
     $data = htmlspecialchars($data);
     return $data;
 }
-
 ?>
-
-<!-- ================================================================ -->
+<!-- ======================================================= -->
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>MyHome | User</title>
+<title>MyHome | Category</title>
 <!-- ======================= CSS ================================= -->
 <?php include('template/css.php'); ?>
 </head>
@@ -100,49 +109,50 @@ function test_input($data) {
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        ADD USER
-        <small></small>
+        User Update
+        <small>asdasdas</small>
       </h1>
-      <ol class="breadcrumb">
-        <li><a href="index.php"><i class="fa fa-dashboard active"></i> Dashboard</a></li>
-      </ol>
     </section>
   <!-- ======================== MAIN CONTENT ======================= -->
     <!-- Main content -->
     <section class="content">
-      <div class="col-md-6">
+    <div class="col-md-6">
           <!-- general form elements -->
           <div class="box box-success">
             <div class="box-header with-border">
-              <h3 class="box-title">User's Information</h3>
-              <br><a href="user-manage.php" class="text-center">View User</a>
+              <h3 class="box-title">User Details</h3>
             </div>
             <!-- /.box-header -->
+            <?php echo $alertMessage; ?>
             <!-- form start -->
-            <form  method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+              <form  method="POST"  action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>?id=<?php echo $users_id; ?>">
               <div class="box-body">
                 <div class="form-group">
                   <label>Username</label>
-                  <input type="text" class="form-control" placeholder="Username" name="username" required>
-                </div>
-
-                <div class="form-group">
-                  <label>Password</label>
-                  <input type="password" class="form-control" placeholder="Password" name="password" required>
+                  <input type="text" class="form-control" placeholder="Username" name="username" value="<?php echo $username; ?>">
                 </div>
 
                 <div class="form-group">
                 <label>User Type</label>
-                <select class="form-control select2" style="width: 100%;" name="usertype" required>
+                <select class="form-control select2" style="width: 100%;" name="userType">
+                  <option value="<?php echo $usertype; ?>"><?php echo $usertype; ?></option>
                   <option>Administrator</option>
-                  <option>Manager</option>
                   <option>Accounting</option>
+                  <option>Manager</option>
+
                 </select>
               </div>
+
+                <div class="form-group">
+                  <label>Password</label>
+                  <input type="password" class="form-control" placeholder="Password" name="password" value="<?php echo $password; ?>">
+                </div>
+
+              </div>
               <!-- /.box-body -->
-            </div>
+
               <div class="box-footer">
-                <button type="submit" class="btn btn-success" onclick="this.disabled=true;this.value='Submitting...'; this.form.submit();" >Save</button>
+                <button type="submit" class="btn btn-success">Save</button>
               </div>
             </form>
           </div>
@@ -150,9 +160,12 @@ function test_input($data) {
 
 
         </div>
-    </section>
+    <!-- /.content -->
+  </div>
+</section>
   <!-- /.content-wrapper -->
 </div>
+<!-- =========================== MODAL =========================== -->
 
 
 <!-- =========================== FOOTER =========================== -->
@@ -178,12 +191,14 @@ $(document).ready(function () {
   }, 1000);
 
 });
+
+
 </script>
 
 <script>
   $(function () {
     //Initialize Select2 Elements
-    //$('.select2').select2()
+    $('.select2').select2()
 
     //Datemask dd/mm/yyyy
     $('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
@@ -256,6 +271,6 @@ $(document).ready(function () {
     }, 1);
 }
 </script>
-<?php include('template/disable_button.php'); ?>
+
 </body>
 </html>
