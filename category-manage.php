@@ -36,7 +36,7 @@
   <!-- ======================== MAIN CONTENT ======================= -->
     <!-- Main content -->
     <section class="content">
-      <div class="col-md-12">
+      <div class="col-md-6">
           <!-- general form elements -->
           <div class="box box-success">
             <div class="box-header with-border">
@@ -58,7 +58,7 @@
                         require_once "config.php";
 
                         // Attempt select query execution
-                        $query = "SELECT * FROM categories";
+                        $query = "SELECT * FROM categories order by category asc";
                         if($result = mysqli_query($link, $query)){
                           if(mysqli_num_rows($result) > 0){
                             $j = 0;
@@ -68,8 +68,8 @@
                               echo "<td>" . $row['category'] . "</td>";
                               echo "<td>";
                               echo "<a href='category-update.php?id=". $row['id'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
-
                               echo " &nbsp; <a href='category-delete.php?id=". $row['id'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash remove'></span></a>";
+                              echo "<input type='button' id='".$row['id']."' class='button' data-toggle='modal' data-target='#modal-default' class='btn-default' value='Test'>";
                               echo "</td>";
                               echo "</tr>";
                             }
@@ -95,7 +95,27 @@
   <!-- /.content-wrapper -->
 </div>
 <!-- =========================== MODAL =========================== -->
-
+        <div class="modal fade" id="modal-default">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Default Modal</h4>
+              </div>
+              <div class="modal-body">
+                <p>One fine body&hellip;</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
 
 <!-- =========================== FOOTER =========================== -->
   <footer class="main-footer">
