@@ -7,55 +7,85 @@
   $Accounting_auth = 0;
  include('template/user_auth.php');
 ?>
+
 <!-- ========================== ADD FORM TO THE DATABASE ====================================== -->
 <?php
+
 // Define variables and initialize with empty values
-$username=$password=$usertype=$alertMessage="";
+$supplier_name=$supplier_contact_person=$supplier_email=$supplier_number=$supplier_address=$alertMessage=$users_id=$created_at="";
 
 require_once "config.php";
+
+
+$users_id = $_GET['id'];
+$query = "SELECT * from suppliers WHERE id='$users_id'";
+$result = mysqli_query($link, $query) or die(mysqli_error($link));
+if (mysqli_num_rows($result) > 0) {
+    while ($row = mysqli_fetch_assoc($result)){
+        $supplier_name              =   $row['supplier_name'];
+        $supplier_contact_person    =   $row['supplier_contact_person'];
+        $supplier_email             =   $row['supplier_email'];
+        $supplier_number            =   $row['supplier_number'];
+        $supplier_address           =   $row['supplier_address'];
+        $created_at                 =   $row['created_at'];
+    }
+}else {
+    $alertMessage="<div class='alert alert-danger' role='alert'>Theres Nothing to see Here.</div>";
+}
+
+
 
 //If the form is submitted or not.
 //If the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
     //Assigning posted values to variables.
-    $username = test_input($_POST['username']);
-    $password = test_input($_POST['password']);
-    $usertype = test_input($_POST['usertype']);
+    $supplier_name = test_input($_POST['supplier_name']);
+    $supplier_contact_person = test_input($_POST['supplier_contact_person']);
+    $supplier_email = test_input($_POST['supplier_email']);
+    $supplier_number = test_input($_POST['supplier_number']);
+    $supplier_address = test_input($_POST['supplier_address']);
 
-    // Validate username
+    // Validate supplier name
 
-    if(empty($username)){
-        $alertMessage = "Please enter a username.";
+    if(empty($supplier_name)){
+        $alertMessage = "Please enter a supplier name.";
     }
 
-    // Validate password
+    // Validate supplier contact person
 
-    if(empty($password)){
-        $alertMessage = "Please enter a password.";
+    if(empty($supplier_contact_person)){
+        $alertMessage = "Please enter a supplier contact person.";
     }
 
-    // Validate user type
+    // Validate supplier email
 
-    if(empty($usertype)){
-        $alertMessage = "Please enter a user type.";
+    if(empty($supplier_email)){
+        $alertMessage = "Please enter a supplier email.";
     }
 
+    // Validate supplier contact number
 
+    if(empty($supplier_number)){
+        $alertMessage = "Please enter a supplier contact number.";
+    }
+
+    // Validate supplier contact number
+
+    if(empty($supplier_address)){
+        $alertMessage = "Please enter a supplier address.";
+    }
     // Check input errors before inserting in database
     if(empty($alertMessage)){
-
-    //$hash = password_hash($password, PASSWORD_DEFAULT);
     //Checking the values are existing in the database or not
-    $query = "INSERT INTO users (username, password, usertype, time_created) VALUES ('$username', '$password', '$usertype', CURRENT_TIMESTAMP)";
+    $query = "UPDATE suppliers SET supplier_name='$supplier_name', supplier_contact_person='$supplier_contact_person', supplier_email='$supplier_email', supplier_number='$supplier_number', supplier_address='$supplier_address' WHERE id='$users_id'";
     $result = mysqli_query($link, $query) or die(mysqli_error($link));
-
     if($result){
-         $alertMessage = "<div class='alert alert-success' role='alert'>
-  Newuser successfully added in database.
+        $alertMessage = "<div class='alert alert-success' role='alert'>
+  Supplier data successfully updated in database.
 </div>";
-    }else{
-        $alertMessage = "<div class='alert alert-danger' role='alert'>
-  Error Adding data in Database.
+    }else {
+        $alertMessage = "<div class='alert alert-success' role='alert'>
+  Error updating record.
 </div>";}
 
 // remove all session variables
@@ -65,9 +95,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
 // Close connection
 mysqli_close($link);
-
+}
     }
-  }
 
 function test_input($data) {
     $data = trim($data);
@@ -75,16 +104,15 @@ function test_input($data) {
     $data = htmlspecialchars($data);
     return $data;
 }
-
 ?>
-
 <!-- ================================================================ -->
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>MyHome | User</title>
+<title>MyHome | Supplier</title>
 <!-- ======================= CSS ================================= -->
 <?php include('template/css.php'); ?>
 </head>
@@ -100,49 +128,62 @@ function test_input($data) {
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        ADD USER
-        <small></small>
+        Add Supplier
+        <small>asdasdas</small>
       </h1>
-      <ol class="breadcrumb">
-        <li><a href="index.php"><i class="fa fa-dashboard active"></i> Dashboard</a></li>
-      </ol>
     </section>
   <!-- ======================== MAIN CONTENT ======================= -->
     <!-- Main content -->
-    <section class="content">
-      <div class="col-md-6">
+<section class="content">
+    <div class="col-md-6">
+      <?php echo $alertMessage; ?>
           <!-- general form elements -->
           <div class="box box-success">
             <div class="box-header with-border">
-              <h3 class="box-title">User's Information</h3>
-              <br><a href="user-manage.php" class="text-center">View User</a>
+              <h3 class="box-title">Supplier's Information</h3>
+              <br><a href="supplier-manage.php" class="text-center">View Supplier</a>
             </div>
+
             <!-- /.box-header -->
             <!-- form start -->
-            <form  method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+             <form  method="POST"  action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>?id=<?php echo $users_id; ?>">
+
               <div class="box-body">
                 <div class="form-group">
-                  <label>Username</label>
-                  <input type="text" class="form-control" placeholder="Username" name="username" required>
+                  <label>Suppliers</label>
+                  <input type="text" class="form-control" placeholder="Suppliers" name="supplier_name" oninput="upperCaseF(this)" value="<?php echo $supplier_name; ?>" required>
                 </div>
 
                 <div class="form-group">
-                  <label>Password</label>
-                  <input type="password" class="form-control" placeholder="Password" name="password" required>
+                  <label>Contact Person</label>
+                  <input type="text" class="form-control" placeholder="Contact Person" name="supplier_contact_person" oninput="upperCaseF(this)" value="<?php echo $supplier_contact_person; ?>" required>
                 </div>
 
                 <div class="form-group">
-                <label>User Type</label>
-                <select class="form-control select2" style="width: 100%;" name="usertype" required>
-                  <option>Administrator</option>
-                  <option>Manager</option>
-                  <option>Accounting</option>
-                </select>
+                <label>Phone</label>
+                  <input type="text" class="form-control" placeholder="Phone" name="supplier_number" value="<?php echo $supplier_number; ?>" data-inputmask='"mask": "(999) 999-9999"' data-mask>
+                </div>
+
+                <div class="form-group">
+                  <label>Email</label>
+                  <input type="email" class="form-control" placeholder="Email" name="supplier_email" value="<?php echo $supplier_email; ?>" required>
+                </div>
+
+                <div class="form-group">
+                  <label>Address</label>
+                  <input type="text" class="form-control" placeholder="Address" name="supplier_address" oninput="upperCaseF(this)" value="<?php echo $supplier_address; ?>" required>
+                </div>
+                <div class="form-group">
+                <label>Created at</label>
+                <input type="text" class="form-control" placeholder="date" name="date" value="<?php echo $created_at; ?>" disabled>
               </div>
+              </div>
+
+
+
               <!-- /.box-body -->
-            </div>
               <div class="box-footer">
-                <button type="submit" class="btn btn-success" onclick="this.disabled=true;this.value='Submitting...'; this.form.submit();" >Save</button>
+                  <button type="submit" class="btn btn-success">Save</button>
               </div>
             </form>
           </div>
@@ -150,7 +191,9 @@ function test_input($data) {
 
 
         </div>
-    </section>
+    <!-- /.content -->
+  </div>
+</section>
   <!-- /.content-wrapper -->
 </div>
 
@@ -183,7 +226,7 @@ $(document).ready(function () {
 <script>
   $(function () {
     //Initialize Select2 Elements
-    //$('.select2').select2()
+    $('.select2').select2()
 
     //Datemask dd/mm/yyyy
     $('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
@@ -256,6 +299,6 @@ $(document).ready(function () {
     }, 1);
 }
 </script>
-<?php include('template/disable_button.php'); ?>
+
 </body>
 </html>

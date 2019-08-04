@@ -108,7 +108,7 @@ mysqli_close($link);
 
 <!-- =========================== FOOTER =========================== -->
   <footer class="main-footer">
-      
+      <?php include('template/footer.php'); ?>
   </footer>
 
 
