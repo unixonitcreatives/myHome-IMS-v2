@@ -82,7 +82,7 @@ $(document).ready(function() {
 
 
 			// array validation
-			var productName = document.getElementsByName('productName[]');
+			var productName = document.getElementsByName('po_supplier[]');
 			var validateProduct;
 			for (var x = 0; x < productName.length; x++) {
 				var productNameId = productName[x].id;
@@ -102,7 +102,7 @@ $(document).ready(function() {
 	      }
 	   	} // for
 
-	   	var quantity = document.getElementsByName('quantity[]');
+	   	var quantity = document.getElementsByName('qty[]');
 	   	var validateQuantity;
 	   	for (var x = 0; x < quantity.length; x++) {
 	 			var quantityId = quantity[x].id;
@@ -251,7 +251,7 @@ $(document).ready(function() {
 
 
 			// array validation
-			var productName = document.getElementsByName('productName[]');
+			var productName = document.getElementsByName('po_supplier[]');
 			var validateProduct;
 			for (var x = 0; x < productName.length; x++) {
 				var productNameId = productName[x].id;
@@ -271,7 +271,7 @@ $(document).ready(function() {
 	      }
 	   	} // for
 
-	   	var quantity = document.getElementsByName('quantity[]');
+	   	var quantity = document.getElementsByName('qty[]');
 	   	var validateQuantity;
 	   	for (var x = 0; x < quantity.length; x++) {
 	 			var quantityId = quantity[x].id;
@@ -391,7 +391,7 @@ function addRow() {
 	}
 
 	$.ajax({
-		url: 'php_action/fetchProductData.php',
+		url: 'fetchProductData.php',
 		type: 'post',
 		dataType: 'json',
 		success:function(response) {
@@ -412,13 +412,13 @@ function addRow() {
 					'</div>'+
 				'</td>'+
 				'<td>'+
-					'<div class="form-group">'+
-					'<input type="number" name="quantity[]" id="quantity'+count+'" onkeyup="getTotal('+count+')" autocomplete="off" class="form-control" min="1" />'+
-					'</div>'+
+					'<input type="text" name="retail_price[]" id="retail_price'+count+'" autocomplete="off" disabled="true" class="form-control" />'+
+					'<input type="hidden" name="retailPriceValue[]" id="retailPriceValue'+count+'" autocomplete="off" class="form-control" />'+
 				'</td>'+
 				'<td>'+
-					'<input type="text" name="srp[]" id="srp'+count+'" autocomplete="off" disabled="true" class="form-control" />'+
-					'<input type="hidden" name="srpValue[]" id="srpValue'+count+'" autocomplete="off" class="form-control" />'+
+					'<div class="form-group">'+
+					'<input type="number" name="qty[]" id="qty'+count+'" onkeyup="getTotal('+count+')" autocomplete="off" class="form-control" min="1" />'+
+					'</div>'+
 				'</td>'+
 				'<td>'+
 					'<input type="text" name="total[]" id="total'+count+'" autocomplete="off" class="form-control" disabled="true" />'+
@@ -455,12 +455,12 @@ function removeProductRow(row = null) {
 // select on product data
 function getProductData(row = null) {
 	if(row) {
-		var productId = $("#productName"+row).val();
+		var productId = $("#po_supplier"+row).val();
 
 		if(productId == "") {
-			$("#rate"+row).val("");
+			$("#retail_price"+row).val("");
 
-			$("#quantity"+row).val("");
+			$("#qty"+row).val("");
 			$("#total"+row).val("");
 
 			// remove check if product name is selected
@@ -480,17 +480,17 @@ function getProductData(row = null) {
 
 		} else {
 			$.ajax({
-				url: 'php_action/fetchSelectedProduct.php',
+				url: 'fetchSelectedProduct.php',
 				type: 'post',
-				data: {productId : productId},
+				data: {inv_id : inv_id},
 				dataType: 'json',
 				success:function(response) {
 					// setting the rate value into the rate input field
 
-					$("#rate"+row).val(response.rate);
-					$("#rateValue"+row).val(response.rate);
+					$("#retail_price"+row).val(response.rate);
+					$("#retailPriceValue"+row).val(response.rate);
 
-					$("#quantity"+row).val(1);
+					$("#qty"+row).val(1);
 
 					var total = Number(response.rate) * 1;
 					total = total.toFixed(2);
@@ -526,7 +526,7 @@ function getProductData(row = null) {
 // table total
 function getTotal(row = null) {
 	if(row) {
-		var total = Number($("#rate"+row).val()) * Number($("#quantity"+row).val());
+		var total = Number($("#retail_price"+row).val()) * Number($("#qty"+row).val());
 		total = total.toFixed(2);
 		$("#total"+row).val(total);
 		$("#totalValue"+row).val(total);

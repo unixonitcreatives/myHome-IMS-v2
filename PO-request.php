@@ -130,7 +130,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                           <option>--SELECT SUPPLIER--</option>
                           <?php
 
-                          $query = "select po_trans_id, supplier_name from po_transactions";
+                          $query = "select * from po_transactions";
                           $result = mysqli_query($link, $query);
 
                           $po_supplier_name = $_POST['supplier_name'];
@@ -153,14 +153,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     <div class="col-md-12" ><!--id="txtHint"-->
                       <div class="table-responsive">
                         <!--Table-->
-                        <button type="button" class="btn btn-default" onclick="addRow()" id="addRowBtn" data-loading-text="Loading..."> <i class="glyphicon glyphicon-plus-sign"></i> Add Row </button>
+
                         <table class="table" id="productTable">
                           <thead>
                             <tr>
                               <th>Model</th>
-                              <th>Quantity</th>
-                              <th>Stock Count</th>
                               <th>Retail Price</th>
+                              <th>Quantity</th>
                               <th>Total</th>
                               <th>Action</th>
                             </tr>
@@ -174,27 +173,28 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                                 <td>
                                   <div class="form-group">
                                     <select class="form-control" name="po_supplier[]" id="po_supplier<?php echo $x; ?>" onchange="getProductData(<?php echo $x; ?>)">
-                                      <option>~~SELECT SUPPLIER~~</option>
+                                      <option value="">~~SELECT SUPPLIER~~</option>
                                       <?php
+                                      $productSql = "SELECT * FROM inventory";
+                                      $productData = $link->query($productSql);
 
-                                      $query = "select * from inventory";
-                                      $result = mysqli_query($link, $query);
+                                      while($row = $productData->fetch_array()) {
+                                        echo "<option value='".$row['inv_id']."' id='changeProduct".$row['inv_id']."'>".$row['product_description']."</option>";
+                                      } // /while
 
-                                      while ($row = mysqli_fetch_array($result)) { ?>
-                                        <option value="<?php echo $row['inv_id']?>" id="changeProduct<?php echo $row['inv_id']?>"><?php echo $row['product_description']?></option>
-                                      <?php } ?>
+                                      ?>
                                     </select>
                                   </div>
                                 </td>
                                 <td>
-                                  <div class="form-group"><!--QTY-->
-                                    <input type="number" name="qty[]" id="qty<?php echo $x; ?>" onkeyup="getTotal(<?php echo $x ?>)" autocomplete="off" class="form-control" min="1" />
-                                  </div>
+                                  <!--UNIT PRICE-->
+                                  <input type="text" name="retail_price[]" id="retail_price<?php echo $x; ?>" autocomplete="off" disabled="true" class="form-control" />
+                                  <input type="hidden" name="retailPriceValue[]" id="retailPriceValue<?php echo $x; ?>" autocomplete="off" class="form-control" />
                                 </td>
                                 <td>
-                                  <!--UNIT PRICE-->
-                                  <input type="text" name="srp[]" id="srp<?php echo $x; ?>" autocomplete="off" disabled="true" class="form-control" />
-                                  <input type="hidden" name="srpValue[]" id="srpValue<?php echo $x; ?>" autocomplete="off" class="form-control" />
+                                  <div class="form-group"><!--QTY-->
+                                    <input type="number" name="qty[]" id="qty<?php echo $x; ?>" onkeyup="getTotal(<?php echo $x; ?>)" autocomplete="off" class="form-control" min="1" />
+                                  </div>
                                 </td>
                                 <td>
                                   <!--TOTAL PRICE-->
@@ -207,18 +207,20 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                               </tr>
 
                               <?php $arrayNumber++; } ?> <!-- For Loop End -->
-
                             </tbody>
                             <tfoot>
+                              <div class="form-group submitButtonFooter">
+                                <button type="button" class="btn btn-default" onclick="addRow()" id="addRowBtn" data-loading-text="Loading..."> <i class="glyphicon glyphicon-plus-sign"></i> Add Row </button>
+                              </div>
                               <tr>
                                 <td>
                                   <div class="form-group">
-                        				    <label for="subTotal" class="col-sm-3 control-label">Sub Amount</label>
-                        				    <div class="col-sm-9">
-                        				      <input type="text" class="form-control" id="subTotal" name="subTotal" disabled="true" />
-                        				      <input type="hidden" class="form-control" id="subTotalValue" name="subTotalValue" />
-                        				    </div>
-                        				  </div>
+                                    <label for="subTotal" class="col-sm-3 control-label">Sub Amount</label>
+                                    <div class="col-sm-9">
+                                      <input type="text" class="form-control" id="subTotal" name="subTotal" disabled="true" />
+                                      <input type="hidden" class="form-control" id="subTotalValue" name="subTotalValue" />
+                                    </div>
+                                  </div>
                                 </td>
                               </tr>
                             </tfoot>
@@ -231,7 +233,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
                     <div class="box-footer">
                       <!-- Buttons -->
-
                       <button type="submit" name="save" id="save" onclick="this.disabled=true;this.value='Submitting...'; this.form.submit();" class="btn btn-success pull-right">Save</button>
                     </div>
 
@@ -346,7 +347,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             }
             </script>
 
-            <script>
+          <!--  <script>
             function showUser(str) {
               if (str == "") {
                 document.getElementById("txtHint").innerHTML = "";
@@ -368,8 +369,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 xmlhttp.send();
               }
             }
-            </script>
+          </script> -->
 
             <script src="dist/js/orderSample.js"></script>
+
+
+
           </body>
           </html>
