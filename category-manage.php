@@ -69,8 +69,6 @@
                               echo "<td>";
                               echo "<a href='category-update.php?id=". $row['id'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
                               echo " &nbsp; <a href='category-delete.php?id=". $row['id'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash remove'></span></a>";
-
-                              echo "<input type='button' id='modelbox' class='button' data-toggle='modal' data-target='#myModal' href='#myModal' class='btn-default' value='Test'>";
                               echo "</td>";
                               echo "</tr>";
                             }
