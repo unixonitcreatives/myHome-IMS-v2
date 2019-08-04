@@ -1,5 +1,6 @@
 <!-- ======================= SESSION =================== -->
 <?php include('template/session.php'); ?>
+<?php include('config.php'); ?>
 <!-- ======================= USER AUTHENTICATION  =================== -->
 <?php
 $Admin_auth = 1;
@@ -57,8 +58,6 @@ include('template/user_auth.php');
                       <option>--SELECT SUPPLIER--</option>
                       <?php
 
-                      include "config.php";
-
                       $query = "select po_trans_id, supplier_name from po_transactions";
                       $result = mysqli_query($link, $query);
 
@@ -79,8 +78,66 @@ include('template/user_auth.php');
 
                 </div>
 
-                <div class="col-md-12" id="txtHint">
-                  <!-- 2nd row content -->
+                <div class="col-md-12" ><!--id="txtHint"-->
+                  <div class="table-responsive">
+                    <!--Table-->
+                    <table class="table table-bordered" id="productTable">
+                      <thead>
+                        <tr>
+                          <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Model</th>
+                          <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Stock Count</th>
+                          <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Retail Price</th>
+                          <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Total</th>
+                          <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Action</th>
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                        <?php $arrayNumber = 0;
+                        
+                        for($x = 1; $x < 4; $x++){ ?><!-- for loop start -->
+                          <tr id="row<?php echo $x; ?>" class="<?php echo $arrayNumber; ?>">
+                            <td>
+                              <div class="form-group">
+                                <select class="form-control" style="width: 100%;" name="po_supplier[]" id="po_supplier<?php echo $x; ?>" onchange="getProductData(<?php echo $x; ?>)">
+                                  <option>--SELECT SUPPLIER--</option>
+                                  <?php
+
+                                  $query = "select * from inventory";
+                                  $result = mysqli_query($link, $query);
+
+                                  $po_supplier_name = $_POST['supplier_name'];
+
+                                  while ($row = mysqli_fetch_array($result)) { ?>
+                                    <option value="<?php echo $row['product_description']; ?>"><?php echo $row['product_description']; ?></option>
+                                  <?php } ?>
+                                </select>
+                              </div>
+                            </td>
+                            <td>
+                              <input type="number" class="form-control" name="qty[]" id="qty<?php echo $x; ?>" onkeyup="getTotal(<?php echo $x; ?>)" autocomplete="off"  min="1">
+                            </td>
+                            <td>
+                              <input type="text" class="form-control" placeholder="Notes" name="srp[]" id="srp<?php echo $x; ?>" >
+                            </td>
+                            <td>
+                              <input type="text" class="form-control" placeholder="Notes" name="total[]" id="total<?php echo $x; ?>" >
+                            </td>
+                            <td>
+                              <button class="btn btn-success">Add</button>
+                            </td>
+
+                          </tr>
+                          <?php $arrayNumber++; $x++; } ?> <!-- For Loop End -->
+                      </tbody>
+
+
+                    </table>
+                    <!--/table-->
+
+
+                  </div>
+                  <!-- /.content-wrapper -->
 
                 </div>
               </div>
