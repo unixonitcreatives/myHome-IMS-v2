@@ -74,7 +74,11 @@
             </td>
             <td>
               <div class="form-group"><!--QTY-->
+<<<<<<< HEAD
+                <input type="text" name="quantity[]" id="quantity<?php echo $x; ?>" onkeyup="getTotal(<?php echo $x; ?>)" autocomplete="off"  min="1">
+=======
                 <input type="text" name="quantity[]" id="quantity" onkeyup="getTotal(<?php echo $x; ?>)" autocomplete="off"  min="1">
+>>>>>>> 93c54f08fc8f0ebc4f78e55d0cd83cc98ff8e679
               </div>
             </td>
             <td>
