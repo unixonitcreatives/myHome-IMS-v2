@@ -338,8 +338,10 @@ $(document).ready(function() {
 		}); // /edit order form function
 	}
 
-}); // /documernt
+}); // /document
 
+
+// print order function
 function printOrder(orderId = null) {
 	if(orderId) {
 
@@ -408,19 +410,19 @@ function addRow() {
 
 					tr += '</select>'+
 					'</div>'+
-				'</td>'+ //end model
-                '<td>'+
+				'</td>'+
+				'<td>'+
 					'<div class="form-group">'+
-					'<input type="number" name="qty[]" id="qty'+count+'" onkeyup="getTotal('+count+')" autocomplete="off" class="form-control" min="1" />'+
+					'<input type="number" name="quantity[]" id="quantity'+count+'" onkeyup="getTotal('+count+')" autocomplete="off" class="form-control" min="1" />'+
 					'</div>'+
-				'</td>'+//end qty
-                '<td>'+
+				'</td>'+
+				'<td>'+
 					'<input type="text" name="srp[]" id="srp'+count+'" autocomplete="off" disabled="true" class="form-control" />'+
-					//'<input type="hidden" name="rateValue[]" id="rateValue'+count+'" autocomplete="off" class="form-control" />'+
-				'</td>'+//end unit price
+					'<input type="hidden" name="srpValue[]" id="srpValue'+count+'" autocomplete="off" class="form-control" />'+
+				'</td>'+
 				'<td>'+
 					'<input type="text" name="total[]" id="total'+count+'" autocomplete="off" class="form-control" disabled="true" />'+
-					//'<input type="hidden" name="totalValue[]" id="totalValue'+count+'" autocomplete="off" class="form-control" />'+
+					'<input type="hidden" name="totalValue[]" id="totalValue'+count+'" autocomplete="off" class="form-control" />'+
 				'</td>'+
 				'<td>'+
 					'<button class="btn btn-default removeProductRowBtn" type="button" onclick="removeProductRow('+count+')"><i class="glyphicon glyphicon-trash"></i></button>'+
@@ -436,6 +438,8 @@ function addRow() {
 	});	// get the product data
 
 } // /add row
+
+
 
 function removeProductRow(row = null) {
 	if(row) {
@@ -483,11 +487,10 @@ function getProductData(row = null) {
 				success:function(response) {
 					// setting the rate value into the rate input field
 
-					$("#quantity"+row).val(1);
-
-                    $("#rate"+row).val(response.rate);
+					$("#rate"+row).val(response.rate);
 					$("#rateValue"+row).val(response.rate);
 
+					$("#quantity"+row).val(1);
 
 					var total = Number(response.rate) * 1;
 					total = total.toFixed(2);

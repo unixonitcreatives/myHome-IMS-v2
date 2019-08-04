@@ -158,6 +158,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                           <thead>
                             <tr>
                               <th>Model</th>
+                              <th>Quantity</th>
                               <th>Stock Count</th>
                               <th>Retail Price</th>
                               <th>Total</th>
@@ -187,27 +188,39 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                                 </td>
                                 <td>
                                   <div class="form-group"><!--QTY-->
-                                    <input type="number" class="form-control" name="qty[]" id="qty<?php echo $x; ?>" onkeyup="getTotal(<?php echo $x; ?>)" autocomplete="off"  min="1">
+                                    <input type="number" name="qty[]" id="qty<?php echo $x; ?>" onkeyup="getTotal(<?php echo $x ?>)" autocomplete="off" class="form-control" min="1" />
                                   </div>
                                 </td>
                                 <td>
                                   <!--UNIT PRICE-->
-                                  <input type="text" class="form-control"  name="srp[]" id="srp<?php echo $x; ?>" >
-
+                                  <input type="text" name="srp[]" id="srp<?php echo $x; ?>" autocomplete="off" disabled="true" class="form-control" />
+                                  <input type="hidden" name="srpValue[]" id="srpValue<?php echo $x; ?>" autocomplete="off" class="form-control" />
                                 </td>
                                 <td>
                                   <!--TOTAL PRICE-->
-                                  <input type="text" class="form-control" name="total[]" id="total<?php echo $x; ?>" >
-
+                                  <input type="text" name="total[]" id="total<?php echo $x; ?>" autocomplete="off" class="form-control" disabled="true" />
+                                  <input type="hidden" name="totalValue[]" id="totalValue<?php echo $x; ?>" autocomplete="off" class="form-control" />
                                 </td>
                                 <td>
                                   <button class="btn btn-default removeProductRowBtn" type="button" id="removeProductRowBtn" onclick="removeProductRow(<?php echo $x; ?>)"><i class="glyphicon glyphicon-trash"></i></button>
                                 </td>
                               </tr>
+
                               <?php $arrayNumber++; } ?> <!-- For Loop End -->
 
                             </tbody>
                             <tfoot>
+                              <tr>
+                                <td>
+                                  <div class="form-group">
+                        				    <label for="subTotal" class="col-sm-3 control-label">Sub Amount</label>
+                        				    <div class="col-sm-9">
+                        				      <input type="text" class="form-control" id="subTotal" name="subTotal" disabled="true" />
+                        				      <input type="hidden" class="form-control" id="subTotalValue" name="subTotalValue" />
+                        				    </div>
+                        				  </div>
+                                </td>
+                              </tr>
                             </tfoot>
                           </table>
                           <!--/table-->
