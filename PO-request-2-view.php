@@ -97,10 +97,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
   <script type="text/javascript">
 
         $(function () {
-
-
-            
-
+            //Make the QTY textbox value return to zero when current value is erased
             $(".qty").on("blur", function () {
                 if ($(this).val().trim().length == 0) {
                     $(this).val("0");
@@ -108,7 +105,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             });
             //trigger blur once for the initial setting:
             $(".qty").trigger("blur");
-
+            //end
+            //calculate to qty * price = Amount
             $('.pnm, .price, .subtot, .grdtot').prop('readonly', true);
             var $tblrows = $("#example2 tbody tr");
 
@@ -120,14 +118,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     var qty = $tblrow.find("[name=qty]").val();
                     var price = $tblrow.find("[name=price]").val();
                     var stock = $tblrow.find("[name=stock]").val();
-                    var chk = $tblrow.find("[name=chk]").val();
-
-                    $('.chk').change(function(){
-                       $tblrow.find('.qty').prop("enabled", !$(this).is(':checked'));
-                    });
 
                     var subTotal = parseInt(qty, 10) * parseFloat(price);
-                    Alert(chk);
+
                     if (!isNaN(subTotal)) {
 
                         $tblrow.find('.subtot').val(subTotal.toFixed(2));
@@ -143,7 +136,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 });
             });
         });
-
+        //End
+        //Make the QTY text box accept numerical value only
         function isNumberKey(evt){
             var charCode = (evt.which) ? evt.which : event.keyCode
             if (charCode > 31 && (charCode < 48 || charCode > 57))
@@ -241,6 +235,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             }
 
                               echo "<tfoot>";
+                              echo "<td></td>";
                               echo "<td></td>";
                               echo "<td></td>";
                               echo "<td></td>";
