@@ -25,21 +25,21 @@ $user=
 $paymentTerms=
 $transID=
 $alertMessage="";
-
+$supp = $_GET['name'];
 
 require_once "config.php";
 
 //If the form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
-  $po_supplier_name = $_GET['name'];
+  $po_supplier_name = $_POST['supplier_name'];
   $paymentTerms = "note";
   $totalPrice = $_POST['totalPrice'];
 
   $query = "INSERT INTO po_transactions (inv_date, supplier_name, paymentTerms, totalPrice, po_status) VALUES ( CURRENT_TIMESTAMP, '$po_supplier_name', '$paymentTerms', '$totalPrice', 1)";
   $result = mysqli_query($link, $query) or die(mysqli_error($link));
 
-
-  if ($result) {
+    // If im not mistaken, dito magstart yung insert ng bawat row sa table to database
+    if ($result) {
     $j = 0;
     $count = sizeof($_POST['po_qty']);
 
@@ -49,7 +49,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     for ($j = 0; $j < $count; $j++) {
 
-      $query = "INSERT INTO request_po (po_trans_id,po_qty,po_unit,po_description,po_unit_price,po_total_amount,user) VALUES (
+        $query = "INSERT INTO request_po (po_trans_id,po_qty,po_unit,po_description,po_unit_price,po_total_amount,user) VALUES (
         '".$po_trans_id."',
         '".$_POST['po_qty'][$j]."',
         '".$_POST['po_unit'][$j]."',
@@ -75,7 +75,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
       }else{
         $alertMessage = "<div class='alert alert-danger' role='alert'>
         Error Adding data in Database.
-        </div>";}
+        </div>";
+      }
 
 
         //mysqli_close($link);
@@ -94,7 +95,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
   <script src="jquery-1.11.1.min.js"></script>    
    
   <script type="text/javascript">
+
         $(function () {
+
+
             
 
             $(".qty").on("blur", function () {
@@ -116,9 +120,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     var qty = $tblrow.find("[name=qty]").val();
                     var price = $tblrow.find("[name=price]").val();
                     var stock = $tblrow.find("[name=stock]").val();
+                    var chk = $tblrow.find("[name=chk]").val();
+
+                    $('.chk').change(function(){
+                       $tblrow.find('.qty').prop("enabled", !$(this).is(':checked'));
+                    });
 
                     var subTotal = parseInt(qty, 10) * parseFloat(price);
-
+                    Alert(chk);
                     if (!isNaN(subTotal)) {
 
                         $tblrow.find('.subtot').val(subTotal.toFixed(2));
@@ -171,7 +180,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
           <div class="box box-success">
             <div class="box-header with-border">
            <form class="form-vertical" enctype="multipart/form-data" method="post" accept-charset="utf-8" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="createOrderForm">   
-              <h3 class="box-title">Supplier: <span name="supplier_name"><?php echo $_GET['name']; ?></span></h3>
+              <h3 class="box-title">Supplier: <input type="text" name="supplier_name" value="<?php echo $_GET['name']; ?>" readonly/></h3>
             </div>
             <!-- /.box-header -->
             <!-- form start -->
@@ -181,6 +190,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                       <thead>
                         <tr>
                           <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">No</th>
+                          <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Include</th>
                           <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Product Name</th>
                           <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Category</th>
                           <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Model No.</th>
@@ -201,11 +211,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                           if(mysqli_num_rows($result) > 0){
                             $j = 0;
 
-
+                            $count = 0;
                             while($row = mysqli_fetch_array($result)){
                               $j += 1;
+
                               echo "<tr>";
                               echo "<td> $j </td>";
+                              echo "<td><label><input type='checkbox' class='flat-red chk' onclick='enable_text(this.checked)'></label></td>";
+
                               echo "<td>" . $row['product_description'] . "</td>";
                               echo "<td>" . $row['category'] . "</td>";
                               echo "<td>" . $row['model'] . "</td>";
@@ -224,6 +237,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                               echo "<td><input type='text' class='form-control subtot' name='subtot' type='text' value='0' /></td>";
 
                               echo "</tr>";
+                              $count++;
                             }
 
                               echo "<tfoot>";
