@@ -39,12 +39,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
   $result = mysqli_query($link, $query) or die(mysqli_error($link));
 
     // If im not mistaken, dito magstart yung insert ng bawat row sa table to database
+    // yup tama
     if ($result) {
     $j = 0;
-    $count = sizeof($_POST['po_qty']);
+
+    $count = sizeof($_POST['po_qty']);  //eto parang .lenght in php
 
     // Use insert_id property
-    $po_trans_id = $link->insert_id;
+    $po_trans_id = $link->insert_id; //get the ID of po_transaction table
     $user  = $_SESSION["username"];
 
     for ($j = 0; $j < $count; $j++) {
@@ -92,8 +94,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>MyHome | Purchase Order</title>
-  <script src="jquery-1.11.1.min.js"></script>    
-   
+  <script src="jquery-1.11.1.min.js"></script>
+
   <script type="text/javascript">
 
         $(function () {
@@ -173,7 +175,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
           <!-- general form elements -->
           <div class="box box-success">
             <div class="box-header with-border">
-           <form class="form-vertical" enctype="multipart/form-data" method="post" accept-charset="utf-8" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="createOrderForm">   
+           <form class="form-vertical" enctype="multipart/form-data" method="post" accept-charset="utf-8" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="createOrderForm">
               <h3 class="box-title">Supplier: <input type="text" name="supplier_name" value="<?php echo $_GET['name']; ?>" readonly/></h3>
             </div>
             <!-- /.box-header -->

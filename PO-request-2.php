@@ -43,7 +43,7 @@ include('template/user_auth.php');
           <div class="box box-success">
             <div class="box-header with-border">
               <h3 class="box-title">Select Supplier</h3>
-              
+
             </div>
             <!-- /.box-header -->
             <!-- form start -->
@@ -54,7 +54,7 @@ include('template/user_auth.php');
 
                       <?php
                       $query = "SELECT * FROM suppliers ORDER BY supplier_name";
-                      $result = mysqli_query($link, $query);                      
+                      $result = mysqli_query($link, $query);
                       while ($row = mysqli_fetch_assoc($result)) {
                         echo "<option value='PO-request-2-view.php?id=". $row['id']."&name=".$row['supplier_name']."'>".$row['supplier_name']."</option>";
                       }
