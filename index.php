@@ -22,14 +22,75 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        DASHBOARD
-        <small>asdasdas</small>
+         Welcome to MyHome Furniture IMS Dashboard<br>
+        <small>Insert Tagline, Contact Details or Important Details</small>
       </h1>
     </section>
   <!-- ======================== MAIN CONTENT ======================= -->
     <!-- Main content -->
     <section class="content">
-      <?php  echo $_SESSION['usertype']; ?>
+    <div class="callout callout-success">
+        <h4>The software is now on BETA Testing</h4>
+        <p>You can now use the system alongside with your traditional bookkeeping method for at least 2 months during the testing period.</p>
+        
+        <strong>Other Updates</strong>
+        <ul>
+
+          <li>Update 1 </li>
+          <li>Update 2 </li>
+          <li>
+        </ul>
+
+        <p><strong>Note:</strong> User might experience bugs and errors during the testing period. Please contact developer for assistance.</p>
+
+      </div>
+      <div class="callout callout-warning">
+       <h4>Pending Features</h4>
+        <ul>
+          <li>Pending 1</li>
+          <li>Pending 2</li>
+          <li>Pending 3</li>
+        </ul>
+      </div>
+
+      
+
+
+      <!-- Default box -->
+      <div class="box">
+        <div class="box-header with-border">
+          <h3 class="box-title">Get Started</h3>
+
+          <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+              <i class="fa fa-minus"></i></button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove">
+              <i class="fa fa-times"></i></button>
+          </div>
+        </div>
+        <div class="box-body">
+
+          <p>You can add new customer here
+          <input type="button" class="btn-success" onclick="window.location.href = 'customer-add.php';" value="+ add new customer" />
+          </p>
+
+          <p>You can add new supplier here
+          <input type="button" class="btn-success" onclick="window.location.href = 'supplier-add.php';" value="+ add new customer" />
+          </p>
+
+          <p>You can add new branch here
+          <input type="button" class="btn-success" onclick="window.location.href = 'branch-add.php';" value="+ add new customer" />
+          </p>
+
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer">
+          
+          
+        </div>
+        <!-- /.box-footer-->
+      </div>
+      <!-- /.box -->
     </section>
   <!-- /.content-wrapper -->
 </div>

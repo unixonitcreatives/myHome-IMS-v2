@@ -7,76 +7,65 @@
   $Accounting_auth = 0;
  include('template/user_auth.php');
 ?>
-
-<!-- ========================== ADD FORM TO THE DATABASE ====================================== -->
+<!-- ======================= UPDATE  =================== -->
 <?php
+$addSuccess=$users_id=$alertMessage="";
 
 require_once "config.php";
-$supplier_name=$supplier_contact_person=$supplier_email=$supplier_number=$supplier_address=$alertMessage="";
-if ($_SERVER["REQUEST_METHOD"] == "POST"){
-  $supplier_name = test_input($_POST['supplier_name']);
-  $supplier_contact_person = test_input($_POST['supplier_contact_person']);
-  $supplier_email = test_input($_POST['supplier_email']);
-  $supplier_number = test_input($_POST['supplier_number']);
-  $supplier_address = test_input($_POST['supplier_address']);
 
-  if(empty($supplier_name)){
-    $alertMessage = "Please enter a supplier name.";
-  }
-
-  if(empty($supplier_contact_person)){
-    $alertMessage = "Please enter a supplier contact person.";
-  }
-
-  if(empty($supplier_email)){
-    $alertMessage = "Please enter a supplier email.";
-  }
-
-
-  if(empty($supplier_number)){
-    $alertMessage = "Please enter a supplier contact number.";
-  }
-
-
-  if(empty($supplier_address)){
-    $alertMessage = "Please enter a supplier address.";
-  }
-
-  if(empty($alertMessage)){
-
-    //Checking the values are existing in the database or not
-    $query = "INSERT INTO suppliers (supplier_name, supplier_contact_person, supplier_email, supplier_number, supplier_address, created_at) VALUES ('$supplier_name', '$supplier_contact_person', '$supplier_email', '$supplier_number', '$supplier_address', CURRENT_TIMESTAMP)";
-    $result = mysqli_query($link, $query) or die(mysqli_error($link));
-
-    if($result){
-      $alertMessage = "<div class='alert alert-success' role='alert'>
-      New Supplier Successfully Added in Database.
-      </div>";
-    }else{
-      $alertMessage = "<div class='alert alert-danger' role='alert'>
-      Error Adding data in Database.
-      </div>";}
-
-      mysqli_close($link);
-
+$users_id = $_GET['id'];
+$query = "SELECT * from categories WHERE id='$users_id'";
+$result = mysqli_query($link, $query) or die(mysqli_error($link));
+if (mysqli_num_rows($result) > 0) {
+    while ($row = mysqli_fetch_assoc($result)){
+        $category              =   $row['category'];
     }
-  }
+}else {
+    $alertMessage="<div class='alert alert-danger' role='alert'>Theres Nothing to see Here.</div>";
+}
+//If the form is submitted or not.
+//If the form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST"){
+    //Assigning posted values to variables.
+    $category = test_input($_POST['category']);
+    // Validate category
+    if(empty($category)){
+        $alertMessage = "Please enter a product category.";
+    }
+    // Check input errors before inserting in database
+    if(empty($alertMessage)){
+    //Checking the values are existing in the database or not
+    $query = "UPDATE categories SET category='$category' WHERE id='$users_id'";
+    $result = mysqli_query($link, $query) or die(mysqli_error($link));
+    if($result){
+        $alertMessage = "<div class='alert alert-success' role='alert'>
+  Category data successfully updated in database.
+</div>";
+    }else {
+        $alertMessage = "<div class='alert alert-success' role='alert'>
+  Error updating record.
+</div>";
+    }
+}
+}
 
-  function test_input($data) {
+function test_input($data) {
     $data = trim($data);
     $data = stripslashes($data);
     $data = htmlspecialchars($data);
     return $data;
-  }
-?>
-<!-- ================================================================ -->
+}
 
+// Close connection
+mysqli_close($link);
+?>
+<!-- ======================================================= -->
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>MyHome | Supplier</title>
+<title>MyHome | Category</title>
 <!-- ======================= CSS ================================= -->
 <?php include('template/css.php'); ?>
 </head>
@@ -92,70 +81,45 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Add Supplier
+        Manage Category
         <small>asdasdas</small>
       </h1>
     </section>
   <!-- ======================== MAIN CONTENT ======================= -->
     <!-- Main content -->
-<section class="content">
-          <div class="col-md-6">
-            <?php echo $alertMessage;?>
-            <!-- general form elements -->
-            <div class="box box-success">
-              <div class="box-header with-border">
-                <h3 class="box-title">Supplier's Information</h3>
-                <br><a href="supplier-manage.php" class="text-center">View Suppliers</a>
-              </div>
+    <section class="content">
+    <div class="col-md-6">
+          <!-- general form elements -->
+          <div class="box box-success">
+            <div class="box-header with-border">
+              <h3 class="box-title">Product Category</h3>
+              <br><a href="category-manage.php" class="text-center">View Categories</a>
 
-              <!-- /.box-header -->
-              <!-- form start -->
-              <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-
-                <div class="box-body">
-                  <div class="form-group">
-                    <label>Suppliers</label>
-                    <input type="text" class="form-control" placeholder="Supplier Name" name="supplier_name" oninput="upperCaseF(this)" required>
-                  </div>
-
-                  <div class="form-group">
-                    <label>Contact Person</label>
-                    <input type="text" class="form-control" placeholder="Contact Person" name="supplier_contact_person" oninput="upperCaseF(this)" required>
-                  </div>
-
-                  <div class="form-group">
-                    <label>Phone</label>
-                    <input type="text" class="form-control" placeholder="Contact No." name="supplier_number" data-inputmask='"mask": "(999) 999-9999"' data-mask>
-                  </div>
-
-                  <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" class="form-control" placeholder="Email" name="supplier_email" required>
-                  </div>
-
-                  <div class="form-group">
-                    <label>Address</label>
-                    <input type="text" class="form-control" placeholder="Address" name="supplier_address" onkeydown="upperCaseF(this)" required>
-                  </div>
-                </div>
-                <!-- /.box-body -->
-
-                <div class="box-footer">
-                  <button type="submit" id="save" onclick="this.disabled=true;this.value='Submitting...'; this.form.submit();" class="btn btn-success">Save</button>
-
-                </div>
-              </form>
             </div>
-
-            <!-- /.box -->
-
-
+            <?php echo $alertMessage; ?>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <form  method="POST"  action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>?id=<?php echo $users_id; ?>">
+              <div class="box-body">
+                <div class="form-group">
+                  <label>Category Name</label>
+                  <input type="text" class="form-control" placeholder="Category e.g: Chairs, Tables, Cabinets" name="category" value="<?php echo $category; ?>"required>
+                </div>
+              <!-- /.box-body -->
+             </div>
+              <div class="box-footer">
+                <button type="submit" class="btn btn-success">Save</button>
+              </div>
+            </form>
           </div>
-          <!-- /.content -->
+          <!-- /.box -->
         </div>
-      </section>
+    <!-- /.content -->
+  </div>
+</section>
   <!-- /.content-wrapper -->
 </div>
+<!-- =========================== MODAL =========================== -->
 
 
 <!-- =========================== FOOTER =========================== -->
@@ -181,6 +145,8 @@ $(document).ready(function () {
   }, 1000);
 
 });
+
+
 </script>
 
 <script>

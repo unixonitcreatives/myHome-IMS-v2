@@ -7,76 +7,93 @@
   $Accounting_auth = 0;
  include('template/user_auth.php');
 ?>
-
-<!-- ========================== ADD FORM TO THE DATABASE ====================================== -->
+<!-- ======================= UPDATE  =================== -->
 <?php
+// Define variables and initialize with empty values
+$username=$time_created=$alertMessage=$password=$usertype="";
 
 require_once "config.php";
-$supplier_name=$supplier_contact_person=$supplier_email=$supplier_number=$supplier_address=$alertMessage="";
-if ($_SERVER["REQUEST_METHOD"] == "POST"){
-  $supplier_name = test_input($_POST['supplier_name']);
-  $supplier_contact_person = test_input($_POST['supplier_contact_person']);
-  $supplier_email = test_input($_POST['supplier_email']);
-  $supplier_number = test_input($_POST['supplier_number']);
-  $supplier_address = test_input($_POST['supplier_address']);
-
-  if(empty($supplier_name)){
-    $alertMessage = "Please enter a supplier name.";
-  }
-
-  if(empty($supplier_contact_person)){
-    $alertMessage = "Please enter a supplier contact person.";
-  }
-
-  if(empty($supplier_email)){
-    $alertMessage = "Please enter a supplier email.";
-  }
 
 
-  if(empty($supplier_number)){
-    $alertMessage = "Please enter a supplier contact number.";
-  }
-
-
-  if(empty($supplier_address)){
-    $alertMessage = "Please enter a supplier address.";
-  }
-
-  if(empty($alertMessage)){
-
-    //Checking the values are existing in the database or not
-    $query = "INSERT INTO suppliers (supplier_name, supplier_contact_person, supplier_email, supplier_number, supplier_address, created_at) VALUES ('$supplier_name', '$supplier_contact_person', '$supplier_email', '$supplier_number', '$supplier_address', CURRENT_TIMESTAMP)";
-    $result = mysqli_query($link, $query) or die(mysqli_error($link));
-
-    if($result){
-      $alertMessage = "<div class='alert alert-success' role='alert'>
-      New Supplier Successfully Added in Database.
-      </div>";
-    }else{
-      $alertMessage = "<div class='alert alert-danger' role='alert'>
-      Error Adding data in Database.
-      </div>";}
-
-      mysqli_close($link);
-
+$users_id = $_GET['id'];
+$query = "SELECT * from users WHERE id='$users_id'";
+$result = mysqli_query($link, $query) or die(mysqli_error($link));
+if (mysqli_num_rows($result) > 0) {
+    while ($row = mysqli_fetch_assoc($result)){
+        $username               =   $row['username'];
+        $password               =   $row['password'];
+        $usertype               =   $row['userType'];
     }
-  }
+}else {
+    $alertMessage="<div class='alert alert-danger' role='alert'>Theres Nothing to see Here.</div>";
+}
 
-  function test_input($data) {
+//If the form is submitted or not.
+//If the form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST"){
+    //Assigning posted values to variables.
+    $username = test_input($_POST['username']);
+    $password = test_input($_POST['password']);
+    $usertype = test_input($_POST['userType']);
+
+    // Validate username
+
+    if(empty($username)){
+        $alertMessage = "Please enter a username.";
+    }
+
+    // Validate password
+
+    if(empty($password)){
+        $alertMessage = "Please enter a password.";
+    }
+
+    // Validate usertype
+
+    if(empty($usertype)){
+        $alertMessage = "Please enter a usertype.";
+    }
+
+
+    // Check input errors before inserting in database
+    if(empty($alertMessage)){
+    $hash = password_hash($password, PASSWORD_DEFAULT);
+    //Checking the values are existing in the database or not
+    $query = "UPDATE users SET username='$username', password='$hash', userType='$usertype' WHERE id='$users_id'";
+    $result = mysqli_query($link, $query) or die(mysqli_error($link));
+    if($result){
+        $alertMessage = "<div class='alert alert-success' role='alert'>
+  User data successfully updated in database.
+</div>";
+    }else {
+        $alertMessage = "<div class='alert alert-success' role='alert'>
+  Error updating record.
+</div>";}
+
+// remove all session variables
+//session_unset();
+// destroy the session
+//session_destroy();
+
+// Close connection
+mysqli_close($link);
+}
+    }
+
+function test_input($data) {
     $data = trim($data);
     $data = stripslashes($data);
     $data = htmlspecialchars($data);
     return $data;
-  }
+}
 ?>
-<!-- ================================================================ -->
-
+<!-- ======================================================= -->
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>MyHome | Supplier</title>
+<title>MyHome | Category</title>
 <!-- ======================= CSS ================================= -->
 <?php include('template/css.php'); ?>
 </head>
@@ -92,70 +109,63 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Add Supplier
+        User Update
         <small>asdasdas</small>
       </h1>
     </section>
   <!-- ======================== MAIN CONTENT ======================= -->
     <!-- Main content -->
-<section class="content">
-          <div class="col-md-6">
-            <?php echo $alertMessage;?>
-            <!-- general form elements -->
-            <div class="box box-success">
-              <div class="box-header with-border">
-                <h3 class="box-title">Supplier's Information</h3>
-                <br><a href="supplier-manage.php" class="text-center">View Suppliers</a>
+    <section class="content">
+    <div class="col-md-6">
+          <!-- general form elements -->
+          <div class="box box-success">
+            <div class="box-header with-border">
+              <h3 class="box-title">User Details</h3>
+            </div>
+            <!-- /.box-header -->
+            <?php echo $alertMessage; ?>
+            <!-- form start -->
+              <form  method="POST"  action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>?id=<?php echo $users_id; ?>">
+              <div class="box-body">
+                <div class="form-group">
+                  <label>Username</label>
+                  <input type="text" class="form-control" placeholder="Username" name="username" value="<?php echo $username; ?>">
+                </div>
+
+                <div class="form-group">
+                <label>User Type</label>
+                <select class="form-control select2" style="width: 100%;" name="userType">
+                  <option value="<?php echo $usertype; ?>"><?php echo $usertype; ?></option>
+                  <option>Administrator</option>
+                  <option>Accounting</option>
+                  <option>Manager</option>
+
+                </select>
               </div>
 
-              <!-- /.box-header -->
-              <!-- form start -->
-              <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-
-                <div class="box-body">
-                  <div class="form-group">
-                    <label>Suppliers</label>
-                    <input type="text" class="form-control" placeholder="Supplier Name" name="supplier_name" oninput="upperCaseF(this)" required>
-                  </div>
-
-                  <div class="form-group">
-                    <label>Contact Person</label>
-                    <input type="text" class="form-control" placeholder="Contact Person" name="supplier_contact_person" oninput="upperCaseF(this)" required>
-                  </div>
-
-                  <div class="form-group">
-                    <label>Phone</label>
-                    <input type="text" class="form-control" placeholder="Contact No." name="supplier_number" data-inputmask='"mask": "(999) 999-9999"' data-mask>
-                  </div>
-
-                  <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" class="form-control" placeholder="Email" name="supplier_email" required>
-                  </div>
-
-                  <div class="form-group">
-                    <label>Address</label>
-                    <input type="text" class="form-control" placeholder="Address" name="supplier_address" onkeydown="upperCaseF(this)" required>
-                  </div>
+                <div class="form-group">
+                  <label>Password</label>
+                  <input type="password" class="form-control" placeholder="Password" name="password" value="<?php echo $password; ?>">
                 </div>
-                <!-- /.box-body -->
 
-                <div class="box-footer">
-                  <button type="submit" id="save" onclick="this.disabled=true;this.value='Submitting...'; this.form.submit();" class="btn btn-success">Save</button>
+              </div>
+              <!-- /.box-body -->
 
-                </div>
-              </form>
-            </div>
-
-            <!-- /.box -->
-
-
+              <div class="box-footer">
+                <button type="submit" class="btn btn-success">Save</button>
+              </div>
+            </form>
           </div>
-          <!-- /.content -->
+          <!-- /.box -->
+
+
         </div>
-      </section>
+    <!-- /.content -->
+  </div>
+</section>
   <!-- /.content-wrapper -->
 </div>
+<!-- =========================== MODAL =========================== -->
 
 
 <!-- =========================== FOOTER =========================== -->
@@ -181,6 +191,8 @@ $(document).ready(function () {
   }, 1000);
 
 });
+
+
 </script>
 
 <script>

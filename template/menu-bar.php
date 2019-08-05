@@ -19,9 +19,6 @@
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
           <li class="dropdown user user-menu">
-            <a href="profile.php" class="icon-bar">
-              <span class="hidden-xs">Hello, <?php echo htmlspecialchars($_SESSION["username"]); ?></span>
-            </a>
           </li>
 
           <li class="dropdown user user-menu">
