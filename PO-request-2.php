@@ -56,16 +56,16 @@ include('template/user_auth.php');
                       $query = "SELECT * FROM suppliers ORDER BY supplier_name";
                       $result = mysqli_query($link, $query);
                       while ($row = mysqli_fetch_assoc($result)) {
-                        echo "<option value='PO-request-2-view.php?id=". $row['id']."&name=".$row['supplier_name']."'>".$row['supplier_name']."</option>";
-                      }
+                         echo "<option value='PO-request-2-view.php?id=". $row['id']."&name=".$row['supplier_name']."'>".$row['supplier_name']."</option>";
 
-                     ?>
-
+                        } ?>
                    </select>
                 </div>
               <!-- /.box-body -->
             </div>
               <div class="box-footer">
+
+
                 <button type="button" onclick="siteRedirect()" class="btn btn-success">Proceed</button>
                 <script>
                   function siteRedirect() {
@@ -74,7 +74,6 @@ include('template/user_auth.php');
                     console.log(selectedValue);
                     window.location.href = selectedValue;
                   }
-
                 </script>
 
               </div>

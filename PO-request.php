@@ -210,7 +210,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             </tbody>
                             <tfoot>
                               <div class="form-group submitButtonFooter">
-                                <button type="button" class="btn btn-default" onclick="addRow()" id="addRowBtn" data-loading-text="Loading..."> <i class="glyphicon glyphicon-plus-sign"></i> Add Row </button>
+                                <button type="button" class="btn btn-default" onclick="addRow();" id="addRowBtn" data-loading-text="Loading..."> <i class="glyphicon glyphicon-plus-sign"></i> Add Row </button>
                               </div>
                               <tr>
                                 <td>
