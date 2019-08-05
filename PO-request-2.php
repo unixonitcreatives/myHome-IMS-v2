@@ -56,7 +56,7 @@ include('template/user_auth.php');
                       $query = "SELECT * FROM suppliers ORDER BY supplier_name";
                       $result = mysqli_query($link, $query);                      
                       while ($row = mysqli_fetch_assoc($result)) {
-                        echo "<option value='PO-request-2-view.php?id=".$row['id']."'>".$row['supplier_name']."</option>";
+                        echo "<option value='PO-request-2-view.php?id=". $row['id']."&name=".$row['supplier_name']."'>".$row['supplier_name']."</option>";
                       }
 
                      ?>
@@ -192,31 +192,7 @@ include('template/user_auth.php');
       }
       </script>
 
-      <script>
-      function showUser(str) {
-        if (str == "") {
-          document.getElementById("txtHint").innerHTML = "";
-          return;
-        } else {
-          if (window.XMLHttpRequest) {
-            // code for IE7+, Firefox, Chrome, Opera, Safari
-            xmlhttp = new XMLHttpRequest();
-          } else {
-            // code for IE6, IE5
-            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-          }
-          xmlhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-              document.getElementById("txtHint").innerHTML = this.responseText;
-            }
-          };
-          xmlhttp.open("GET","PO-add-4.php?q="+str,true);
-          xmlhttp.send();
-        }
-      }
 
-
-      </script>
 
     </body>
     </html>

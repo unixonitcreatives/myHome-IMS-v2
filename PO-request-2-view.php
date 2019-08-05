@@ -11,6 +11,79 @@ $Accounting_auth = 0;
 include('template/user_auth.php');
 ?>
 
+<?php
+$inv_num=
+$po_supplier_name=
+$po_qty=
+$po_unit=
+$po_description=
+$po_unit_price=
+$po_total_amount=
+$totalPrice=
+$remarks=
+$user=
+$paymentTerms=
+$transID=
+$alertMessage="";
+
+
+require_once "config.php";
+
+//If the form is submitted
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+  $po_supplier_name = $_GET['name'];
+  $paymentTerms = "note";
+  $totalPrice = $_POST['totalPrice'];
+
+  $query = "INSERT INTO po_transactions (inv_date, supplier_name, paymentTerms, totalPrice, po_status) VALUES ( CURRENT_TIMESTAMP, '$po_supplier_name', '$paymentTerms', '$totalPrice', 1)";
+  $result = mysqli_query($link, $query) or die(mysqli_error($link));
+
+
+  if ($result) {
+    $j = 0;
+    $count = sizeof($_POST['po_qty']);
+
+    // Use insert_id property
+    $po_trans_id = $link->insert_id;
+    $user  = $_SESSION["username"];
+
+    for ($j = 0; $j < $count; $j++) {
+
+      $query = "INSERT INTO request_po (po_trans_id,po_qty,po_unit,po_description,po_unit_price,po_total_amount,user) VALUES (
+        '".$po_trans_id."',
+        '".$_POST['po_qty'][$j]."',
+        '".$_POST['po_unit'][$j]."',
+        '".$_POST['po_description'][$j]."',
+        '".$_POST['po_unit_price'][$j]."',
+        '".$_POST['po_total_amount'][$j]."',
+        '".$user."')";
+
+        if("" == trim($_POST['qty']))
+        {
+
+        }
+        else {
+          $result = mysqli_multi_query($link, $query) or die(mysqli_error($link));
+        }
+
+      }
+
+      if($result){
+        $alertMessage = "<div class='alert alert-success' role='alert'>
+        New user successfully added in database.
+        </div>";
+      }else{
+        $alertMessage = "<div class='alert alert-danger' role='alert'>
+        Error Adding data in Database.
+        </div>";}
+
+
+        //mysqli_close($link);
+
+      }
+    }
+?>
+
 
 <!DOCTYPE html>
 <html>
@@ -18,19 +91,32 @@ include('template/user_auth.php');
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>MyHome | Purchase Order</title>
-  <script src="jquery-1.11.1.min.js"></script>         
+  <script src="jquery-1.11.1.min.js"></script>    
+   
   <script type="text/javascript">
         $(function () {
+            
+
+            $(".qty").on("blur", function () {
+                if ($(this).val().trim().length == 0) {
+                    $(this).val("0");
+                }
+            });
+            //trigger blur once for the initial setting:
+            $(".qty").trigger("blur");
+
             $('.pnm, .price, .subtot, .grdtot').prop('readonly', true);
             var $tblrows = $("#example2 tbody tr");
 
             $tblrows.each(function (index) {
                 var $tblrow = $(this);
 
-                $tblrow.find('.qty').on('change', function () {
+                $tblrow.find('.qty').on('keyup change', function () {
 
                     var qty = $tblrow.find("[name=qty]").val();
                     var price = $tblrow.find("[name=price]").val();
+                    var stock = $tblrow.find("[name=stock]").val();
+
                     var subTotal = parseInt(qty, 10) * parseFloat(price);
 
                     if (!isNaN(subTotal)) {
@@ -48,6 +134,15 @@ include('template/user_auth.php');
                 });
             });
         });
+
+        function isNumberKey(evt){
+            var charCode = (evt.which) ? evt.which : event.keyCode
+            if (charCode > 31 && (charCode < 48 || charCode > 57))
+                return false;
+            return true;
+        }
+
+
     </script>
   <!-- ======================= CSS ================================= -->
   <?php include('template/css.php'); ?>
@@ -75,25 +170,12 @@ include('template/user_auth.php');
           <!-- general form elements -->
           <div class="box box-success">
             <div class="box-header with-border">
-
-              <?php
-              $users_id = $_GET['id'];
-              $query = "SELECT * from suppliers WHERE id='$users_id'";
-              $result = mysqli_query($link, $query) or die(mysqli_error($link));
-              if (mysqli_num_rows($result) > 0) {
-                  while ($row = mysqli_fetch_assoc($result)){
-                      $supplier_name = $row['supplier_name'];
-                  }
-              }else {
-                  echo "Theres nothing to see here.";
-              }
-              ?>
-
-              <h3 class="box-title">Supplier: <?php echo $supplier_name; ?></h3>
+           <form class="form-vertical" enctype="multipart/form-data" method="post" accept-charset="utf-8" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="createOrderForm">   
+              <h3 class="box-title">Supplier: <span name="supplier_name"><?php echo $_GET['name']; ?></span></h3>
             </div>
             <!-- /.box-header -->
             <!-- form start -->
-            <form  method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+
               <div class="box-body">
                 <table id="example2" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
                       <thead>
@@ -112,12 +194,14 @@ include('template/user_auth.php');
                         <?php
                         // Include config file
                         require_once "config.php";
-
+                        $supplier_name = $_GET['name'];
                         // Attempt select query execution
                         $query = "SELECT * FROM inventory WHERE supplier_name = '$supplier_name' ";
                         if($result = mysqli_query($link, $query)){
                           if(mysqli_num_rows($result) > 0){
                             $j = 0;
+
+
                             while($row = mysqli_fetch_array($result)){
                               $j += 1;
                               echo "<tr>";
@@ -125,16 +209,18 @@ include('template/user_auth.php');
                               echo "<td>" . $row['product_description'] . "</td>";
                               echo "<td>" . $row['category'] . "</td>";
                               echo "<td>" . $row['model'] . "</td>";
-                              echo "<td>" . $row['qty'] . " pc(s)</td>";
+
+
+                              //echo "<td>" . $row['qty'] . " pc(s)</td>";
+                              echo "<td><input type='text' class='form-control stock' name='stock' value='". $row['qty'] ."' readonly/></td>";
+
                               if($row['qty'] <= 0){
-                              echo "<td><input type='text' class='form-control qty' name='qty' value='No Stock Count' disabled/></td>";
+                                echo "<td><input type='text' class='form-control qty' name='qty' value='No Stock Count' disabled/></td>";
                               } else {
-                              echo "<td><input type='text' class='form-control qty' name='qty' value='' /></td>";
+                                echo "<td><input type='text' class='form-control qty' name='qty' value='0' onkeypress='return isNumberKey(event)'/></td>";
                               }
 
                               echo "<td><input type='text' class='form-control price' name='price' value='".$row['cost_price']."'></td>";
-
-                              
                               echo "<td><input type='text' class='form-control subtot' name='subtot' type='text' value='0' /></td>";
 
                               echo "</tr>";
@@ -148,7 +234,8 @@ include('template/user_auth.php');
                               echo "<td></td>";
                               echo "<td></td>";
                               echo "<td>Grand Total:</td>";
-                              echo "<td><input class='form-control grdtot' type='text' value='0' /></td>";
+                              echo "<td><input class='form-control grdtot' name='totalPrice' type='text' value='0' /></td>";
+
                               echo "</tfoot>";
                             mysqli_free_result($result);
                           } else{
@@ -166,7 +253,7 @@ include('template/user_auth.php');
               <!-- /.box-body -->
             </div>
               <div class="box-footer">
-                <button type="button" onclick="siteRedirect()" class="btn btn-success">Proceed</button>
+                <button type="submit" name="save" id="save" onclick="this.disabled=true;this.value='Submitting...'; this.form.submit();" class="btn btn-success pull-right">Save</button>
                 <script>
                   function siteRedirect() {
                     var selectbox = document.getElementById("selectSupplier");
