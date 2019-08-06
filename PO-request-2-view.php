@@ -230,9 +230,9 @@ mysqli_close($link);
                           echo "<td> $j </td>";
                           echo "<td><label><input type='checkbox' class='flat-red chk' onclick='enable_text(this.checked)'></label></td>";
 
-                          echo "<td>" . $row['product_description'] . "</td>";
-                          echo "<td>" . $row['category'] . "</td>";
-                          echo "<td>" . $row['model'] . "</td>";
+                          echo "<td><input type='text' class='form-control' value='" .$row['product_description'] . "'</td>";
+                          echo "<td><input type='text' class='form-control' value='" .$row['category'] . "' </td>";
+                            echo "<td><input type='text' class='form-control' value='" .$row['model'] . "' </td>";
 
 
                           //echo "<td>" . $row['qty'] . " pc(s)</td>";
