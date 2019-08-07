@@ -104,7 +104,7 @@ mysqli_close($link);
     </section>
   <!-- /.content-wrapper -->
 </div>
-
+    </div>
 
 <!-- =========================== FOOTER =========================== -->
   <footer class="main-footer">

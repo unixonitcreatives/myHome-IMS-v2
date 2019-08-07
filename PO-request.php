@@ -24,8 +24,6 @@ $transID=
 $alertMessage="";
 
 
-require_once "config.php";
-
 //If the form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
   $po_supplier_name =$_POST['po_supplier'];
@@ -111,16 +109,16 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
           <section class="content">
             <?php  echo $_SESSION['usertype']; ?>
 
-            <!-- ========================= FORM ============================ -->
+            
             <div class="box box-success">
               <div class="box-header with-border">
                 <h3 class="box-title">Purchase Order Form </h3>
               </div>
               <!-- /.box-header -->
               <div class="box-body">
-                <div class="row">
                   <?php echo $alertMessage; ?>
-                  <form class="form-vertical" enctype="multipart/form-data" method="post" accept-charset="utf-8" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="createOrderForm">
+                  <!-- ========================= FORM ============================ -->
+                  <form class="form-vertical"  method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="createOrderForm">
                     <div class="col-md-6">
                       <!-- 1st column content -->
 
@@ -152,8 +150,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
                     <div class="col-md-12" ><!--id="txtHint"-->
                       <div class="table-responsive">
-                        <!--Table-->
-
                         <table class="table" id="productTable">
                           <thead>
                             <tr>
@@ -209,9 +205,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                               <?php $arrayNumber++; } ?> <!-- For Loop End -->
                             </tbody>
                             <tfoot>
-                              <div class="form-group submitButtonFooter">
-                                <button type="button" class="btn btn-default" onclick="addRow();" id="addRowBtn" data-loading-text="Loading..."> <i class="glyphicon glyphicon-plus-sign"></i> Add Row </button>
-                              </div>
+                             
+                                <button type="button" class="btn btn-default" onclick="addRow()" id="addRowBtn" data-loading-text="Loading..."> <i class="glyphicon glyphicon-plus-sign"></i> Add Row </button>
+
                               <tr>
                                 <td>
                                   <div class="form-group">
@@ -227,22 +223,23 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                           </table>
                           <!--/table-->
                         </div>
-                        <!-- /.content-wrapper -->
+                        <!--/table-responsive-->
                       </div>
-                    </div>
-
-                    <div class="box-footer">
+                  </form>
+                  <!-- ========================= /FORM ============================ -->
+                </div>
+                <!-- /.box-body -->
+                  <div class="box-footer">
                       <!-- Buttons -->
                       <button type="submit" name="save" id="save" onclick="this.disabled=true;this.value='Submitting...'; this.form.submit();" class="btn btn-success pull-right">Save</button>
                     </div>
-
-                  </form>
+                  <!-- .box-footer -->
                 </div>
-                <!-- ========================= /FORM ============================ -->
+                <!-- /.box -->
               </section>
-              <!-- /.content-wrapper -->
+              <!-- /.content -->
             </div>
-
+                <!-- /.content-wrapper -->
 
             <!-- =========================== FOOTER =========================== -->
             <footer class="main-footer">
@@ -250,7 +247,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
             </footer>
 
-
+</div>
+<!-- ./wrapper -->
             <!-- =========================== JAVASCRIPT ========================= -->
             <?php include('template/js.php'); ?>
 
