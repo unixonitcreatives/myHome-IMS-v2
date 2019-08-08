@@ -40,10 +40,12 @@
       <div class="box box-success">
         <div class="box-header with-border">
           <h3 class="box-title">Sales Order List</h3>
+          <br><a href="#" class="text-center">+ update transactions</a>
         </div>
         <!-- /.box-header -->
         <div class="box-body">
           <div class="row">
+
           </div>
           <table id="example1" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
       <thead>
@@ -60,10 +62,14 @@
                          // Include config file
                          require_once "config.php";
 
+                         //get customer id
+                         $get_customer_id = $_GET['so_trans_id'];
+
                          // Attempt select query execution
-                         $query = "SELECT * FROM so_transactions";
+                         $query = "SELECT * FROM so_items where so_trans_id = '$get_customer_id' ";
                          if($result = mysqli_query($link, $query)){
                              if(mysqli_num_rows($result) > 0){
+
 
                                      while($row = mysqli_fetch_array($result)){
                                          echo "<tr>";
@@ -74,11 +80,11 @@
 
                                              echo "<td>";
 
-                                             echo "<a href='SO-installments.php?so_trans_id=". $row['so_trans_id'] ."' title='View Record'><span class='glyphicon glyphicon-eye-open'></span></a>";
+                                             echo "<a href='supplier-view.php?so_trans_id=". $row['so_trans_id'] ."' title='View Record' data-toggle='modal' data-target='#modal-default'><span class='glyphicon glyphicon-eye-open'></span></a>";
 
-                                             echo " &nbsp; <a href='SO-update.php?so_trans_id=". $row['so_trans_id'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
+                                             echo " &nbsp; <a href='supplier-update.php?so_trans_id=". $row['so_trans_id'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
 
-                                             echo " &nbsp; <a href='SO-delete.php?so_trans_id=". $row['so_trans_id'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash remove'></span></a>";
+                                             echo " &nbsp; <a href='supplier-delete.php?so_trans_id=". $row['so_trans_id'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash remove'></span></a>";
 
                                              echo "</td>";
                                          echo "</tr>";
