@@ -180,8 +180,8 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
                         <label>Payemt Terms</label>
                         <select class="form-control select2" style="width: 100%;" id="" maxlength="50" placeholder="customer name" name="so_paymentTerms" required>
                           <option value="">~~SELECT~~</option>
-                          <option value="installment">Fully Paid</option>
-                          <option value="installment">Installment</option>
+                          <option value="Fully Paid">Fully Paid</option>
+                          <option value="Installment">Installment</option>
                           <option value="Credit Card">Credit Card</option>
                           <option value="Home Credit">Home Credit</option>
                         </select>
@@ -244,8 +244,6 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
                               </div>
                             </td>
                           </tr>
-
-
                           <tfoot >
                             <tr>
                               <td align="right" colspan="4">Delivery Fee:</td>
@@ -509,6 +507,5 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
           '-' + date.getDate().toString().padStart(2, 0);
         </script>
         <!-- /script for onload date -->
-
       </body>
       </html>

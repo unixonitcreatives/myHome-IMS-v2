@@ -72,9 +72,18 @@
                                              echo "<td>" . $row['so_grand_total'] . "</td>";
                                              echo "<td>" . $row['so_paymentTerms'] . "</td>";
 
-                                             echo "<td>";
 
-                                             echo "<a href='SO-installments.php?so_trans_id=". $row['so_trans_id'] ."' title='View Record'><span class='glyphicon glyphicon-eye-open'></span></a>";
+
+                                            echo "<td>";
+
+                                            if($row['so_paymentTerms'] == "Installment"){
+                                             echo "<a href='SO-installments.php?so_trans_id=".$row['so_trans_id']." && so_customer_name=".$row['so_customer_name']." && so_date=".$row['so_date']." && so_paymentTerms=".$row['so_paymentTerms']."  && so_sub_total=".$row['so_sub_total']." && so_delivery_fee=".$row['so_delivery_fee']." && so_discount=".$row['so_discount']." && so_grand_total=".$row['so_grand_total']."' title='View Record'><span class='glyphicon glyphicon-eye-open'></span></a>";
+                                           }else if($row['so_paymentTerms'] == "Fully Paid"){
+                                              echo "<a href='SO-fullyPaid.php?so_trans_id=".$row['so_trans_id']." && so_customer_name=".$row['so_customer_name']." && so_date=".$row['so_date']." && so_paymentTerms=".$row['so_paymentTerms']."  && so_sub_total=".$row['so_sub_total']." && so_delivery_fee=".$row['so_delivery_fee']." && so_discount=".$row['so_discount']." && so_grand_total=".$row['so_grand_total']."' title='View Record'><span class='glyphicon glyphicon-eye-open'></span></a>";
+                                           }
+
+
+
 
                                              echo " &nbsp; <a href='SO-update.php?so_trans_id=". $row['so_trans_id'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
 
