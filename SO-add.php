@@ -40,8 +40,6 @@ $so_date_receive=
 $so_receive_payment=
 $so_reference_id="";
 
-
-
 //If the form is submitted
 if($_SERVER['REQUEST_METHOD'] == "POST"){
   $so_customer_name       =test_input($_POST['so_customer_name']);

@@ -17,13 +17,12 @@ $so_model=
 $so_qty=
 $so_unit =
 $so_unit_price=
+$get_customer_id=
+$get_customer_name=
+$get_so_date=
+$get_so_paymentTerms=
+$get_so_grand_total=
 $so_total_amount="";
-
-//modal variables
-$so_receive_payment_date=
-$so_amount_receive=
-$so_paymentMode=
-$so_amount_receive="";
 
 //get links
 $get_customer_id = $_GET['so_trans_id'];
@@ -34,39 +33,8 @@ $get_so_grand_total= $_GET['so_grand_total'];
 
 $alertMessage="";
 
-//If the form is submitted
-if($_SERVER['REQUEST_METHOD'] == "POST"){
-  $so_receive_payment_date       =test_input($_POST['so_receive_payment_date']);
-  $so_amount_receive             =test_input($_POST['so_amount_receive']);
-  $so_paymentMode                =test_input($_POST['so_paymentMode']);
-  $so_amount_receive              =test_input($_POST['so_amount_receive']);
-
-  //loggedin username
-  $user = $_SESSION["username"];
-
-  //INSERT query to so_transactions table
-  $query = "INSERT INTO so_transactions (so_trans_id,so_receive_payment_date,so_amount_receive,so_paymentMode,so_amount_receive,user) VALUES ( '$get_customer_id', '$so_receive_payment_date', '$so_amount_receive', '$so_paymentMode',  '$so_amount_receive', '$user' )";
-  $result = mysqli_query($link, $query) or die(mysqli_error($link));
-
-  if($result){
-    $alertMessage = "<div class='alert alert-success' role='alert'>
-    New Sales Order Created.
-    </div>";
-  }else{
-    $alertMessage = "<div class='alert alert-danger' role='alert'>
-    Error Creating Sales Order.
-    </div>";}
-
-  }
-
-    function test_input($data) {
-      $data = trim($data);
-      $data = stripslashes($data);
-      $data = htmlspecialchars($data);
-      return $data;
-    }
-    // Close connection
-    //mysqli_close($link);
+//loggedin username
+$user = $_SESSION["username"];
 
 ?>
 
@@ -119,7 +87,11 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
                   <h4 class="modal-title" id="myModalLabel">Receive Payment Form</h4>
                 </div>
                 <div class="modal-body">
-                  <form class="form-vertical" enctype="multipart/form-data" method="POST" accept-charset="utf-8" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+                  <form method="POST"  action="modals/so_receive_payments.php">
+                    <div class="form-group">
+                      <input type="hidden" class="form-control"  name="so_trans_id" value="<?php echo htmlspecialchars($get_customer_id); ?>">
+                    </div>
+
                     <div class="form-group">
                       <label>SO Date:</label>
                       <input type="date" class="form-control"  name="so_receive_payment_date">
@@ -131,29 +103,41 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
                     </div>
 
                     <div class="form-group">
+                      <label>Mode of Payment:</label>
                       <select class="form-control" id="so_unit" name="so_paymentMode">
-                        <option value="PC/S">Cash</option>
-                        <option value="SET/S">Credit Card</option>
-                        <option value="SET/S">Bank Deposit</option>
+                        <option value="Cash">Cash</option>
+                        <option value="Credit Card">Credit Card</option>
+                        <option value="Bank Deposit">Bank Deposit</option>
                       </select>
                     </div>
 
                     <div class="form-group">
                       <label>Reference No:</label>
-                      <input type="number" class="form-control"  name="so_amount_receive">
+                      <input type="text" class="form-control"  name="so_ref_no">
                     </div>
-                  </form>
-                </div>
+
                 <div class="modal-footer">
                   <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                  <button type="submit" name="receivePayment" class="btn btn-success">Receive</button>
+                  <button type="submit" name="receivePaymentBtn" class="btn btn-success">Receive</button>
                 </div>
                 </form>
+                </div>
               </div>
             </div>
           </div>
           <!-- /Modal -->
           <!-- /.box-header -->
+          <?php
+          if(isset($_GET['alert'])){
+              if( $_GET['alert'] == 'receive'){
+                  $alertMessage = "<div class='alert alert-success' role='alert'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>Receive Payment Successful</div>";
+              }elseif ($_GET['alert'] == 'insertsuccess'){
+                  $alertMessage = "<div class='alert alert-success' role='alert'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>New data added.</div>";
+              }elseif ($_GET['alert'] == 'deletesuccess'){
+                  $alertMessage = "<div class='alert alert-success' role='alert'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>Data deleted.</div>";
+              }
+          } ?>
+          <?php echo $alertMessage; ?>
           <div class="box-body">
             <div class="row">
               <div class="col-md-6">

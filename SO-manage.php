@@ -61,7 +61,7 @@
                          require_once "config.php";
 
                          // Attempt select query execution
-                         $query = "SELECT * FROM so_transactions";
+                         $query = "SELECT * FROM so_transactions ORDER BY so_trans_id DESC";
                          if($result = mysqli_query($link, $query)){
                              if(mysqli_num_rows($result) > 0){
 
