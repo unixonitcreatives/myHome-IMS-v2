@@ -37,5 +37,5 @@ if(isset($_POST['receivePaymentBtn'])){
       return $data;
     }
     // Close connection
-    //mysqli_close($link);
+    mysqli_close($link);
   ?>

@@ -20,6 +20,7 @@ $so_unit_price=
 $get_customer_id=
 $get_customer_name=
 $get_so_date=
+$so_delivery_date=
 $get_so_paymentTerms=
 $get_so_grand_total=
 $so_total_amount="";
@@ -70,7 +71,7 @@ $user = $_SESSION["username"];
         <div class="box box-success">
           <div class="box-header with-border">
             <?php echo $alertMessage; ?>
-            <h3 class="box-title">Sales Order List</h3>
+            <h3 class="box-title">Sales Transactions History</h3>
             <!-- Button trigger modal -->
             <button type="button" class="btn btn-success btn-sm pull-right" data-toggle="modal" data-target="#receivePayment">
               Receive Payment
@@ -127,6 +128,8 @@ $user = $_SESSION["username"];
           </div>
           <!-- /Modal -->
           <!-- /.box-header -->
+
+
           <?php
           if(isset($_GET['alert'])){
               if( $_GET['alert'] == 'receive'){
@@ -137,7 +140,9 @@ $user = $_SESSION["username"];
                   $alertMessage = "<div class='alert alert-success' role='alert'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>Data deleted.</div>";
               }
           } ?>
-          <?php echo $alertMessage; ?>
+          <?php echo $alertMessage; ?> <!-- alert message -->
+
+
           <div class="box-body">
             <div class="row">
               <div class="col-md-6">
@@ -158,9 +163,9 @@ $user = $_SESSION["username"];
               </div>
             </div><br>
 
-            <!-- Collapse -->
+
             <h6><a type="button" data-toggle="collapse" data-target="#collapseItems" aria-expanded="false" aria-controls="collapseExample">+ Purchased Items</a></h6>
-            <!-- /collapse -->
+            <!-- Collapse Button -->
 
             <div class="collapse" id="collapseItems">
               <table id="example1" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
@@ -170,6 +175,8 @@ $user = $_SESSION["username"];
                     <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Quantity</th>
                     <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Unit</th>
                     <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Retail Price</th>
+                    <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Delivery Date</th>
+                    <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Date Delivered</th>
                     <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Total Amount</th>
                   </tr>
                 </thead>
@@ -185,6 +192,8 @@ $user = $_SESSION["username"];
                         <td><?php echo htmlspecialchars($row['so_qty']);?></td>
                         <td><?php echo htmlspecialchars($row['so_unit']);?></td>
                         <td><?php echo htmlspecialchars($row['so_unit_price']);?></td>
+                        <td><?php echo htmlspecialchars($row['so_delivery_date']);?></td>
+                        <td><?php echo htmlspecialchars($row['so_date_delivered']);?></td>
                         <td><?php echo htmlspecialchars($row['so_total_amount']);?></td>
                       </tr>
 
@@ -203,10 +212,11 @@ $user = $_SESSION["username"];
 
 
       <!--================Installment History Table===================================--->
+
       <section class="content">
         <div class="box box-success">
           <div class="box-header with-border">
-            <h3 class="box-title">SO Transactions History</h3>
+            <h3 class="box-title">Remaining Balance: ₱ <?php echo number_format($get_so_grand_total,2);?></h3>
           </div>
           <!-- /.box-header -->
           <div class="box-body">

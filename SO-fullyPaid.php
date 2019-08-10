@@ -17,6 +17,7 @@ $so_model=
 $so_qty=
 $so_unit =
 $so_unit_price=
+$so_date_delivered=
 $so_total_amount="";
 
 //get links

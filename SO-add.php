@@ -267,7 +267,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
                             </tr>
 
 
-                            <tr>
+                            <!--<tr>
                               <td align="right" colspan="4">Discount/s:</td>
                               <td>
                                 <div class="form-group">
@@ -275,9 +275,9 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
                                 </div>
                               </td>
                               <td>
-
                               </td>
-                            </tr>
+                            </tr>-->
+
                             <tr>
                               <td align="right" colspan="4">Grand Total Amount:</td>
                               <td>
@@ -444,8 +444,8 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
               calc_total();
             });
 
-            $('#so_discount').on('keyup change',function(){
-              calc_total();
+            //$('#so_discount').on('keyup change',function(){
+              //calc_total();
             });
 
 
@@ -476,16 +476,18 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
             total=0;
 
             var deliveryFee = parseFloat(document.getElementById("so_delivery_fee").value);
-            var disc = parseInt(document.getElementById("so_discount").value||0);
-            var discount_total = disc;
+            //var disc = parseInt(document.getElementById("so_discount").value||0);
+            //var discount_total = disc;
 
             $('.so_total_amount').each(function() {
               total += parseInt($(this).val());
             });
-            var discount_grand_total = total * discount_total;
-            $('#so_sub_total').val((total+deliveryFee).toFixed(2));
+            //var discount_grand_total = total * discount_total;
+            $('#so_sub_total').val((total).toFixed(2));
 
-            $('#so_grand_total').val(((total - disc) + deliveryFee).toFixed(2));
+            var gTotal = total + deliveryFee;
+            //$('#so_grand_total').val(((total - disc) + deliveryFee).toFixed(2));
+            $('#so_grand_total').val((gTotal).toFixed(2));
 
             //tax_sum=total/100*$('#tax').val();
             //$('#tax_amount').val(tax_sum.toFixed(2));
