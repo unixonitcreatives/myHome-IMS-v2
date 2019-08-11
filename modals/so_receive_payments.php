@@ -22,13 +22,17 @@ if(isset($_POST['receivePaymentBtn'])){
   $query = "INSERT INTO so_installments_history (so_trans_id, so_receive_payment_date, so_amount_receive, so_paymentMode, so_ref_no) VALUES ( '$get_customer_id', '$so_receive_payment_date', '$so_amount_receive', '$so_paymentMode',  '$so_reference_no')";
   $result = mysqli_query($link, $query) or die(mysqli_error($link));
 
+  //if result is true
   if($result){
     header("Location: ../SO-installments.php?alert=receive");
   }else {
-      echo "Error updating record: " . mysqli_error($conn);
+    echo "Error updating record: " . mysqli_error($link);
   }
 
+  }else {
+      echo "Error updating record: " . mysqli_error($link);
   }
+
 
     function test_input($data) {
       $data = trim($data);

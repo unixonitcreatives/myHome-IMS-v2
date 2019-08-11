@@ -43,6 +43,17 @@
         </div>
         <!-- /.box-header -->
         <div class="box-body">
+          <?php
+          if(isset($_GET['alert'])){
+              if( $_GET['alert'] == 'receive'){
+                  $alertMessage = "<div class='alert alert-success' role='alert'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>Receive Payment Successful</div>";
+              }elseif ($_GET['alert'] == 'insertsuccess'){
+                  $alertMessage = "<div class='alert alert-success' role='alert'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>New data added.</div>";
+              }elseif ($_GET['alert'] == 'deletesuccess'){
+                  $alertMessage = "<div class='alert alert-success' role='alert'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>Data deleted.</div>";
+              }
+          } ?>
+          <?php echo $alertMessage; ?> <!-- alert message -->
           <div class="row">
           </div>
           <table id="example1" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
