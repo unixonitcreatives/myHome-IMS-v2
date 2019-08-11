@@ -28,12 +28,10 @@ $alertMessage="";
 
 
 //get the id from selected supplier
-$users_id = $_GET['id'];
-
-//get the supplier from selected supplier
 $supp = $_GET['name'];
 
-
+$users_id = $_GET['id'];
+require_once "config.php";
 //If the form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
   $po_supplier_name             = test_input($_POST['supplier_name']);
@@ -51,41 +49,37 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
   // If im not mistaken, dito magstart yung insert ng bawat row sa table to database
   // yup tama
-  if ($result) {
-    //$j = 0;
 
+  if ($result) {
+    echo $asd = 0;
+    //$j = 0;
+  }
     //$count = sizeof($_POST['po_qty']);  //eto parang .lenght in php
 
     // Use insert_id property
     //get the ID of po_transaction table
-    $po_trans_id = $link->insert_id;
+    //$po_trans_id = $link->insert_id;
 
     //session username
-    $user  = $_SESSION["username"];
+    //$user  = $_SESSION["username"];
 
     //for ($j = 0; $j < $count; $j++) {
 
-    $query = "INSERT INTO request_po (po_trans_id,po_qty,po_unit,po_description,po_unit_price,po_total_amount,user) VALUES ('$po_trans_id', '$po_qty', '$po_unit', '$po_description', '$po_unit_price', '$po_total_amount', '$user' )";
-    $result = mysqli_query($link, $query) or die(mysqli_error($link));
+    //$query = "INSERT INTO request_po (po_trans_id,po_qty,po_unit,po_description,po_unit_price,po_total_amount,user) VALUES ('$po_trans_id', '$po_qty', '$po_unit', '$po_description', '$po_unit_price', '$po_total_amount', '$user' )";
 
-    if($result){
-      $alertMessage = "<div class='alert alert-success' role='alert'>
-      New user successfully added in database.
-      </div>";
-    }else{
-      $alertMessage = "<div class='alert alert-danger' role='alert'>
-      Error Adding data in Database.
-      </div>";
-    }
+    //$result = mysqli_query($link, $query) or die(mysqli_error($link));
+
+    //alert message code block here
+
     /*if("" == trim($_POST['qty']))
     {
 
   }
   else {
   $result = mysqli_multi_query($link, $query) or die(mysqli_error($link));
-}*/}// end if
+}*///}// end if
 
-} //end form post
+ //end form post
 
 
 //security
@@ -95,7 +89,7 @@ function test_input($data) {
   $data = htmlspecialchars($data);
   return $data;
 }
-
+}
 // Close connection
 mysqli_close($link);
 ?>
@@ -211,24 +205,24 @@ mysqli_close($link);
                   </thead>
                   <tbody>
                     <?php
-
                     // Include config file
                     require_once "config.php";
-
                     $supplier_name = $_GET['name'];
                     // Attempt select query execution
                     $query = "SELECT * FROM inventory WHERE supplier_name = '$supplier_name' ";
                     if($result = mysqli_query($link, $query)){
                       if(mysqli_num_rows($result) > 0){
                         $j = 0;
-
-                        $count = 0;
                         while($row = mysqli_fetch_array($result)){
                           $j += 1;
-
                           echo "<tr>";
                           echo "<td> $j </td>";
                           echo "<td><label><input type='checkbox' class='flat-red chk' onclick='enable_text(this.checked)'></label></td>";
+
+                          echo "<td>" . $row['product_description'] . "</td>";
+                          echo "<td>" . $row['category'] . "</td>";
+                          echo "<td>" . $row['model'] . "</td>";
+
 
                           echo "<td><input type='text' class='form-control' value='" .$row['product_description'] . "'</td>";
                           echo "<td><input type='text' class='form-control' value='" .$row['category'] . "' </td>";
@@ -243,14 +237,12 @@ mysqli_close($link);
                           } else {
                             echo "<td><input type='text' class='form-control qty' name='qty' value='0' onkeypress='return isNumberKey(event)'/></td>";
                           }
-
                           echo "<td><input type='text' class='form-control price' name='price' value='".$row['cost_price']."'></td>";
                           echo "<td><input type='text' class='form-control subtot' name='subtot' type='text' value='0' /></td>";
 
                           echo "</tr>";
                           $count++;
                         }
-
                         echo "<tfoot>";
                         echo "<td></td>";
                         echo "<td></td>";
@@ -261,7 +253,6 @@ mysqli_close($link);
                         echo "<td></td>";
                         echo "<td>Grand Total:</td>";
                         echo "<td><input class='form-control grdtot' name='totalPrice' type='text' value='0' /></td>";
-
                         echo "</tfoot>";
                         mysqli_free_result($result);
                       } else{
@@ -270,7 +261,6 @@ mysqli_close($link);
                     } else{
                       echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
                     }
-
                     // Close connection
                     mysqli_close($link);
                     ?>
@@ -280,16 +270,6 @@ mysqli_close($link);
               </div>
               <div class="box-footer">
                 <button type="submit" name="save" id="save" onclick="this.disabled=true;this.value='Submitting...'; this.form.submit();" class="btn btn-success pull-right">Save</button>
-                <script>
-                function siteRedirect() {
-                  var selectbox = document.getElementById("selectSupplier");
-                  var selectedValue = selectbox.options[selectbox.selectedIndex].value;
-                  console.log(selectedValue);
-                  window.location.href = selectedValue;
-                }
-
-                </script>
-
               </div>
             </form>
           </div>
