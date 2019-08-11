@@ -6,6 +6,9 @@
   $Manager_auth = 0;
   $Accounting_auth = 0;
  include('template/user_auth.php');
+
+ $get_so_amount_receive = $_GET['so_amount_receive'];
+ $alertMessage = "";
 ?>
 
 <!DOCTYPE html>
@@ -55,6 +58,7 @@
           } ?>
           <?php echo $alertMessage; ?> <!-- alert message -->
           <div class="row">
+
           </div>
           <table id="example1" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
       <thead>

@@ -24,7 +24,7 @@ if(isset($_POST['receivePaymentBtn'])){
 
   //if result is true
   if($result){
-    header("Location: ../SO-installments.php?alert=receive");
+    header("Location: ../SO-manage.php?alert=receive && so_amount_receive = $so_amount_receive ");
   }else {
     echo "Error updating record: " . mysqli_error($link);
   }
