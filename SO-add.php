@@ -444,8 +444,8 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
               calc_total();
             });
 
-            //$('#so_discount').on('keyup change',function(){
-              //calc_total();
+            $('#so_discount').on('keyup change',function(){
+            calc_total();
             });
 
 
