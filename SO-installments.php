@@ -28,6 +28,7 @@ $so_get_amount_receive=
 $so_total_amount="";
 
 //get links
+
 $get_customer_id = $_GET['so_trans_id'];
 $get_customer_name = $_GET['so_customer_name'];
 $get_so_date = $_GET['so_date'];
@@ -46,6 +47,8 @@ while ($row = mysqli_fetch_assoc($result)){
   $amountR = $row['amount_receive'];
   $total_grand_amount = $get_so_grand_total - $amountR;
 }
+
+ob_start();
 
 ?>
 
@@ -140,6 +143,7 @@ while ($row = mysqli_fetch_assoc($result)){
                     <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Delivery Date</th>
                     <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Date Delivered</th>
                     <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Total Amount</th>
+                    <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -148,7 +152,6 @@ while ($row = mysqli_fetch_assoc($result)){
                   $result = mysqli_query($link, $query);
                   if(mysqli_num_rows($result) > 0){
                     while ($row = mysqli_fetch_assoc($result)){ ?>
-
                       <tr>
                         <td><?php echo htmlspecialchars($row['so_model']);?></td>
                         <td><?php echo htmlspecialchars($row['so_qty']);?></td>
@@ -157,6 +160,8 @@ while ($row = mysqli_fetch_assoc($result)){
                         <td><?php echo htmlspecialchars($row['so_delivery_date']);?></td>
                         <td><?php echo htmlspecialchars($row['so_date_delivered']);?></td>
                         <td><?php echo htmlspecialchars($row['so_total_amount']);?></td>
+                        <td>
+                          <a data-toggle="modal" data-target="#updateDelivery" class="btn btn-sm btn-success" href='updateDelivery?so_request_id=<?php echo $row['so_request_id']; ?>' >Update Delivery</a>
                       </tr>
 
                     <?php }
@@ -302,20 +307,24 @@ while ($row = mysqli_fetch_assoc($result)){
           <h4 class="modal-title" id="myModalLabel">Receive Payment Form</h4>
         </div>
         <div class="modal-body">
-          <form method="POST"  action="modals/so_receive_payments.php">
+          <form method="POST"  action="modals/so_fullyPaid.php">
+
+            <div class="form-group">
+              <input type="hidden" class="form-control"  name="so_trans_id" value="<?php echo htmlspecialchars($get_customer_id); ?>">
+            </div>
 
             <?php
             if($total_grand_amount == 0){
               echo 'Please press update button to continue
               <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-              <button type="submit" name="receivePaymentBtn" class="btn btn-success">Update</button>
+              <button type="submit" name="fullyPaid" class="btn btn-success">Update</button>
                 </div>';
             }else {
               echo 'You still have remaining balance of ' .$total_grand_amount.
               '<div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal"  >Cancel</button>
-              <button type="submit" name="receivePaymentBtn" class="btn btn-success" aria-disabled="true" disabled>Update</button>
+              <button type="submit" name="fullyPaid" class="btn btn-success" aria-disabled="true" disabled>Update</button>
               </div>';
             }
             ?>
@@ -328,6 +337,45 @@ while ($row = mysqli_fetch_assoc($result)){
     <!-- /Modal -->
     <!-- /.box-header -->
 <!-- ================== /Fully Paid Modal ====================================-->
+
+<!-- ================== Update Delivery Modal ====================================-->
+<div class="modal fade" id="updateDelivery<?php echo $row['so_request_id']; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Receive Payment Form</h4>
+      </div>
+      <div class="modal-body">
+
+        <form method="POST"  action="SO-update-items.php?so_trans_id=<?php echo $so_request_id; ?>">
+
+          <div class="form-group">
+            <input type="text" class="form-control"  name="so_request_id" value="<?php echo $so_request_id; ?>">
+          </div>
+
+          <div class="form-group">
+            <label>Delivery Date:</label>
+            <input type="date" class="form-control"  name="so_delivery_date">
+          </div>
+
+          <div class="form-group">
+            <label>Date Delivered:</label>
+            <input type="date" class="form-control"  name="so_date_delivered">
+          </div>
+
+          <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal"  >Cancel</button>
+          <button type="submit" name="updateDeliveryBtn" class="btn btn-success" >Update</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  </div>
+  <!-- /Modal -->
+  <!-- /.box-header -->
+<!-- ================== /Update Delivery Modal ====================================-->
 
 
 <!-- =========================== FOOTER =========================== -->
@@ -432,6 +480,6 @@ function upperCaseF(a){
 }
 </script>
 
-
+<?php ob_end_flush(); ?>
 </body>
 </html>
