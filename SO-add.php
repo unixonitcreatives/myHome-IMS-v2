@@ -1,7 +1,6 @@
 <!-- ======================= SESSION =================== -->
 <?php
 include('config.php');
-
 include('template/session.php');
 
 //<!-- ======================= USER AUTHENTICATION  =================== -->
@@ -46,7 +45,6 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
   $so_sub_total           =test_input($_POST['so_sub_total']);
   $so_paymentTerms        =test_input($_POST['so_paymentTerms']);
   $so_delivery_fee        =test_input($_POST['so_delivery_fee']);
-  $so_discount            =test_input($_POST['so_discount']);
   $so_grand_total         =test_input($_POST['so_grand_total']);
   $so_remarks             =test_input($_POST['so_remarks']);
 
@@ -54,7 +52,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
   $user = $_SESSION["username"];
 
   //INSERT query to so_transactions table
-  $query = "INSERT INTO so_transactions (so_date, so_customer_name, so_sub_total, so_paymentTerms, so_delivery_fee, so_discount, so_grand_total, so_remarks, so_user) VALUES (CURRENT_TIMESTAMP, '$so_customer_name', '$so_sub_total', '$so_paymentTerms', '$so_delivery_fee', '$so_discount', '$so_grand_total', '$so_remarks', '$user' )";
+  $query = "INSERT INTO so_transactions (so_date, so_customer_name, so_sub_total, so_paymentTerms, so_delivery_fee, so_grand_total, so_remarks, so_user) VALUES (CURRENT_TIMESTAMP, '$so_customer_name', '$so_sub_total', '$so_paymentTerms', '$so_delivery_fee', '$so_grand_total', '$so_remarks', '$user' )";
   $result = mysqli_query($link, $query) or die(mysqli_error($link));
 
   if ($result) {
