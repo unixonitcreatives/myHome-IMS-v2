@@ -443,11 +443,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
             });
 
             $('#so_discount').on('keyup change',function(){
-<<<<<<< HEAD
-              calc_total();
-=======
             calc_total();
->>>>>>> 77e71640edcdb5f912a8eb1120bb1752e54cb459
             });
           });
 
