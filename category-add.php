@@ -79,7 +79,7 @@ function test_input($data) {
     <section class="content-header">
       <h1>
         Add Category
-        <small>asdasdas</small>
+        <small></small>
       </h1>
     </section>
   <!-- ======================== MAIN CONTENT ======================= -->

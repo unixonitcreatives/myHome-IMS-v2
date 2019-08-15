@@ -33,7 +33,7 @@ $so_get_amount_receive=
     <section class="content-header">
       <h1>
         Manage Sales Order
-        <small>asdasdas</small>
+        <small></small>
       </h1>
     </section>
   <!-- ======================== MAIN CONTENT ======================= -->

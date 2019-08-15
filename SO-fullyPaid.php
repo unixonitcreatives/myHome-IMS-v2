@@ -54,7 +54,7 @@ $get_so_grand_total= $_GET['so_grand_total'];
       <section class="content-header">
         <h1>
           Manage Sales Order
-          <small>asdasdas</small>
+          <small></small>
         </h1>
       </section>
       <!-- ======================== MAIN CONTENT ======================= -->

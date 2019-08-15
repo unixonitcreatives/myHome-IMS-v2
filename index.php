@@ -36,8 +36,8 @@
         <strong>Other Updates</strong>
         <ul>
 
-          <li>Update 1 </li>
-          <li>Update 2 </li>
+          <li></li>
+          <li></li>
           <li>
         </ul>
 
@@ -47,9 +47,9 @@
       <div class="callout callout-warning">
        <h4>Pending Features</h4>
         <ul>
-          <li>Pending 1</li>
-          <li>Pending 2</li>
-          <li>Pending 3</li>
+          <li></li>
+          <li></li>
+          <li></li>
         </ul>
       </div>
 

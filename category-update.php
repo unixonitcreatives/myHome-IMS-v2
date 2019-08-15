@@ -82,7 +82,7 @@ mysqli_close($link);
     <section class="content-header">
       <h1>
         Manage Category
-        <small>asdasdas</small>
+        <small></small>
       </h1>
     </section>
   <!-- ======================== MAIN CONTENT ======================= -->

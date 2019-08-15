@@ -30,7 +30,7 @@
     <section class="content-header">
       <h1>
         Manage User
-        <small>asdasdas</small>
+        <small></small>
       </h1>
     </section>
   <!-- ======================== MAIN CONTENT ======================= -->

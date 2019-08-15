@@ -101,7 +101,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
           <section class="content-header">
             <h1>
               Purchase Order Request
-              <small>asdasdas</small>
+              <small></small>
             </h1>
           </section>
           <!-- ======================== MAIN CONTENT ======================= -->
