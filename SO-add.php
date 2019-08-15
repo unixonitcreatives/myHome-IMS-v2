@@ -1,7 +1,6 @@
 <!-- ======================= SESSION =================== -->
 <?php
 include('config.php');
-
 include('template/session.php');
 
 //<!-- ======================= USER AUTHENTICATION  =================== -->
@@ -46,15 +45,15 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
   $so_sub_total           =test_input($_POST['so_sub_total']);
   $so_paymentTerms        =test_input($_POST['so_paymentTerms']);
   $so_delivery_fee        =test_input($_POST['so_delivery_fee']);
-  $so_discount            =test_input($_POST['so_discount']);
   $so_grand_total         =test_input($_POST['so_grand_total']);
   $so_remarks             =test_input($_POST['so_remarks']);
+
 
   //loggedin username
   $user = $_SESSION["username"];
 
   //INSERT query to so_transactions table
-  $query = "INSERT INTO so_transactions (so_date, so_customer_name, so_sub_total, so_paymentTerms, so_delivery_fee, so_discount, so_grand_total, so_remarks, so_user) VALUES (CURRENT_TIMESTAMP, '$so_customer_name', '$so_sub_total', '$so_paymentTerms', '$so_delivery_fee', '$so_discount', '$so_grand_total', '$so_remarks', '$user' )";
+  $query = "INSERT INTO so_transactions (so_date, so_customer_name, so_sub_total, so_paymentTerms, so_delivery_fee, so_grand_total, so_remarks, so_user) VALUES (CURRENT_TIMESTAMP, '$so_customer_name', '$so_sub_total', '$so_paymentTerms', '$so_delivery_fee', '$so_grand_total', '$so_remarks', '$user' )";
   $result = mysqli_query($link, $query) or die(mysqli_error($link));
 
   if ($result) {
@@ -75,6 +74,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
         '".$_POST['so_unit'][$j]."',
         '".$_POST['so_unit_price'][$j]."',
         '".$_POST['so_total_amount'][$j]."')";
+
 
         $result = mysqli_multi_query($link, $query) or die(mysqli_error($link));
 
@@ -180,7 +180,6 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
                           <option value="">~~SELECT~~</option>
                           <option value="Fully Paid">Fully Paid</option>
                           <option value="Installment">Installment</option>
-                          <option value="Credit Card">Credit Card</option>
                           <option value="Home Credit">Home Credit</option>
                         </select>
                       </div>
@@ -235,7 +234,6 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
                                 <input type="number" class="form-control so_total_amount" id="so_total_amount" name="so_total_amount[]" placeholder= "0.00" readonly>
                               </div>
                             </td>
-
                             <td>
                               <div align="right">
                                 <button type="button" name="add" id="add" class="btn btn-success pull-left">Add Row</button>
@@ -445,7 +443,11 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
             });
 
             $('#so_discount').on('keyup change',function(){
+<<<<<<< HEAD
               calc_total();
+=======
+            calc_total();
+>>>>>>> 77e71640edcdb5f912a8eb1120bb1752e54cb459
             });
           });
 

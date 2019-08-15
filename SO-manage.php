@@ -6,6 +6,9 @@
   $Manager_auth = 0;
   $Accounting_auth = 0;
  include('template/user_auth.php');
+
+$so_get_amount_receive=
+ $alertMessage = "";
 ?>
 
 <!DOCTYPE html>
@@ -47,14 +50,12 @@
           if(isset($_GET['alert'])){
               if( $_GET['alert'] == 'receive'){
                   $alertMessage = "<div class='alert alert-success' role='alert'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>Receive Payment Successful</div>";
-              }elseif ($_GET['alert'] == 'insertsuccess'){
-                  $alertMessage = "<div class='alert alert-success' role='alert'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>New data added.</div>";
               }elseif ($_GET['alert'] == 'deletesuccess'){
-                  $alertMessage = "<div class='alert alert-success' role='alert'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>Data deleted.</div>";
+                  $alertMessage = "<div class='alert alert-danger' role='alert'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>Data deleted.</div>";
               }
           } ?>
-          <?php echo $alertMessage; ?> <!-- alert message -->
           <div class="row">
+            <?php echo $alertMessage; ?>
           </div>
           <table id="example1" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
       <thead>
@@ -80,7 +81,7 @@
                                          echo "<tr>";
                                              echo "<td>" . $row['so_trans_id'] . "</td>";
                                              echo "<td>" . $row['so_customer_name'] . "</td>";
-                                             echo "<td>" . $row['so_grand_total'] . "</td>";
+                                             echo "<td>  ₱ " . number_format($row['so_grand_total'],2) . "</td>";
                                              echo "<td>" . $row['so_paymentTerms'] . "</td>";
 
 
@@ -88,9 +89,9 @@
                                             echo "<td>";
 
                                             if($row['so_paymentTerms'] == "Installment"){
-                                             echo "<a href='SO-installments.php?so_trans_id=".$row['so_trans_id']." && so_customer_name=".$row['so_customer_name']." && so_date=".$row['so_date']." && so_paymentTerms=".$row['so_paymentTerms']."  && so_sub_total=".$row['so_sub_total']." && so_delivery_fee=".$row['so_delivery_fee']." && so_discount=".$row['so_discount']." && so_grand_total=".$row['so_grand_total']."' title='View Record'><span class='glyphicon glyphicon-eye-open'></span></a>";
+                                             echo "<a href='SO-installments.php?so_trans_id=".$row['so_trans_id']." && so_customer_name=".$row['so_customer_name']." && so_date=".$row['so_date']." && so_paymentTerms=".$row['so_paymentTerms']."  && so_sub_total=".$row['so_sub_total']." && so_delivery_fee=".$row['so_delivery_fee']."  && so_grand_total=".$row['so_grand_total']."' title='View Record' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
                                            }else if($row['so_paymentTerms'] == "Fully Paid"){
-                                              echo "<a href='SO-fullyPaid.php?so_trans_id=".$row['so_trans_id']." && so_customer_name=".$row['so_customer_name']." && so_date=".$row['so_date']." && so_paymentTerms=".$row['so_paymentTerms']."  && so_sub_total=".$row['so_sub_total']." && so_delivery_fee=".$row['so_delivery_fee']." && so_discount=".$row['so_discount']." && so_grand_total=".$row['so_grand_total']."' title='View Record'><span class='glyphicon glyphicon-eye-open'></span></a>";
+                                              echo "<a href='SO-fullyPaid.php?so_trans_id=".$row['so_trans_id']." && so_customer_name=".$row['so_customer_name']." && so_date=".$row['so_date']." && so_paymentTerms=".$row['so_paymentTerms']."  && so_sub_total=".$row['so_sub_total']." && so_delivery_fee=".$row['so_delivery_fee']."  && so_grand_total=".$row['so_grand_total']."' title='View Record' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
                                            }
 
 
