@@ -122,6 +122,6 @@
 
                         <li><a href="logout.php"><i class="fa fa-close"></i> <span>Logout</span></a>
                         </li>
-                    </ul>      
+                    </ul>
                 </section>
             </aside>

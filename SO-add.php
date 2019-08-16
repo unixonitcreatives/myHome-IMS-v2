@@ -169,13 +169,15 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
                     </div>
                     <div class="col-md-6">
                       <div class="form-group">
+                        <label class="text text-red">*</label>
                         <label>Date</label>
                         <input type="date" onload="getDate()" class="form-control" id="so_date"  name="so_date"  disabled>
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="form-group">
-                        <label>Payemt Terms</label>
+                        <label class="text text-red">*</label>
+                        <label>Payment Method</label>
                         <select class="form-control select2" style="width: 100%;" id="" maxlength="50" placeholder="customer name" name="so_paymentTerms" required>
                           <option value="">~~SELECT~~</option>
                           <option value="Fully Paid">Fully Paid</option>
@@ -185,6 +187,14 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
                       </div>
                     </div>
                     <div class="col-md-6">
+                      <div class="form-group">
+                        <label class="text text-red">*</label>
+                        <label>Sales Person</label>
+                        <input type="text" class="form-control"  name="so_remarks" required>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
                       <div class="form-group">
                         <label>Note</label>
                         <input type="text" class="form-control"  name="so_remarks">

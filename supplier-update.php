@@ -1,7 +1,7 @@
 <!-- ======================= SESSION =================== -->
 <?php include('template/session.php'); ?>
 <!-- ======================= USER AUTHENTICATION  =================== -->
-<?php 
+<?php
   $Admin_auth = 1;
   $Manager_auth = 0;
   $Accounting_auth = 0;
@@ -17,8 +17,8 @@ $supplier_name=$supplier_contact_person=$supplier_email=$supplier_number=$suppli
 require_once "config.php";
 
 
-$users_id = $_GET['id'];
-$query = "SELECT * from suppliers WHERE id='$users_id'";
+$suppliers_id = $_GET['suppliers_id'];
+$query = "SELECT * from suppliers WHERE suppliers_id='$suppliers_id'";
 $result = mysqli_query($link, $query) or die(mysqli_error($link));
 if (mysqli_num_rows($result) > 0) {
     while ($row = mysqli_fetch_assoc($result)){
@@ -32,7 +32,6 @@ if (mysqli_num_rows($result) > 0) {
 }else {
     $alertMessage="<div class='alert alert-danger' role='alert'>Theres Nothing to see Here.</div>";
 }
-
 
 
 //If the form is submitted or not.
@@ -77,7 +76,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     // Check input errors before inserting in database
     if(empty($alertMessage)){
     //Checking the values are existing in the database or not
-    $query = "UPDATE suppliers SET supplier_name='$supplier_name', supplier_contact_person='$supplier_contact_person', supplier_email='$supplier_email', supplier_number='$supplier_number', supplier_address='$supplier_address' WHERE id='$users_id'";
+    $query = "UPDATE suppliers SET supplier_name='$supplier_name', supplier_contact_person='$supplier_contact_person', supplier_email='$supplier_email', supplier_number='$supplier_number', supplier_address='$supplier_address' WHERE suppliers_id='$suppliers_id'";
     $result = mysqli_query($link, $query) or die(mysqli_error($link));
     if($result){
         $alertMessage = "<div class='alert alert-success' role='alert'>
@@ -135,7 +134,7 @@ function test_input($data) {
   <!-- ======================== MAIN CONTENT ======================= -->
     <!-- Main content -->
 <section class="content">
-    <div class="col-md-6">
+
       <?php echo $alertMessage; ?>
           <!-- general form elements -->
           <div class="box box-success">
@@ -146,7 +145,7 @@ function test_input($data) {
 
             <!-- /.box-header -->
             <!-- form start -->
-             <form  method="POST"  action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>?id=<?php echo $users_id; ?>">
+             <form  method="POST"  action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>?suppliers_id=<?php echo $suppliers_id; ?>">
 
               <div class="box-body">
                 <div class="form-group">
@@ -178,9 +177,6 @@ function test_input($data) {
                 <input type="text" class="form-control" placeholder="date" name="date" value="<?php echo $created_at; ?>" disabled>
               </div>
               </div>
-
-
-
               <!-- /.box-body -->
               <div class="box-footer">
                   <button type="submit" class="btn btn-success">Save</button>
@@ -190,7 +186,7 @@ function test_input($data) {
           <!-- /.box -->
 
 
-        </div>
+
     <!-- /.content -->
   </div>
 </section>

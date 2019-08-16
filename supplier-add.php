@@ -1,7 +1,7 @@
 <!-- ======================= SESSION =================== -->
 <?php include('template/session.php'); ?>
 <!-- ======================= USER AUTHENTICATION  =================== -->
-<?php 
+<?php
   $Admin_auth = 1;
   $Manager_auth = 0;
   $Accounting_auth = 0;
@@ -23,24 +23,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
   if(empty($supplier_name)){
     $alertMessage = "Please enter a supplier name.";
   }
-
   if(empty($supplier_contact_person)){
     $alertMessage = "Please enter a supplier contact person.";
   }
-
   if(empty($supplier_email)){
     $alertMessage = "Please enter a supplier email.";
   }
-
-
   if(empty($supplier_number)){
     $alertMessage = "Please enter a supplier contact number.";
   }
-
-
   if(empty($supplier_address)){
     $alertMessage = "Please enter a supplier address.";
   }
+
 
   if(empty($alertMessage)){
 
@@ -93,13 +88,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     <section class="content-header">
       <h1>
         Add Supplier
-        <small>asdasdas</small>
+        <small></small>
       </h1>
     </section>
   <!-- ======================== MAIN CONTENT ======================= -->
     <!-- Main content -->
 <section class="content">
-          <div class="col-md-6">
             <?php echo $alertMessage;?>
             <!-- general form elements -->
             <div class="box box-success">
@@ -149,8 +143,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
             <!-- /.box -->
 
-
-          </div>
           <!-- /.content -->
         </div>
       </section>

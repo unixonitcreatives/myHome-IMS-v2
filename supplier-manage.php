@@ -1,7 +1,7 @@
 <!-- ======================= SESSION =================== -->
 <?php include('template/session.php'); ?>
 <!-- ======================= USER AUTHENTICATION  =================== -->
-<?php 
+<?php
   $Admin_auth = 1;
   $Manager_auth = 0;
   $Accounting_auth = 0;
@@ -77,11 +77,11 @@
                                              echo "<td>" . $row['supplier_address'] . "</td>";
                                              echo "<td>";
 
-                                             echo "<a href='supplier-view.php?id=". $row['id'] ."' title='View Record' data-toggle='modal' data-target='#modal-default'><span class='glyphicon glyphicon-eye-open'></span></a>";
+                                             echo "<a href='supplier-add-products.php?suppliers_id=". $row['suppliers_id'] ."' title='View Record' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
 
-                                             echo " &nbsp; <a href='supplier-update.php?id=". $row['id'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
+                                             echo " &nbsp; <a href='supplier-update.php?suppliers_id=". $row['suppliers_id'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
 
-                                             echo " &nbsp; <a href='supplier-delete.php?id=". $row['id'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash remove'></span></a>";
+                                             echo " &nbsp; <a href='supplier-delete.php?suppliers_id=". $row['suppliers_id'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash remove'></span></a>";
 
                                              echo "</td>";
                                          echo "</tr>";
