@@ -28,7 +28,6 @@ $so_get_amount_receive=
 $so_total_amount="";
 
 //get links
-
 $get_customer_id = $_GET['so_trans_id'];
 $get_customer_name = $_GET['so_customer_name'];
 $get_so_date = $_GET['so_date'];

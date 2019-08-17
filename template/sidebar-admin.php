@@ -62,7 +62,18 @@
                                 <!-- <li><a href="PO-add.php">Add PO</a></li> -->
                                 <li><a href="PO-request.php">Request PO</a></li>
                                 <li><a href="PO-manage.php">Manage PO</a></li>
-
+                            </ul>
+                        </li>
+                        <li class="treeview">
+                            <a href="#"><i class="fa fa-cart-plus"></i> <span>Stocks</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <!-- <li><a href="PO-add.php">Add PO</a></li> -->
+                                <li><a href="PO-request.php">Recieve Items</a></li>
+                                <li><a href="PO-manage.php">Manage PO</a></li>
                             </ul>
                         </li>
 
@@ -106,14 +117,14 @@
                         </li>
 
                         <li class="treeview">
-                            <a href="#"><i class="fa fa-user-circle-o"></i> <span>Add Users</span>
+                            <a href="#"><i class="fa fa-user-circle-o"></i> <span>Personnel</span>
                                 <span class="pull-right-container">
                                     <i class="fa fa-angle-left pull-right"></i>
                                 </span>
                             </a>
                             <ul class="treeview-menu">
-                                <li><a href="user-add.php">Add Users</a></li>
-                                <li><a href="user-manage.php">Manage Users</a></li>
+                                <li><a href="user-add.php">Add Personnel</a></li>
+                                <li><a href="user-manage.php">Manage Personnel</a></li>
                             </ul>
                         </li>
 

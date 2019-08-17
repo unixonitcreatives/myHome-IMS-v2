@@ -1,7 +1,7 @@
 <!-- ======================= SESSION =================== -->
 <?php include('template/session.php'); ?>
 <!-- ======================= USER AUTHENTICATION  =================== -->
-<?php 
+<?php
   $Admin_auth = 1;
   $Manager_auth = 1;
   $Accounting_auth = 1;
@@ -47,7 +47,6 @@
                     <tr>
                       <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">PO-ID</th>
                       <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Date</th>
-                      
                       <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Supplier</th>
                       <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Notes</th>
                       <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Total Price</th>
@@ -71,7 +70,7 @@
                           echo "<tr>";
                           echo "<td>#" . $row['po_trans_id'] . "</td>";
                           echo "<td>" . $row['inv_date'] . "</td>";
-                          
+
                           echo "<td>" . $row['supplier_name'] . "</td>";
                           echo "<td>" . $row['paymentTerms'] . "</td>";
                           echo "<td>₱" . number_format($row['totalPrice'],2) . "</td>";
