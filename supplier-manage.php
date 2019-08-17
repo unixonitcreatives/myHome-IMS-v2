@@ -75,7 +75,7 @@ include('template/user_auth.php');
                       echo "<td>" . $row['supplier_address'] . "</td>";
                       echo "<td>";
                       echo "<a href='supplier-add-products.php?suppliers_id=". $row['suppliers_id'] ." && supplier_name=". $row['supplier_name'] ."' title='Add Products' data-toggle='tooltip'><span class='fa fa-plus-square'></span></a>";
-                      echo " &nbsp; <a href='supplier-view.php?suppliers_id=". $row['suppliers_id'] ."' title='View Record' data-toggle='tooltip'><span class='fa fa-eye'></span></a>";
+                      echo " &nbsp; <a href='supplier-record.php?suppliers_id=". $row['suppliers_id'] ."' title='View Record' data-toggle='tooltip'><span class='fa fa-eye'></span></a>";
                       echo " &nbsp; <a href='supplier-update.php?suppliers_id=". $row['suppliers_id'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
                       echo " &nbsp; <a href='supplier-delete.php?suppliers_id=". $row['suppliers_id'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash remove'></span></a>";
                       echo "</td>";
