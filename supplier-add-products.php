@@ -53,11 +53,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
     if($result){
       $alertMessage = "<div class='alert alert-success' role='alert'>
-      New Sales Order Created.
+      Products added successfully.
       </div>";
     }else{
       $alertMessage = "<div class='alert alert-danger' role='alert'>
-      Error Creating Sales Order.
+      Error adding data.
       </div>";}
       //INSERT query to so_transactions table end
 
@@ -103,9 +103,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
           <!-- ======================== MAIN CONTENT ======================= -->
           <!-- Main content -->
           <section class="content">
-            <?php echo $alertMessage;?>
+
             <!-- general form elements -->
             <div class="box box-success">
+                <?php echo $alertMessage;?>
               <div class="box-header with-border">
                 <h3>Supplier Name:&nbsp;<?php echo $get_suppliers_name; ?></h3>
                 <a href="supplier-manage.php" class="text-center">View Suppliers</a>

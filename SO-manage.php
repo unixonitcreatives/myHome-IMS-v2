@@ -49,9 +49,9 @@ $so_get_amount_receive=
           <?php
           if(isset($_GET['alert'])){
               if( $_GET['alert'] == 'receive'){
-                  $alertMessage = "<div class='alert alert-success' role='alert'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>Receive Payment Successful</div>";
+                  $alertMessage = "<div class='alert alert-success' role='alert'>Receive Payment Successful</div>";
               }elseif ($_GET['alert'] == 'deletesuccess'){
-                  $alertMessage = "<div class='alert alert-danger' role='alert'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>Data deleted.</div>";
+                  $alertMessage = "<div class='alert alert-danger' role='alert'>Data deleted.</div>";
               }
           } ?>
           <div class="row">

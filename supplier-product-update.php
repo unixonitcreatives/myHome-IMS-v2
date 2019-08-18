@@ -7,14 +7,6 @@ $Manager_auth = 0;
 $Accounting_auth = 0;
 include('template/user_auth.php');
 
-//suppliers table variables
-$supplier_name=
-$supplier_contact_person=
-$supplier_email=
-$supplier_number=
-$supplier_address=
-$created_at=
-$get_suppliers_id="";
 
 
 //suppliers_prodauts table variables
@@ -23,31 +15,94 @@ $sup_prod_category=
 $sup_prod_subCategory=
 $sup_prod_price=
 $sup_prod_srp=
+$get_suppliers_id=
 $alertMessage=
 $sup_prod_date="";
 
 require_once "config.php";
 
 //get suppliers table id from Manage
-$get_suppliers_id = $_GET['suppliers_id'];
+$get_suppliers_id = $_GET['suppliers_product_id'];
 
-$query = "SELECT * from suppliers WHERE suppliers_id='$get_suppliers_id'";
+$query = "SELECT * FROM suppliers_products WHERE suppliers_product_id='$get_suppliers_id'";
 $result = mysqli_query($link, $query) or die(mysqli_error($link));
 if (mysqli_num_rows($result) > 0) {
   while ($row = mysqli_fetch_assoc($result)){
-    $supplier_name              =   $row['supplier_name'];
-    $supplier_contact_person    =   $row['supplier_contact_person'];
-    $supplier_email             =   $row['supplier_email'];
-    $supplier_number            =   $row['supplier_number'];
-    $supplier_address           =   $row['supplier_address'];
-    $created_at                 =   $row['created_at'];
+    $sup_prod_model               =   $row['sup_prod_model'];
+    $sup_prod_category            =   $row['sup_prod_category'];
+    $sup_prod_subCategory         =   $row['sup_prod_subCategory'];
+    $sup_prod_price               =   $row['sup_prod_price'];
+    $sup_prod_srp                 =   $row['sup_prod_srp'];
+    $sup_prod_date                =   $row['sup_prod_date'];
 
   }
 }else {
   $alertMessage="<div class='alert alert-danger' role='alert'>Theres Nothing to see Here.</div>";
 }
 
+//If the form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST"){
+    //Assigning posted values to variables.
+    $sup_prod_model               =   test_input($_POST['sup_prod_model']);
+    $sup_prod_category            =   test_input($_POST['sup_prod_category']);
+    $sup_prod_subCategory         =   test_input($_POST['sup_prod_subCategory']);
+    $sup_prod_price               =   test_input($_POST['sup_prod_price']);
+    $sup_prod_srp                 =   test_input($_POST['sup_prod_srp']);
+    $sup_prod_date                =   test_input($_POST['sup_prod_date']);
 
+
+    // Validate model
+    if(empty($sup_prod_model)){
+        $alertMessage = "Please enter a model.";
+    }
+    // Validate category
+    if(empty($sup_prod_category)){
+        $alertMessage = "Please enter a category.";
+    }
+    // Validate category
+    if(empty($sup_prod_subCategory)){
+        $alertMessage = "Please enter a sub-category.";
+    }
+    // Validate category
+    if(empty($sup_prod_price)){
+        $alertMessage = "Please enter a price.";
+    }
+    // Validate category
+    if(empty($sup_prod_srp)){
+        $alertMessage = "Please enter a retail price.";
+    }
+    // Validate category
+    if(empty($sup_prod_date)){
+        $alertMessage = "Please enter a date.";
+    }
+
+    // Check input errors before inserting in database
+    if(empty($alertMessage)){
+    //Checking the values are existing in the database or not
+    $query = "UPDATE suppliers_products SET sup_prod_model='$sup_prod_model', sup_prod_category='$sup_prod_category', sup_prod_subCategory='$sup_prod_subCategory', sup_prod_price='$sup_prod_price', sup_prod_srp='$sup_prod_srp',  sup_prod_date='$sup_prod_date' WHERE suppliers_product_id='$get_suppliers_id'";
+    $result = mysqli_query($link, $query) or die(mysqli_error($link));
+    if($result){
+        $alertMessage = "<div class='alert alert-success' role='alert'>
+  Product data successfully updated in database.
+</div>";
+    }else {
+        $alertMessage = "<div class='alert alert-success' role='alert'>
+  Error updating record.
+</div>";
+    }
+}
+}
+
+function test_input($data) {
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+}
+
+
+// Close connection
+mysqli_close($link);
 
 ?>
 
@@ -86,96 +141,46 @@ if (mysqli_num_rows($result) > 0) {
           </div>
           <!-- /.box-header -->
           <div class="box-body">
-<?php echo $alertMessage; ?>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Name:</label>
-                <input type="text" class="form-control" id="supplier_name" name="supplier_name"  value="<?php echo $supplier_name; ?>" disabled/>
-              </div>
-
-              <div class="form-group">
-                <label>Contact Person:</label>
-                <input type="text" class="form-control" id="supplier_contact_person" name="supplier_contact_person"  value="<?php echo $supplier_contact_person; ?>" disabled/>
-              </div>
-            </div>
-
-            <div class="col-md-6">
-              <div class="form-group">
-                <label>Email:</label>
-                <input type="email" class="form-control" id="supplier_email" name="supplier_email"  value="<?php echo $supplier_email; ?>" disabled/>
-              </div>
-
-              <div class="form-group">
-                <label>Contact Number:</label>
-                <input type="text" class="form-control" id="supplier_number" name="supplier_number"  value="<?php echo $supplier_number; ?>" disabled/>
-              </div>
-            </div>
-
+            <?php echo $alertMessage; ?>
+          <form  method="POST"  action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>?suppliers_product_id=<?php echo $get_suppliers_id; ?>">
             <div class="col-md-12">
-              <label>Address:</label>
-              <input type="text" class="form-control" id="supplier_address" name="supplier_address"  value="<?php echo $supplier_address; ?>" disabled/>
-            </div>
-
-
-            <div class="col-md-12">
-              <br>
-              <div class="row">
-                <h4>Supplier Products</h4>
+              <div class="form-group">
+                <label>Model:</label>
+                <input type="text" class="form-control" id="sup_prod_model" name="sup_prod_model"  value="<?php echo $sup_prod_model; ?>" required/>
               </div>
-              <table id="example1" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
-                <thead>
-                  <tr>
-                    <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Model</th>
-                    <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Category</th>
-                    <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Sub-Category</th>
-                    <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Price</th>
-                    <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Retail Price</th>
-                    <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Date</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php
-                  // Include config file
-                  require_once "config.php";
 
-                  // Attempt select query execution from suppliers_products table
-                  $query = "SELECT * FROM suppliers_products WHERE suppliers_id='$get_suppliers_id' ";
-                  if($result = mysqli_query($link, $query)){
-                    if(mysqli_num_rows($result) > 0){
-                      while($row = mysqli_fetch_array($result)){
-                        $suppliers_prod_id = $row['suppliers_product_id'];
-                        echo "<tr>";
-                        echo "<td>" . $row['sup_prod_model'] . "</td>";
-                        echo "<td>" . $row['sup_prod_category'] . "</td>";
-                        echo "<td>" . $row['sup_prod_subCategory'] . "</td>";
-                        echo "<td>" . $row['sup_prod_price'] . "</td>";
-                        echo "<td>" . $row['sup_prod_srp'] . "</td>";
-                        echo "<td>" . $row['sup_prod_date'] . "</td>";
-                        echo "<td>";
-                        echo " &nbsp; <a href='supplier-product-update.php?suppliers_product_id=". $suppliers_prod_id ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
-                        echo " &nbsp; <a href='supplier-product-delete.php?suppliers_product_id=". $suppliers_prod_id ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash remove'></span></a>";
-                        echo "</td>";
-                        echo "</tr>";
-                      }
+              <div class="form-group">
+                <label>Category:</label>
+                <input type="text" class="form-control" id="sup_prod_category" name="sup_prod_category"  value="<?php echo $sup_prod_category; ?>" required/>
+              </div>
 
-                      // Free result set
-                      mysqli_free_result($result);
-                    } else{
-                      echo "<p class='lead'><em>No records were found.</em></p>";
-                    }
-                  } else{
-                    echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
-                  }
 
-                  // Close connection
-                  mysqli_close($link);
-                  ?>
-                </tbody>
-              </table>
+              <div class="form-group">
+                <label>Sub-Category</label>
+                <input type="text" class="form-control" id="sup_prod_subCategory" name="sup_prod_subCategory"  value="<?php echo $sup_prod_subCategory; ?>" required/>
+              </div>
+
+              <div class="form-group">
+                <label>Price</label>
+                <input type="number" class="form-control" id="sup_prod_price" name="sup_prod_price"  value="<?php echo $sup_prod_price; ?>" required/>
+              </div>
+
+              <div class="form-group">
+                <label>Retail Price:</label>
+                <input type="number" class="form-control" id="sup_prod_srp" name="sup_prod_srp"  value="<?php echo $sup_prod_srp; ?>" required/>
+              </div>
+
+              <div class="form-group">
+                <label>Date:</label>
+                <input type="date" class="form-control" id="sup_prod_date" name="sup_prod_date"  value="<?php echo $sup_prod_date; ?>" required/>
+              </div>
             </div>
-
+            <div class="box-footer">
+              <button type="submit" class="btn btn-success">Update Product</button>
+            </div>
+              </form>
           </div>
+
         </section>
         <!-- /.content-wrapper -->
       </div>
