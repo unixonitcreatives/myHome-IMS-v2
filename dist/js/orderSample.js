@@ -1,6 +1,6 @@
 var manageOrderTable;
 
-$(document).ready(function() {
+/*$(document).ready(function() {
 
 	var divRequest = $(".div-request").text();
 
@@ -82,7 +82,7 @@ $(document).ready(function() {
 
 
 			// array validation
-			var productName = document.getElementsByName('po_supplier[]');
+			var productName = document.getElementsByName('productName[]');
 			var validateProduct;
 			for (var x = 0; x < productName.length; x++) {
 				var productNameId = productName[x].id;
@@ -102,7 +102,7 @@ $(document).ready(function() {
 	      }
 	   	} // for
 
-	   	var quantity = document.getElementsByName('qty[]');
+	   	var quantity = document.getElementsByName('quantity[]');
 	   	var validateQuantity;
 	   	for (var x = 0; x < quantity.length; x++) {
 	 			var quantityId = quantity[x].id;
@@ -251,7 +251,7 @@ $(document).ready(function() {
 
 
 			// array validation
-			var productName = document.getElementsByName('po_supplier[]');
+			var productName = document.getElementsByName('productName[]');
 			var validateProduct;
 			for (var x = 0; x < productName.length; x++) {
 				var productNameId = productName[x].id;
@@ -271,7 +271,7 @@ $(document).ready(function() {
 	      }
 	   	} // for
 
-	   	var quantity = document.getElementsByName('qty[]');
+	   	var quantity = document.getElementsByName('quantity[]');
 	   	var validateQuantity;
 	   	for (var x = 0; x < quantity.length; x++) {
 	 			var quantityId = quantity[x].id;
@@ -338,11 +338,11 @@ $(document).ready(function() {
 		}); // /edit order form function
 	}
 
-}); // /document
+}); // document*/
 
 
 // print order function
-function printOrder(orderId = null) {
+/*function printOrder(orderId = null) {
 	if(orderId) {
 
 		$.ajax({
@@ -367,77 +367,78 @@ function printOrder(orderId = null) {
 			}// /success function
 		}); // /ajax function to fetch the printable order
 	} // /if orderId
-} // /print order function
+} // /print order function */
 
 function addRow() {
-    $("#addRowBtn").button("loading");
- 
-    var tableLength = $("#productTable tbody tr").length;
- 
-    var tableRow;
-    var arrayNumber;
-    var count;
- 
-    if(tableLength > 0) {
-        tableRow = $("#productTable tbody tr:last").attr('id');
-        arrayNumber = $("#productTable tbody tr:last").attr('class');
-        count = tableRow.substring(3);
-        count = Number(count) + 1;
-        arrayNumber = Number(arrayNumber) + 1;
-    } else {
-        // no table row
-        count = 1;
-        arrayNumber = 0;
-    }
- 
-    $.ajax({
-        url: 'fetchProductData.php',
-        type: 'post',
-        dataType: 'json',
-        success:function(response) {
-            $("#addRowBtn").button("reset");
- 
-            var tr = '<tr id="row'+count+'" class="'+arrayNumber+'">'+
-                '<td>'+
-                    '<div class="form-group">'+
- 
-                    '<select class="form-control" name="po_supplier[]" id="po_supplier'+count+'" onchange="getProductData('+count+')" >'+
-                        '<option value="">~~SELECT~~</option>';
-                        // console.log(response);
-                        $.each(response, function(index, value) {
-                            tr += '<option value="'+value[0]+'">'+value[1]+'</option>';
-                        });
- 
-                    tr += '</select>'+
-                    '</div>'+
-                '</td>'+
-                '<td>'+
-                    '<input type="text" name="retail_price[]" id="retail_price'+count+'" autocomplete="off" disabled="true" class="form-control" />'+
-                    '<input type="hidden" name="retailPriceValue[]" id="retailPriceValue'+count+'" autocomplete="off" class="form-control" />'+
-                '</td>'+
-                '<td>'+
-                    '<div class="form-group">'+
-                    '<input type="number" name="qty[]" id="qty'+count+'" onkeyup="getTotal('+count+')" autocomplete="off" class="form-control" min="1" />'+
-                    '</div>'+
-                '</td>'+
-                '<td>'+
-                    '<input type="text" name="total[]" id="total'+count+'" autocomplete="off" class="form-control" disabled="true" />'+
-                    '<input type="hidden" name="totalValue[]" id="totalValue'+count+'" autocomplete="off" class="form-control" />'+
-                '</td>'+
-                '<td>'+
-                    '<button class="btn btn-default removeProductRowBtn" type="button" onclick="removeProductRow('+count+')"><i class="glyphicon glyphicon-trash"></i></button>'+
-                '</td>'+
-            '</tr>';
-            if(tableLength > 0) {
-                $("#productTable tbody tr:last").after(tr);
-            } else {
-                $("#productTable tbody").append(tr);
-            }
- 
-        } // /success
-    }); // get the product data
- 
+	$("#addRowBtn").button("loading");
+
+	var tableLength = $("#productTable tbody tr").length;
+
+	var tableRow;
+	var arrayNumber;
+	var count;
+
+	if(tableLength > 0) {
+		tableRow = $("#productTable tbody tr:last").attr('id');
+		arrayNumber = $("#productTable tbody tr:last").attr('class');
+		count = tableRow.substring(3);
+		count = Number(count) + 1;
+		arrayNumber = Number(arrayNumber) + 1;
+	} else {
+		// no table row
+		count = 1;
+		arrayNumber = 0;
+	}
+
+	$.ajax({
+		url: 'php_action/fetchProductData.php',
+		type: 'post',
+		dataType: 'json',
+		success:function(response) {
+			$("#addRowBtn").button("reset");
+
+			var tr = '<tr id="row'+count+'" class="'+arrayNumber+'">'+
+				'<td>'+
+					'<div class="form-group">'+
+
+					'<select class="form-control" name="po_supplier[]" id="po_supplier'+count+'" onchange="getProductData('+count+')" >'+
+						'<option value="">~~SELECT~~</option>';
+						// console.log(response);
+						$.each(response, function(index, value) {
+							tr += '<option value="'+value[0]+'">'+value[1]+'</option>';
+						});
+
+					tr += '</select>'+
+					'</div>'+
+				'</td>'+
+				'<td>'+
+					'<input type="text" name="retail_price[]" id="retail_price'+count+'" autocomplete="off" disabled="true" class="form-control" />'+
+					'<input type="hidden" name="rateValue[]" id="rateValue'+count+'" autocomplete="off" class="form-control" />'+
+				'</td>'+
+				'<td>'+
+					'<div class="form-group">'+
+					'<input type="number" name="qty[]" id="qty'+count+'" onkeyup="getTotal('+count+')" autocomplete="off" class="form-control" min="1" />'+
+					'</div>'+
+				'</td>'+
+				'<td>'+
+					'<input type="text" name="total[]" id="total'+count+'" autocomplete="off" class="form-control" disabled="true" />'+
+					'<input type="hidden" name="totalValue[]" id="totalValue'+count+'" autocomplete="off" class="form-control" />'+
+				'</td>'+
+				'<td>'+
+					'<button class="btn btn-default removeProductRowBtn" type="button" onclick="removeProductRow('+count+')"><i class="glyphicon glyphicon-trash"></i></button>'+
+				'</td>'+
+			'</tr>';
+			if(tableLength > 0) {
+				$("#productTable tbody tr:last").after(tr);
+			} else {
+				$("#productTable tbody").append(tr);
+			}
+
+		} // /success
+	});	// get the product data
+
 } // /add row
+
 function removeProductRow(row = null) {
 	if(row) {
 		$("#row"+row).remove();
@@ -452,12 +453,12 @@ function removeProductRow(row = null) {
 // select on product data
 function getProductData(row = null) {
 	if(row) {
-		var productId = $("#po_supplier"+row).val();
+		var productId = $("#productName"+row).val();
 
 		if(productId == "") {
-			$("#retail_price"+row).val("");
+			$("#rate"+row).val("");
 
-			$("#qty"+row).val("");
+			$("#quantity"+row).val("");
 			$("#total"+row).val("");
 
 			// remove check if product name is selected
@@ -477,17 +478,17 @@ function getProductData(row = null) {
 
 		} else {
 			$.ajax({
-				url: 'fetchSelectedProduct.php',
+				url: 'php_action/fetchSelectedProduct.php',
 				type: 'post',
-				data: {inv_id : inv_id},
+				data: {productId : productId},
 				dataType: 'json',
 				success:function(response) {
 					// setting the rate value into the rate input field
 
-					$("#retail_price"+row).val(response.rate);
-					$("#retailPriceValue"+row).val(response.rate);
+					$("#rate"+row).val(response.rate);
+					$("#rateValue"+row).val(response.rate);
 
-					$("#qty"+row).val(1);
+					$("#quantity"+row).val(1);
 
 					var total = Number(response.rate) * 1;
 					total = total.toFixed(2);
@@ -523,7 +524,7 @@ function getProductData(row = null) {
 // table total
 function getTotal(row = null) {
 	if(row) {
-		var total = Number($("#retail_price"+row).val()) * Number($("#qty"+row).val());
+		var total = Number($("#rate"+row).val()) * Number($("#quantity"+row).val());
 		total = total.toFixed(2);
 		$("#total"+row).val(total);
 		$("#totalValue"+row).val(total);
