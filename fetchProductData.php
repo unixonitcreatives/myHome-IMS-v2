@@ -10,3 +10,5 @@ $data = $result->fetch_all();
 $link->close();
 
 echo json_encode($data);
+
+?>

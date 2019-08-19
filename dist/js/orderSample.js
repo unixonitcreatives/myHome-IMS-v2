@@ -1,6 +1,6 @@
 var manageOrderTable;
 
-/*$(document).ready(function() {
+$(document).ready(function() {
 
 	var divRequest = $(".div-request").text();
 
@@ -338,11 +338,11 @@ var manageOrderTable;
 		}); // /edit order form function
 	}
 
-}); // document*/
+}); // document
 
 
 // print order function
-/*function printOrder(orderId = null) {
+function printOrder(orderId = null) {
 	if(orderId) {
 
 		$.ajax({
@@ -367,7 +367,7 @@ var manageOrderTable;
 			}// /success function
 		}); // /ajax function to fetch the printable order
 	} // /if orderId
-} // /print order function */
+} // /print order function
 
 function addRow() {
 	$("#addRowBtn").button("loading");
@@ -391,7 +391,7 @@ function addRow() {
 	}
 
 	$.ajax({
-		url: 'php_action/fetchProductData.php',
+		url: 'fetchProductData.php',
 		type: 'post',
 		dataType: 'json',
 		success:function(response) {
@@ -401,7 +401,7 @@ function addRow() {
 				'<td>'+
 					'<div class="form-group">'+
 
-					'<select class="form-control" name="po_supplier[]" id="po_supplier'+count+'" onchange="getProductData('+count+')" >'+
+					'<select class="form-control" name="sup_prod_model[]" id="sup_prod_model'+count+'" onchange="getProductData('+count+')" >'+
 						'<option value="">~~SELECT~~</option>';
 						// console.log(response);
 						$.each(response, function(index, value) {
@@ -442,8 +442,6 @@ function addRow() {
 function removeProductRow(row = null) {
 	if(row) {
 		$("#row"+row).remove();
-
-
 		subAmount();
 	} else {
 		alert('error! Refresh the page again');
@@ -453,7 +451,7 @@ function removeProductRow(row = null) {
 // select on product data
 function getProductData(row = null) {
 	if(row) {
-		var productId = $("#productName"+row).val();
+		var productId = $("#sup_prod_model"+row).val();
 
 		if(productId == "") {
 			$("#rate"+row).val("");
@@ -478,9 +476,9 @@ function getProductData(row = null) {
 
 		} else {
 			$.ajax({
-				url: 'php_action/fetchSelectedProduct.php',
+				url: 'fetchSelectedProduct.php',
 				type: 'post',
-				data: {productId : productId},
+				data: {suppliers_product_id : suppliers_product_id},
 				dataType: 'json',
 				success:function(response) {
 					// setting the rate value into the rate input field
