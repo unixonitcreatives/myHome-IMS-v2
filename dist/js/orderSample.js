@@ -1,6 +1,6 @@
 var manageOrderTable;
 
-$(document).ready(function() {
+/*$(document).ready(function() {
 
 	var divRequest = $(".div-request").text();
 
@@ -338,11 +338,11 @@ $(document).ready(function() {
 		}); // /edit order form function
 	}
 
-}); // document
+}); // document*/
 
 
 // print order function
-function printOrder(orderId = null) {
+/*function printOrder(orderId = null) {
 	if(orderId) {
 
 		$.ajax({
@@ -367,7 +367,7 @@ function printOrder(orderId = null) {
 			}// /success function
 		}); // /ajax function to fetch the printable order
 	} // /if orderId
-} // /print order function
+} // /print order function*/
 
 function addRow() {
 	$("#addRowBtn").button("loading");
@@ -391,7 +391,7 @@ function addRow() {
 	}
 
 	$.ajax({
-		url: 'fetchProductData.php',
+		url: "fetchProductData.php",
 		type: 'post',
 		dataType: 'json',
 		success:function(response) {
@@ -402,7 +402,7 @@ function addRow() {
 					'<div class="form-group">'+
 
 					'<select class="form-control" name="sup_prod_model[]" id="sup_prod_model'+count+'" onchange="getProductData('+count+')" >'+
-						'<option value="">~~SELECT~~</option>';
+						'<option value="">~~SELECT MODEL~~</option>';
 						// console.log(response);
 						$.each(response, function(index, value) {
 							tr += '<option value="'+value[0]+'">'+value[1]+'</option>';
@@ -412,17 +412,17 @@ function addRow() {
 					'</div>'+
 				'</td>'+
 				'<td>'+
-					'<input type="text" name="retail_price[]" id="retail_price'+count+'" autocomplete="off" disabled="true" class="form-control" />'+
-					'<input type="hidden" name="rateValue[]" id="rateValue'+count+'" autocomplete="off" class="form-control" />'+
+					'<input type="text" name="po_price[]" id="po_price'+count+'" autocomplete="off" disabled="true" class="form-control" />'+
+					'<input type="hidden" name="po_priceValue[]" id="po_priceValue'+count+'" autocomplete="off" class="form-control" />'+
 				'</td>'+
 				'<td>'+
 					'<div class="form-group">'+
-					'<input type="number" name="qty[]" id="qty'+count+'" onkeyup="getTotal('+count+')" autocomplete="off" class="form-control" min="1" />'+
+					'<input type="number" name="po_qty[]" id="po_qty'+count+'" onkeyup="getTotal('+count+')" autocomplete="off" class="form-control" min="1" />'+
 					'</div>'+
 				'</td>'+
 				'<td>'+
-					'<input type="text" name="total[]" id="total'+count+'" autocomplete="off" class="form-control" disabled="true" />'+
-					'<input type="hidden" name="totalValue[]" id="totalValue'+count+'" autocomplete="off" class="form-control" />'+
+					'<input type="text" name="po_total[]" id="po_total'+count+'" autocomplete="off" class="form-control" disabled="true" />'+
+					'<input type="hidden" name="po_totalValue[]" id="po_totalValue'+count+'" autocomplete="off" class="form-control" />'+
 				'</td>'+
 				'<td>'+
 					'<button class="btn btn-default removeProductRowBtn" type="button" onclick="removeProductRow('+count+')"><i class="glyphicon glyphicon-trash"></i></button>'+
@@ -454,10 +454,10 @@ function getProductData(row = null) {
 		var productId = $("#sup_prod_model"+row).val();
 
 		if(productId == "") {
-			$("#rate"+row).val("");
+			$("#po_price"+row).val("");
 
-			$("#quantity"+row).val("");
-			$("#total"+row).val("");
+			$("#po_qty"+row).val("");
+			$("#po_total"+row).val("");
 
 			// remove check if product name is selected
 			// var tableProductLength = $("#productTable tbody tr").length;
@@ -477,21 +477,21 @@ function getProductData(row = null) {
 		} else {
 			$.ajax({
 				url: 'fetchSelectedProduct.php',
-				type: 'post',
+				type: 'POST',
 				data: {suppliers_product_id : suppliers_product_id},
 				dataType: 'json',
 				success:function(response) {
 					// setting the rate value into the rate input field
 
-					$("#rate"+row).val(response.rate);
-					$("#rateValue"+row).val(response.rate);
+					$("#po_price"+row).val(response.sup_prod_price);
+					$("#po_priceValue"+row).val(response.sup_prod_price);
 
-					$("#quantity"+row).val(1);
+					$("#po_qty"+row).val(1);
 
-					var total = Number(response.rate) * 1;
+					var total = Number(response.sup_prod_price) * 1;
 					total = total.toFixed(2);
-					$("#total"+row).val(total);
-					$("#totalValue"+row).val(total);
+					$("#po_total"+row).val(total);
+					$("#po_totalValue"+row).val(total);
 
 					// check if product name is selected
 					// var tableProductLength = $("#productTable tbody tr").length;
@@ -509,7 +509,7 @@ function getProductData(row = null) {
 					// 	}
 					// } // /for
 
-					subAmount();
+					//subAmount();
 				} // /success
 			}); // /ajax function to fetch the product data
 		}
@@ -520,21 +520,21 @@ function getProductData(row = null) {
 } // /select on product data
 
 // table total
-function getTotal(row = null) {
+/*function getTotal(row = null) {
 	if(row) {
-		var total = Number($("#rate"+row).val()) * Number($("#quantity"+row).val());
+		var total = Number($("#po_price"+row).val()) * Number($("#po_qty"+row).val());
 		total = total.toFixed(2);
-		$("#total"+row).val(total);
-		$("#totalValue"+row).val(total);
+		$("#po_total"+row).val(total);
+		$("#po_totalValue"+row).val(total);
 
 		subAmount();
 
 	} else {
 		alert('no row !! please refresh the page');
 	}
-}
+}*/
 
-function subAmount() {
+/*function subAmount() {
 	var tableProductLength = $("#productTable tbody tr").length;
 	var totalSubAmount = 0;
 	for(x = 0; x < tableProductLength; x++) {
@@ -542,7 +542,7 @@ function subAmount() {
 		var count = $(tr).attr('id');
 		count = count.substring(3);
 
-		totalSubAmount = Number(totalSubAmount) + Number($("#total"+count).val());
+		totalSubAmount = Number(totalSubAmount) + Number($("#po_total"+count).val());
 	} // /for
 
 	totalSubAmount = totalSubAmount.toFixed(2);
@@ -585,9 +585,9 @@ function subAmount() {
 		$("#dueValue").val($("#grandTotal").val());
 	} // else
 
-} // /sub total amount
+} // /sub total amount */
 
-function discountFunc() {
+/*function discountFunc() {
 	var discount = $("#discount").val();
  	var totalAmount = Number($("#totalAmount").val());
  	totalAmount = totalAmount.toFixed(2);
@@ -616,9 +616,9 @@ function discountFunc() {
  		$("#dueValue").val($("#grandTotal").val());
  	}
 
-} // /discount function
+} // /discount function */
 
-function paidAmount() {
+/*function paidAmount() {
 	var grandTotal = $("#grandTotal").val();
 
 	if(grandTotal) {
@@ -627,21 +627,21 @@ function paidAmount() {
 		$("#due").val(dueAmount);
 		$("#dueValue").val(dueAmount);
 	} // /if
-} // /paid amoutn function
+} // /paid amoutn function */
 
 
-function resetOrderForm() {
+/*function resetOrderForm() {
 	// reset the input field
 	$("#createOrderForm")[0].reset();
 	// remove remove text danger
 	$(".text-danger").remove();
 	// remove form group error
 	$(".form-group").removeClass('has-success').removeClass('has-error');
-} // /reset order form
+} // /reset order form */
 
 
 // remove order from server
-function removeOrder(orderId = null) {
+/*function removeOrder(orderId = null) {
 	if(orderId) {
 		$("#removeOrderBtn").unbind('click').bind('click', function() {
 			$("#removeOrderBtn").button('loading');
@@ -696,11 +696,11 @@ function removeOrder(orderId = null) {
 	} else {
 		alert('error! refresh the page again');
 	}
-}
+}*/
 // /remove order from server
 
 // Payment ORDER
-function paymentOrder(orderId = null) {
+/*function paymentOrder(orderId = null) {
 	if(orderId) {
 
 		$("#orderDate").datepicker();
@@ -800,4 +800,4 @@ function paymentOrder(orderId = null) {
 	} else {
 		alert('Error ! Refresh the page again');
 	}
-}
+}*/

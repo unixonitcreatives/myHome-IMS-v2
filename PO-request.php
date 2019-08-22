@@ -8,75 +8,8 @@ $Manager_auth = 1;
 $Accounting_auth = 0;
 include('template/user_auth.php');
 
-// Define variables and initialize with empty values
-$inv_num=
-$po_supplier_name=
-$po_qty=
-$po_unit=
-$po_description=
-$po_unit_price=
-$po_total_amount=
-$totalPrice=
-$remarks=
-$user=
-$paymentTerms=
-$transID=
-$alertMessage="";
+$suppliers_product_id="";
 
-
-//If the form is submitted
-if($_SERVER["REQUEST_METHOD"] == "POST"){
-  $po_supplier_name =$_POST['po_supplier'];
-  $paymentTerms =$_POST['paymentTerms'];
-  $totalPrice =$_POST['totalPrice'];
-
-  $query = "INSERT INTO po_transactions (inv_date, supplier_name, paymentTerms, totalPrice, po_status) VALUES ( CURRENT_TIMESTAMP, '$po_supplier_name', '$paymentTerms', '$totalPrice', 1)";
-  $result = mysqli_query($link, $query) or die(mysqli_error($link));
-
-
-  if ($result) {
-    $j = 0;
-    $count = sizeof($_POST['po_qty']);
-
-    // Use insert_id property
-    $po_trans_id = $link->insert_id;
-    $user  = $_SESSION["username"];
-
-    for ($j = 0; $j < $count; $j++) {
-
-      $query = "INSERT INTO request_po (po_trans_id,po_qty,po_unit,po_description,po_unit_price,po_total_amount,user) VALUES (
-        '".$po_trans_id."',
-        '".$_POST['po_qty'][$j]."',
-        '".$_POST['po_unit'][$j]."',
-        '".$_POST['po_description'][$j]."',
-        '".$_POST['po_unit_price'][$j]."',
-        '".$_POST['po_total_amount'][$j]."',
-        '".$user."')";
-
-        if("" == trim($_POST['qty']))
-        {
-
-        }
-        else {
-          $result = mysqli_multi_query($link, $query) or die(mysqli_error($link));
-        }
-
-      }
-
-      if($result){
-        $alertMessage = "<div class='alert alert-success' role='alert'>
-        New user successfully added in database.
-        </div>";
-      }else{
-        $alertMessage = "<div class='alert alert-danger' role='alert'>
-        Error Adding data in Database.
-        </div>";}
-
-
-        //mysqli_close($link);
-
-      }
-    }
     ?>
 
     <!DOCTYPE html>
@@ -116,7 +49,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
               </div>
               <!-- /.box-header -->
               <div class="box-body">
-                  <?php echo $alertMessage; ?>
+                   <!-- <?php echo $alertMessage; ?> -->
                   <!-- ========================= FORM ============================ -->
                   <form class="form-vertical"  method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" id="createOrderForm">
                     <div class="col-md-6">
@@ -125,10 +58,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                       <div class="form-group">
                         <label>Supplier</label>
                         <select class="form-control"  name='po_supplier' onchange="showUser(this.value)">
-                          <option>--SELECT SUPPLIER--</option>
+                          <option>~~SELECT SUPPLIER~~</option>
                           <?php
 
-                          $query = "select * from po_transactions";
+                          $query = "select * from suppliers";
                           $result = mysqli_query($link, $query);
 
                           $po_supplier_name = $_POST['supplier_name'];
@@ -154,7 +87,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                           <thead>
                             <tr>
                               <th>Model</th>
-                              <th>Retail Price</th>
+                              <th>Price</th>
                               <th>Quantity</th>
                               <th>Total</th>
                               <th>Action</th>
@@ -169,7 +102,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                                 <td>
                                   <div class="form-group">
                                     <select class="form-control" name="sup_prod_model[]" id="sup_prod_model<?php echo $x; ?>" onchange="getProductData(<?php echo $x; ?>)">
-                                      <option value="">~~SELECT SUPPLIER~~</option>
+                                      <option value="">~~SELECT MODEL~~</option>
                                       <?php
                                       $productSql = "SELECT * FROM suppliers_products";
                                       $productData = $link->query($productSql);
@@ -184,18 +117,18 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                                 </td>
                                 <td>
                                   <!--UNIT PRICE-->
-                                  <input type="text" name="retail_price[]" id="retail_price<?php echo $x; ?>" autocomplete="off" disabled="true" class="form-control" />
-                                  <input type="hidden" name="retailPriceValue[]" id="retailPriceValue<?php echo $x; ?>" autocomplete="off" class="form-control" />
+                                  <input type="text" name="po_price[]" id="po_price<?php echo $x; ?>" autocomplete="off" disabled="true" class="form-control" />
+                                  <input type="hidden" name="po_priceValue[]" id="po_priceValue<?php echo $x; ?>" autocomplete="off" class="form-control" />
                                 </td>
                                 <td>
                                   <div class="form-group"><!--QTY-->
-                                    <input type="number" name="qty[]" id="qty<?php echo $x; ?>" onkeyup="getTotal(<?php echo $x; ?>)" autocomplete="off" class="form-control" min="1" />
+                                    <input type="number" name="po_qty[]" id="po_qty<?php echo $x; ?>" onkeyup="getTotal(<?php echo $x; ?>)" autocomplete="off" class="form-control" min="1" />
                                   </div>
                                 </td>
                                 <td>
                                   <!--TOTAL PRICE-->
-                                  <input type="text" name="total[]" id="total<?php echo $x; ?>" autocomplete="off" class="form-control" disabled="true" />
-                                  <input type="hidden" name="totalValue[]" id="totalValue<?php echo $x; ?>" autocomplete="off" class="form-control" />
+                                  <input type="text" name="po_total[]" id="po_total<?php echo $x; ?>" autocomplete="off" class="form-control" disabled="true" />
+                                  <input type="hidden" name="po_totalValue[]" id="po_totalValue<?php echo $x; ?>" autocomplete="off" class="form-control" />
                                 </td>
                                 <td>
                                   <button class="btn btn-default removeProductRowBtn" type="button" id="removeProductRowBtn" onclick="removeProductRow(<?php echo $x; ?>)"><i class="glyphicon glyphicon-trash"></i></button>
@@ -252,7 +185,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 </div>
 <!-- ./wrapper -->
             <!-- =========================== JAVASCRIPT ========================= -->
-            <?php include('template/js.php'); ?>
+            <!-- <?php include('template/js.php'); ?> -->
 
 
             <!-- =========================== PAGE SCRIPT ======================== -->
@@ -371,9 +304,49 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             }
           </script> -->
 
-          <script src="dist/js/orderSample.js"></script>
 
 
+
+          <!-- Latest compiled and minified JavaScript -->
+          <script type="text/javascript" src="dist/js/orderSample.js"></script>
+          <script type="text/javascript" src="dist/js/jquery.min.js"></script>
+          <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+          <script src="https://ajax.googleapis.com/ajax/libs/d3js/5.9.0/d3.min.js"></script>
+          <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+          <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+          <script src="dist/js/bootstrap.min.js"></script>
+          <script src="bower_components/jquery/dist/jquery.min.js"></script>
+          <!-- Bootstrap 3.3.7 -->
+          <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+          <!-- Select2 -->
+          <script src="bower_components/select2/dist/js/select2.full.min.js"></script>
+          <!-- InputMask -->
+          <script src="plugins/input-mask/jquery.inputmask.js"></script>
+          <script src="plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
+          <script src="plugins/input-mask/jquery.inputmask.extensions.js"></script>
+          <!-- date-range-picker -->
+          <script src="bower_components/moment/min/moment.min.js"></script>
+          <script src="bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+          <!-- bootstrap datepicker -->
+          <script src="bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+          <!-- bootstrap color picker -->
+          <script src="bower_components/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js"></script>
+          <!-- bootstrap time picker -->
+          <script src="plugins/timepicker/bootstrap-timepicker.min.js"></script>
+          <!-- SlimScroll -->
+          <script src="bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+          <!-- iCheck 1.0.1 -->
+          <script src="plugins/iCheck/icheck.min.js"></script>
+          <!-- FastClick -->
+          <script src="bower_components/fastclick/lib/fastclick.js"></script>
+          <!-- AdminLTE App -->
+          <script src="dist/js/adminlte.min.js"></script>
+          <!-- AdminLTE for demo purposes -->
+          <script src="dist/js/demo.js"></script>
+          <!-- DataTables -->
+          <script src="bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+          <script src="bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 
           </body>
           </html>
