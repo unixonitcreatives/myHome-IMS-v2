@@ -186,8 +186,5 @@ include('template/user_auth.php');
 <?php include('template/js.php'); ?>
 
 
-
-
-
 </body>
 </html>
