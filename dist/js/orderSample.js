@@ -1,4 +1,6 @@
 var manageOrderTable;
+var suppliers_product_id;
+
 
 /*$(document).ready(function() {
 
@@ -451,9 +453,9 @@ function removeProductRow(row = null) {
 // select on product data
 function getProductData(row = null) {
 	if(row) {
-		var productId = $("#sup_prod_model"+row).val();
+		var suppliers_product_id = $("#sup_prod_model"+row).val();
 
-		if(productId == "") {
+		if(suppliers_product_id == "") {
 			$("#po_price"+row).val("");
 
 			$("#po_qty"+row).val("");
@@ -482,11 +484,10 @@ function getProductData(row = null) {
 				dataType: 'json',
 				success:function(response) {
 					// setting the rate value into the rate input field
-
 					$("#po_price"+row).val(response.sup_prod_price);
 					$("#po_priceValue"+row).val(response.sup_prod_price);
 
-					$("#po_qty"+row).val(1);
+					var q = $("#po_qty"+row).val(1);
 
 					var total = Number(response.sup_prod_price) * 1;
 					total = total.toFixed(2);
