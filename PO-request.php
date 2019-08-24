@@ -54,19 +54,20 @@ include('template/user_auth.php');
 
                 <div class="form-group">
                   <label>Supplier</label>
-                  <select class="form-control"  name='po_supplier'>
+                  <select class="form-control"  id='po_suppliers' name='po_supplier' onchange="printSupplier();">
                     <option>~~SELECT SUPPLIER~~</option>
                     <?php
 
                     $query = "select * from suppliers";
                     $result = mysqli_query($link, $query);
 
-                    $po_supplier_name = $_POST['supplier_name'];
+                    //$po_supplier_name = $_POST['supplier_name'];
 
                     while ($row = mysqli_fetch_assoc($result)) { ?>
-                      <option value="<?php echo $row['supplier_name']; ?>"><?php echo $row['supplier_name']; ?></option>
+                      <option value="<?php echo $row['suppliers_id']; ?>"><?php echo $row['supplier_name']; ?></option>
                     <?php } ?>
                   </select>
+                  <input type="text" name="po_supplier[]" id="po_supplier" autocomplete="off" disabled="true" class="form-control" />
                 </div>
               </div>
 
@@ -134,12 +135,8 @@ include('template/user_auth.php');
 
                         <?php $arrayNumber++; } ?> <!-- For Loop End -->
                       </tbody>
-                    </table>
-                    <button type="button" class="btn btn-default" onclick="addRow()" id="addRowBtn" data-loading-text="Loading..."> <i class="glyphicon glyphicon-plus-sign"></i> Add Row </button>
-                    <!--<tfoot>
 
-
-
+                    <tfoot>
                     <tr>
                     <td>
                     <div class="form-group">
@@ -153,18 +150,22 @@ include('template/user_auth.php');
             </tr>
           </tfoot>
         </table>
-        /table-->
+        <!-- /table -->
       </div>
       <!--/table-responsive-->
+      <button type="button" class="btn btn-default" onclick="addRow()" id="addRowBtn" data-loading-text="Loading..."> <i class="glyphicon glyphicon-plus-sign"></i> Add Row </button>
     </div>
-  </form>
+
   <!-- ========================= /FORM ============================ -->
 </div>
 <!-- /.box-body -->
 <div class="box-footer">
   <!-- Buttons -->
-  <button type="submit" name="save" id="save" onclick="this.disabled=true;this.value='Submitting...'; this.form.submit();" class="btn btn-success pull-right">Save</button>
+  <button type="submit" name="save" id="save" onclick="this.disabled=true;this.value='Submitting...'; this.form.submit();" class="btn btn-success">Request</button>
+
+  <button type="reset" class="btn btn-default" onclick="resetOrderForm()"><i class="glyphicon glyphicon-erase"></i> Clear</button>
 </div>
+</form>
 <!-- .box-footer -->
 </div>
 <!-- /.box -->

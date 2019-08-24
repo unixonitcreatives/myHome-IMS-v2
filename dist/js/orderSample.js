@@ -1,5 +1,6 @@
 var manageOrderTable;
 var suppliers_product_id;
+var suppliers_id;
 
 
 /*$(document).ready(function() {
@@ -461,20 +462,6 @@ function getProductData(row = null) {
 			$("#po_qty"+row).val("");
 			$("#po_total"+row).val("");
 
-			// remove check if product name is selected
-			// var tableProductLength = $("#productTable tbody tr").length;
-			// for(x = 0; x < tableProductLength; x++) {
-			// 	var tr = $("#productTable tbody tr")[x];
-			// 	var count = $(tr).attr('id');
-			// 	count = count.substring(3);
-
-			// 	var productValue = $("#productName"+row).val()
-
-			// 	if($("#productName"+count).val() == "") {
-			// 		$("#productName"+count).find("#changeProduct"+productId).removeClass('div-hide');
-			// 		console.log("#changeProduct"+count);
-			// 	}
-			// } // /for
 
 		} else {
 			$.ajax({
@@ -487,30 +474,15 @@ function getProductData(row = null) {
 					$("#po_price"+row).val(response.sup_prod_price);
 					$("#po_priceValue"+row).val(response.sup_prod_price);
 
-					var q = $("#po_qty"+row).val(1);
+					$("#po_qty"+row).val(1);
 
 					var total = Number(response.sup_prod_price) * 1;
 					total = total.toFixed(2);
 					$("#po_total"+row).val(total);
 					$("#po_totalValue"+row).val(total);
 
-					// check if product name is selected
-					// var tableProductLength = $("#productTable tbody tr").length;
-					// for(x = 0; x < tableProductLength; x++) {
-					// 	var tr = $("#productTable tbody tr")[x];
-					// 	var count = $(tr).attr('id');
-					// 	count = count.substring(3);
 
-					// 	var productValue = $("#productName"+row).val()
-
-					// 	if($("#productName"+count).val() != productValue) {
-					// 		// $("#productName"+count+" #changeProduct"+count).addClass('div-hide');
-					// 		$("#productName"+count).find("#changeProduct"+productId).addClass('div-hide');
-					// 		console.log("#changeProduct"+count);
-					// 	}
-					// } // /for
-
-					//subAmount();
+					subAmount();
 				} // /success
 			}); // /ajax function to fetch the product data
 		}
@@ -521,7 +493,7 @@ function getProductData(row = null) {
 } // /select on product data
 
 // table total
-/*function getTotal(row = null) {
+function getTotal(row = null) {
 	if(row) {
 		var total = Number($("#po_price"+row).val()) * Number($("#po_qty"+row).val());
 		total = total.toFixed(2);
@@ -533,9 +505,9 @@ function getProductData(row = null) {
 	} else {
 		alert('no row !! please refresh the page');
 	}
-}*/
+}
 
-/*function subAmount() {
+function subAmount() {
 	var tableProductLength = $("#productTable tbody tr").length;
 	var totalSubAmount = 0;
 	for(x = 0; x < tableProductLength; x++) {
@@ -552,19 +524,20 @@ function getProductData(row = null) {
 	$("#subTotal").val(totalSubAmount);
 	$("#subTotalValue").val(totalSubAmount);
 
-	// vat
+	/* vat
 	var vat = (Number($("#subTotal").val())/100) * 13;
 	vat = vat.toFixed(2);
 	$("#vat").val(vat);
-	$("#vatValue").val(vat);
+	$("#vatValue").val(vat); */
 
 	// total amount
-	var totalAmount = (Number($("#subTotal").val()) + Number($("#vat").val()));
+	var totalAmount = (Number($("#subTotal").val()));
+	//var totalAmount = (Number($("#subTotal").val()) + Number($("#vat").val()));
 	totalAmount = totalAmount.toFixed(2);
 	$("#totalAmount").val(totalAmount);
 	$("#totalAmountValue").val(totalAmount);
 
-	var discount = $("#discount").val();
+	/*var discount = $("#discount").val();
 	if(discount) {
 		var grandTotal = Number($("#totalAmount").val()) - Number(discount);
 		grandTotal = grandTotal.toFixed(2);
@@ -584,9 +557,9 @@ function getProductData(row = null) {
 	} else {
 		$("#due").val($("#grandTotal").val());
 		$("#dueValue").val($("#grandTotal").val());
-	} // else
+	} // else */
 
-} // /sub total amount */
+} // /sub total amount
 
 /*function discountFunc() {
 	var discount = $("#discount").val();
@@ -631,14 +604,14 @@ function getProductData(row = null) {
 } // /paid amoutn function */
 
 
-/*function resetOrderForm() {
+function resetOrderForm() {
 	// reset the input field
 	$("#createOrderForm")[0].reset();
 	// remove remove text danger
 	$(".text-danger").remove();
 	// remove form group error
 	$(".form-group").removeClass('has-success').removeClass('has-error');
-} // /reset order form */
+} // /reset order form
 
 
 // remove order from server
@@ -802,3 +775,19 @@ function getProductData(row = null) {
 		alert('Error ! Refresh the page again');
 	}
 }*/
+
+function printSupplier() {
+	$.ajax({
+		url: 'getSupplier.php',
+		type: 'POST',
+		data: {suppliers_id : suppliers_id},
+		dataType: 'json',
+		success:function(response) {
+			// setting the rate value into the rate input field
+			$("#po_supplier").val(response.suppliers_id);
+
+		} // /success
+	}); // /ajax function to fetch the product data
+
+
+}
