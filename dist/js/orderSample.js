@@ -776,7 +776,8 @@ function resetOrderForm() {
 	}
 }*/
 
-function printSupplier() {
+function printSupplier(sup_prod_model = null) {
+	if(sup_prod_model){
 	$.ajax({
 		url: 'getSupplier.php',
 		type: 'POST',
@@ -789,5 +790,5 @@ function printSupplier() {
 		} // /success
 	}); // /ajax function to fetch the product data
 
-
+}
 }
