@@ -67,7 +67,7 @@ include('template/user_auth.php');
                       <option value="<?php echo $row['suppliers_id']; ?>"><?php echo $row['supplier_name']; ?></option>
                     <?php } ?>
                   </select>
-                  <input type="text" name="po_supplier[]" id="po_supplier" autocomplete="off" disabled="true" class="form-control" />
+                  <input type="text" name="po_supplier" id="po_supplier" autocomplete="off" disabled="true" class="form-control" />
                 </div>
               </div>
 
@@ -138,13 +138,11 @@ include('template/user_auth.php');
 
                     <tfoot>
                     <tr>
+                    <td></td><td></td><td><label for="subTotal" class="pull-right">Sub Amount:</label></td>
                     <td>
                     <div class="form-group">
-                    <label for="subTotal" class="col-sm-3 control-label">Sub Amount</label>
-                    <div class="col-sm-9">
                     <input type="text" class="form-control" id="subTotal" name="subTotal" disabled="true" />
                     <input type="hidden" class="form-control" id="subTotalValue" name="subTotalValue" />
-                  </div>
                 </div>
               </td>
             </tr>
