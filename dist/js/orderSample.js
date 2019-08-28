@@ -776,19 +776,26 @@ function resetOrderForm() {
 	}
 }*/
 
-function printSupplier(sup_prod_model = null) {
-	if(sup_prod_model){
-	$.ajax({
-		url: 'getSupplier.php',
-		type: 'POST',
-		data: {suppliers_id : suppliers_id},
-		dataType: 'json',
-		success:function(response) {
-			// setting the rate value into the rate input field
-			$("#po_supplier").val(response.suppliers_id);
+function printSupplier() {
 
-		} // /success
-	}); // /ajax function to fetch the product data
+	var j = $("#po_suppliers").val();
 
-}
-}
+
+			$.ajax({
+				type: "POST",
+				url: 'getSupplier.php',
+				data: {suppliers_id : suppliers_id},
+				dataType: 'json',
+				success:function(response) {
+					// out the reponse into po_supplier field
+					$("#po_supplier_field").val(response.supplier_name);
+
+					alert('done');
+
+
+					} // /success
+				}); // /ajax function to fetch the supplier data
+
+
+
+}// /printSupplier

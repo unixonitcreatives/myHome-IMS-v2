@@ -54,13 +54,12 @@ include('template/user_auth.php');
 
                 <div class="form-group">
                   <label>Supplier</label>
-                  <select class="form-control"  id='po_suppliers' name='po_supplier' onchange="printSupplier();">
-                    <option>~~SELECT SUPPLIER~~</option>
+                  <select class="form-control"  id="po_suppliers" name="po_supplier">
+                    <option value="">~~SELECT SUPPLIER~~</option>
                     <?php
 
-                    $query = "select * from suppliers";
+                    $query = "SELECT suppliers_id, supplier_name FROM suppliers";
                     $result = $link->query($query);
-
 
                     //$po_supplier_name = $_POST['supplier_name'];
 
@@ -68,7 +67,7 @@ include('template/user_auth.php');
                       <option value="<?php echo $row['suppliers_id']; ?>"><?php echo $row['supplier_name']; ?></option>
                     <?php } ?>
                   </select>
-                  <input type="text" name="po_supplier" id="po_supplier" autocomplete="off" disabled="true" class="form-control" />
+                  <input type="text" name="po_supplier_field" id="po_supplier_field" autocomplete="off" disabled="true" class="form-control" />
                 </div>
               </div>
 
