@@ -59,11 +59,12 @@ include('template/user_auth.php');
                     <?php
 
                     $query = "select * from suppliers";
-                    $result = mysqli_query($link, $query);
+                    $result = $link->query($query);
+
 
                     //$po_supplier_name = $_POST['supplier_name'];
 
-                    while ($row = mysqli_fetch_assoc($result)) { ?>
+                    while ($row = $result->fetch_array()) { ?>
                       <option value="<?php echo $row['suppliers_id']; ?>"><?php echo $row['supplier_name']; ?></option>
                     <?php } ?>
                   </select>
