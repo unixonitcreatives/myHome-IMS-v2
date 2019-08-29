@@ -6,7 +6,7 @@
         </div>
         <div class="pull-left info">
           <p><?php echo htmlspecialchars($_SESSION["username"]); ?></p>
-          <!-- Status
+           Status
           <a href="#"><i class="fa fa-circle text-success"></i> Online
           </a>
         </div>
@@ -72,8 +72,8 @@
                             </a>
                             <ul class="treeview-menu">
                                 <!-- <li><a href="PO-add.php">Add PO</a></li> -->
-                                <li><a href="PO-request.php">Recieve Items</a></li>
-                                <li><a href="PO-manage.php">Manage PO</a></li>
+                                <li><a href="product-add.php">Recieve Stocks</a></li>
+                                <li><a href="product-manage.php">Manage Stocks</a></li>
                             </ul>
                         </li>
 

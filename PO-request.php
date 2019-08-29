@@ -175,11 +175,11 @@ include('template/user_auth.php');
 <!-- =========================== FOOTER =========================== -->
 <footer class="main-footer">
   <?php include('template/footer.php'); ?>
-
 </footer>
-
 </div>
 <!-- ./wrapper -->
+
+
 <!-- =========================== JAVASCRIPT ========================= -->
 <?php include('template/js.php'); ?>
 
