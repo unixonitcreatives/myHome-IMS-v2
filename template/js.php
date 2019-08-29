@@ -117,8 +117,3 @@ function upperCaseF(a){
   }, 1);
 }
 </script>
-
-
-
-</body>
-</html>

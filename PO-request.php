@@ -183,10 +183,5 @@ include('template/user_auth.php');
 <!-- =========================== JAVASCRIPT ========================= -->
 <?php include('template/js.php'); ?>
 
-
-
-
-
-
 </body>
 </html>
