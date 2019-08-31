@@ -8,7 +8,11 @@
           <p><?php echo htmlspecialchars($_SESSION["username"]); ?></p>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
            Status
+=======
+          <!-- Status
+>>>>>>> parent of 548a919... update
 =======
           <!-- Status
 >>>>>>> parent of 548a919... update
@@ -82,8 +86,13 @@
                                 <!-- <li><a href="PO-add.php">Add PO</a></li> -->
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                                 <li><a href="product-add.php">Recieve Stocks</a></li>
                                 <li><a href="product-manage.php">Manage Stocks</a></li>
+=======
+                                <li><a href="PO-request.php">Recieve Items</a></li>
+                                <li><a href="PO-manage.php">Manage PO</a></li>
+>>>>>>> parent of 548a919... update
 =======
                                 <li><a href="PO-request.php">Recieve Items</a></li>
                                 <li><a href="PO-manage.php">Manage PO</a></li>
