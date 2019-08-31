@@ -778,9 +778,6 @@ function resetOrderForm() {
 
 function printSupplier() {
 
-	var j = $("#po_suppliers").val();
-
-
 			$.ajax({
 				type: "POST",
 				url: 'getSupplier.php',

@@ -8,6 +8,11 @@ $Manager_auth = 1;
 $Accounting_auth = 0;
 include('template/user_auth.php');
 ?>
+<!-- ======================= AJAX =================================== -->
+<?php
+// get the suppliers_id parameter from URL
+$supID = $_REQUEST["suppliers_id"];
+?>
 
 <!DOCTYPE html>
 <html>
@@ -17,6 +22,7 @@ include('template/user_auth.php');
   <title>MyHome | Purchase Order</title>
   <!-- ======================= CSS ================================= -->
   <?php include('template/css.php'); ?>
+  <!-- ======================= AJAX REQUEST ======================== -->
 </head>
 <body class="hold-transition skin-green fixed sidebar-mini">
   <div class="wrapper">
@@ -54,20 +60,7 @@ include('template/user_auth.php');
 
                 <div class="form-group">
                   <label>Supplier</label>
-                  <select class="form-control"  id="po_suppliers" name="po_supplier">
-                    <option value="">~~SELECT SUPPLIER~~</option>
-                    <?php
-
-                    $query = "SELECT suppliers_id, supplier_name FROM suppliers";
-                    $result = $link->query($query);
-
-                    //$po_supplier_name = $_POST['supplier_name'];
-
-                    while ($row = $result->fetch_array()) { ?>
-                      <option value="<?php echo $row['suppliers_id']; ?>"><?php echo $row['supplier_name']; ?></option>
-                    <?php } ?>
-                  </select>
-                  <input type="text" name="po_supplier_field" id="po_supplier_field" autocomplete="off" disabled="true" class="form-control" />
+                  <input type="text" name="po_supplier_field" id="po_supplier_field" autocomplete="off" disabled="true" class="form-control" value="<?php echo $supID; ?>"/>
                 </div>
               </div>
 
@@ -102,7 +95,7 @@ include('template/user_auth.php');
                               <select class="form-control" name="sup_prod_model[]" id="sup_prod_model<?php echo $x; ?>" onchange="getProductData(<?php echo $x; ?>)">
                                 <option value="">~~SELECT MODEL~~</option>
                                 <?php
-                                $productSql = "SELECT * FROM suppliers_products";
+                                $productSql = "SELECT * FROM suppliers_products WHERE suppliers_id = '$supID' ";
                                 $productData = $link->query($productSql);
 
                                 while($row = $productData->fetch_array()) {

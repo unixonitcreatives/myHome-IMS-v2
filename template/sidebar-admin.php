@@ -6,23 +6,7 @@
         </div>
         <div class="pull-left info">
           <p><?php echo htmlspecialchars($_SESSION["username"]); ?></p>
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-           Status
-=======
-          <!-- Status
->>>>>>> parent of 548a919... update
-=======
-          <!-- Status
->>>>>>> parent of 548a919... update
-=======
-          <!-- Status
->>>>>>> parent of 548a919... update
-=======
-          <!-- Status
->>>>>>> parent of 548a919... update
+         Status
           <a href="#"><i class="fa fa-circle text-success"></i> Online
           </a>
         </div>
@@ -45,14 +29,14 @@
                         </li>
 
                         <li class="treeview">
-                            <a href="#"><i class="fa fa-th-large"></i> <span>Category</span>
+                            <a href="#"><i class="fa fa-th-large"></i> <span>Product Code</span>
                                 <span class="pull-right-container">
                                     <i class="fa fa-angle-left pull-right"></i>
                                 </span>
                             </a>
                             <ul class="treeview-menu">
-                                <li><a href="category-add.php">Add Categories</a></li>
-                                <li><a href="category-manage.php">Manage Categories</a></li>
+                                <li><a href="pCode-add.php">Add Product Code</a></li>
+                                <li><a href="pCode-manage.php">Manage Prduct Code</a></li>
                             </ul>
                         </li>
 
@@ -88,28 +72,9 @@
                             </a>
                             <ul class="treeview-menu">
                                 <!-- <li><a href="PO-add.php">Add PO</a></li> -->
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
                                 <li><a href="product-add.php">Recieve Stocks</a></li>
                                 <li><a href="product-manage.php">Manage Stocks</a></li>
-=======
-                                <li><a href="PO-request.php">Recieve Items</a></li>
-                                <li><a href="PO-manage.php">Manage PO</a></li>
->>>>>>> parent of 548a919... update
-=======
-                                <li><a href="PO-request.php">Recieve Items</a></li>
-                                <li><a href="PO-manage.php">Manage PO</a></li>
->>>>>>> parent of 548a919... update
-=======
-                                <li><a href="PO-request.php">Recieve Items</a></li>
-                                <li><a href="PO-manage.php">Manage PO</a></li>
->>>>>>> parent of 548a919... update
-=======
-                                <li><a href="PO-request.php">Recieve Items</a></li>
-                                <li><a href="PO-manage.php">Manage PO</a></li>
->>>>>>> parent of 548a919... update
+                                <li><a href="#">Returns</a></li>
                             </ul>
                         </li>
 
@@ -124,19 +89,6 @@
                                 <li><a href="SO-add.php">Create SO</a></li>
                                 <li><a href="SO-manage.php">Manage SO</a></li>
 
-                            </ul>
-                        </li>
-
-                        <li class="treeview">
-                            <a href="#"><i class="fa fa-th"></i> <span>Products</span>
-                                <span class="pull-right-container">
-                                    <i class="fa fa-angle-left pull-right"></i>
-                                </span>
-                            </a>
-                            <ul class="treeview-menu">
-                                <li><a href="product-add.php">Add Products</a></li>
-                                <li><a href="product-manage.php">Manage Products</a></li>
-                                <li><a href="product-aging.php">Aging Products</a></li>
                             </ul>
                         </li>
 
