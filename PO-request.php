@@ -185,7 +185,11 @@ include('template/user_auth.php');
 
 
 
+<<<<<<< HEAD
 <!-- ===== Updated ==== -->
+=======
+
+>>>>>>> parent of 548a919... update
 
 
 </body>
