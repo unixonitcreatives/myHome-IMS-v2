@@ -2,10 +2,9 @@
 
 require_once 'config.php';
 
-
 $suppliers_product_id = $_POST['suppliers_product_id'];
 
-$sql = "SELECT suppliers_product_id, sup_prod_model, sup_prod_price FROM suppliers_products WHERE suppliers_product_id = $suppliers_product_id ";
+$sql = "SELECT sup_prod_model, sup_prod_price FROM suppliers_products WHERE suppliers_product_id = '$suppliers_product_id' ";
 $result = $link->query($sql);
 
 if($result->num_rows > 0) {

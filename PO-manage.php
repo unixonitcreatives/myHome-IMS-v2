@@ -45,7 +45,7 @@
                 <table id="example1" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
                   <thead>
                     <tr>
-                      <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">PO-ID</th>
+                      <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">PO No</th>
                       <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Date</th>
                       <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Supplier</th>
                       <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Notes</th>
@@ -60,7 +60,7 @@
                     require_once 'config.php';
 
                     // Attempt select query execution
-                    $query = "SELECT * FROM po_transactions order by po_status asc, po_trans_id desc";
+                    $query = "SELECT * FROM po_transactions order by po_trans_id desc";
                     if($result = mysqli_query($link, $query)){
                       if(mysqli_num_rows($result) > 0){
 

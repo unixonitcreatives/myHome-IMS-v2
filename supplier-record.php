@@ -127,9 +127,7 @@ if (mysqli_num_rows($result) > 0) {
                   <tr>
                     <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Model</th>
                     <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Category</th>
-                    <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Sub-Category</th>
                     <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Price</th>
-                    <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Retail Price</th>
                     <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Date</th>
                     <th>Action</th>
                   </tr>
@@ -148,9 +146,7 @@ if (mysqli_num_rows($result) > 0) {
                         echo "<tr>";
                         echo "<td>" . $row['sup_prod_model'] . "</td>";
                         echo "<td>" . $row['sup_prod_category'] . "</td>";
-                        echo "<td>" . $row['sup_prod_subCategory'] . "</td>";
                         echo "<td>" . $row['sup_prod_price'] . "</td>";
-                        echo "<td>" . $row['sup_prod_srp'] . "</td>";
                         echo "<td>" . $row['sup_prod_date'] . "</td>";
                         echo "<td>";
                         echo " &nbsp; <a href='supplier-product-update.php?suppliers_product_id=". $suppliers_prod_id ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
@@ -179,8 +175,6 @@ if (mysqli_num_rows($result) > 0) {
         </section>
         <!-- /.content-wrapper -->
       </div>
-
-
 
 
       <!-- =========================== FOOTER =========================== -->

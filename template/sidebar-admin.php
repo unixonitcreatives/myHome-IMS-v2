@@ -36,7 +36,7 @@
                             </a>
                             <ul class="treeview-menu">
                                 <li><a href="pCode-add.php">Add Product Code</a></li>
-                                <li><a href="pCode-manage.php">Manage Prduct Code</a></li>
+                                <li><a href="pCode-manage.php">Manage Product Code</a></li>
                             </ul>
                         </li>
 

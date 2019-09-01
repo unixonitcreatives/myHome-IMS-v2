@@ -38,13 +38,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
   for ($j = 0; $j < $count; $j++) {
 
-    $query = "INSERT INTO  suppliers_products (suppliers_id, sup_prod_model, sup_prod_category, sup_prod_subCategory, sup_prod_price, sup_prod_srp, sup_prod_date) VALUES (
+    $query = "INSERT INTO  suppliers_products (suppliers_id, sup_prod_model, sup_prod_category, sup_prod_price, sup_prod_date) VALUES (
       '".$get_suppliers_id."',
       '".$_POST['sup_prod_model'][$j]."',
       '".$_POST['sup_prod_category'][$j]."',
-      '".$_POST['sup_prod_subCategory'][$j]."',
       '".$_POST['sup_prod_price'][$j]."',
-      '".$_POST['sup_prod_srp'][$j]."',
       '".$sup_prod_date."')";
 
       $result = mysqli_multi_query($link, $query) or die(mysqli_error($link));
@@ -131,10 +129,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
                           <tr style="text-align: center;">
                             <th>Product Model</th>
                             <th>Category</th>
-                            <th>Sub-Category</th>
+                            <!--<th>Sub-Category</th>-->
                             <th>Price</th>
-                            <th>Retail Price</th>
-                            <th></th>
+                            <!--<th>Retail Price</th>-->
+                            <th>Actions</th>
                           </tr>
                           <tr>
                             <td>
@@ -147,21 +145,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
                                 <input type="text" class="form-control" id="sup_prod_category" name="sup_prod_category[]" placeholder="Product Category">
                               </div>
                             </td>
-                            <td>
+                            <!-- <td>
                               <div class="form-group">
                                 <input type="text" class="form-control" id="sup_prod_subCategory" name="sup_prod_subCategory[]" placeholder="Product Sub-Category">
                               </div>
-                            </td>
+                            </td> -->
                             <td>
                               <div class="form-group">
                                 <input type="number" class="form-control" id="sup_prod_price" name="sup_prod_price[]" placeholder="Product Price">
                               </div>
                             </td>
-                            <td>
+                            <!-- <td>
                               <div class="form-group">
                                 <input type="number" class="form-control" id="sup_prod_srp" name="sup_prod_srp[]" placeholder= "Retail Price">
                               </div>
-                            </td>
+                            </td> -->
                             <td>
                               <div align="right">
                                 <button type="button" name="add" id="add" class="btn btn-success pull-left">Add Row</button>
@@ -294,9 +292,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
               var html_code = "<tr id='row"+count+"'>";
               html_code += "<td><input type='text' class='form-control' id='sup_prod_model' name='sup_prod_model[]' placeholder='Product Model'></td>";
               html_code += "<td><input type='text' class='form-control' id='sup_prod_category' name='sup_prod_category[]' placeholder='Product Category'></td>";
-              html_code += "<td><input type='text' class='form-control' id='sup_prod_subCategory' name='sup_prod_subCategory[]' placeholder='Product Sub-Category'></td>";
               html_code += "<td><input type='number' class='form-control' id='sup_prod_price' name='sup_prod_price[]' placeholder='Product Price'></td>";
-              html_code += "<td><input type='number' class='form-control' id='sup_prod_srp' name='sup_prod_srp[]' placeholder='Retail Price'></td>";
               html_code += "<td><button type='button' name='remove' data-row='row"+count+"' class='btn btn-danger btn-s remove'>-</button></td>";
               html_code += "</tr>";
               $('#crud_table').append(html_code);

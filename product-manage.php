@@ -16,23 +16,7 @@
 <title>MyHome | Product</title>
 <!-- ======================= CSS ================================= -->
 <?php include('template/css.php'); ?>
-<script>
-function selectedSupplier(str) {
-  if (str.length == 0) {
-    document.getElementById("perSupplier").innerHTML = "";
-    return;
-  } else {
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-        document.getElementById("perSupplier").innerHTML = this.responseText;
-      }
-    };
-    xmlhttp.open("GET", "suppliersList.php?suppliers_id=" + str, true);
-    xmlhttp.send();
-  }
-}
-</script>
+
 </head>
 <body class="hold-transition skin-green fixed sidebar-mini">
 <div class="wrapper">
