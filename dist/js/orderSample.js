@@ -416,8 +416,8 @@ function addRow() {
 					'</div>'+
 				'</td>'+
 				'<td>'+
-					'<input type="number" name="po_price[]" id="po_price'+count+'" autocomplete="off" disabled="true" class="form-control" />'+
-					//'<input type="hidden" name="po_priceValue[]" id="po_priceValue'+count+'" autocomplete="off" class="form-control" />'+
+					'<input type="text" name="po_price[]" id="po_price'+count+'" autocomplete="off" disabled="true" class="form-control" />'+
+					'<input type="hidden" name="po_priceValue[]" id="po_priceValue'+count+'" autocomplete="off" class="form-control" />'+
 				'</td>'+
 				'<td>'+
 					'<div class="form-group">'+
@@ -425,8 +425,8 @@ function addRow() {
 					'</div>'+
 				'</td>'+
 				'<td>'+
-					'<input type="number" name="po_total[]" id="po_total'+count+'" autocomplete="off" class="form-control" disabled="true" />'+
-					//'<input type="hidden" name="po_totalValue[]" id="po_totalValue'+count+'" autocomplete="off" class="form-control" />'+
+					'<input type="text" name="po_total[]" id="po_total'+count+'" autocomplete="off" class="form-control" disabled="true" />'+
+					'<input type="hidden" name="po_totalValue[]" id="po_totalValue'+count+'" autocomplete="off" class="form-control" />'+
 				'</td>'+
 				'<td>'+
 					'<button class="btn btn-default removeProductRowBtn" type="button" onclick="removeProductRow('+count+')"><i class="glyphicon glyphicon-trash"></i></button>'+
@@ -473,14 +473,14 @@ function getProductData(row = null) {
 				success:function(response) {
 					// setting the rate value into the rate input field
 					$("#po_price"+row).val(response.sup_prod_price);
-					//$("#po_priceValue"+row).val(response.sup_prod_price);
+					$("#po_priceValue"+row).val(response.sup_prod_price);
 
 					$("#po_qty"+row).val(1);
 
 					var total = Number(response.sup_prod_price) * 1;
 					total = total.toFixed(2);
 					$("#po_total"+row).val(total);
-					//$("#po_totalValue"+row).val(total);
+					$("#po_totalValue"+row).val(total);
 
 
 					subAmount();
@@ -523,7 +523,7 @@ function subAmount() {
 
 	// sub total
 	$("#subTotal").val(totalSubAmount);
-	//$("#subTotalValue").val(totalSubAmount);
+	$("#subTotalValue").val(totalSubAmount);
 
 	/* vat
 	var vat = (Number($("#subTotal").val())/100) * 13;
@@ -536,7 +536,7 @@ function subAmount() {
 	//var totalAmount = (Number($("#subTotal").val()) + Number($("#vat").val()));
 	totalAmount = totalAmount.toFixed(2);
 	$("#totalAmount").val(totalAmount);
-	//$("#totalAmountValue").val(totalAmount);
+	$("#totalAmountValue").val(totalAmount);
 
 	/*var discount = $("#discount").val();
 	if(discount) {

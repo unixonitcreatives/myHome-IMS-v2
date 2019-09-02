@@ -28,7 +28,7 @@ $alertMessage="<div class='alert alert-danger' role='alert'>Theres Nothing to se
 }*/
 
 
-$po_inv_date=$po_supplier_name=$po_notes=$po_totalPrice=$po_status=$po_trans_id=$po_model=$po_price=$po_qty=$po_total="";
+$po_supplier_name=$po_notes=$po_subTotal=$po_status="";
 
 //If the form is submitted
 if($_SERVER['REQUEST_METHOD'] == "POST"){
@@ -36,25 +36,22 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
   $po_inv_date;
   $po_supplier_name           =$_POST['po_supplier_name'];
   $po_notes                   =$_POST['po_notes'];
-  $po_totalPrice              =$_POST['subTotal'];
+  $po_subTotal                =$_POST['subTotalValue'];
   $po_status;
-
-  //request_po
-
 
 
   //loggedin username
   $user = $_SESSION["username"];
 
   //INSERT query to so_transactions table
-  $query = "INSERT INTO po_transactions (po_inv_date, po_supplier_name, po_notes, subTotal, po_status) VALUES (CURRENT_TIMESTAMP, '$po_supplier_name', '$po_notes', '$po_totalPrice', 1)";
+  $query = "INSERT INTO po_transactions (po_inv_date, po_supplier_name, po_notes, subTotal, po_status) VALUES (CURRENT_TIMESTAMP, '$po_supplier_name', '$po_notes', '$po_subTotal', 1)";
   $result = mysqli_query($link, $query) or die(mysqli_error($link));
 
   if ($result) {
     $j = 0;
 
     //Counts the elements in array
-    $count = count($_POST['po_model']);
+    $count = count($_POST['sup_prod_model']);
 
     // Use insert_id property to get the id of previous table (po_transactions)
     $po_trans_id = $link->insert_id;
@@ -64,10 +61,9 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
       $query = "INSERT INTO request_po (po_trans_id, po_model, po_price, po_qty, po_total) VALUES (
         '".$po_trans_id."',
         '".$_POST['sup_prod_model'][$j]."',
-        '".$_POST['po_price'][$j]."',
+        '".$_POST['po_priceValue'][$j]."',
         '".$_POST['po_qty'][$j]."',
-        '".$_POST['po_total'][$j]."')";
-
+        '".$_POST['po_totalValue'][$j]."')";
 
         $result = mysqli_multi_query($link, $query) or die(mysqli_error($link));
 
@@ -152,7 +148,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
                         //$po_supplier_name = $_POST['supplier_name'];
 
                         while ($row = $result->fetch_array()) { ?>
-                          <option value="<?php echo $row['suppliers_id']; ?>"><?php echo $row['supplier_name']; ?></option>
+                          <option value="<?php echo $row['supplier_name']; ?>"><?php echo $row['supplier_name']; ?></option>
                         <?php } ?>
                       </select>
                     </div>
@@ -201,8 +197,8 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
                               </td>
                               <td>
                                 <!--UNIT PRICE-->
-                                <input type="number" name="po_price[]" id="po_price<?php echo $x; ?>" autocomplete="off" disabled="true" class="form-control" />
-                                <!--<input type="hidden" name="po_priceValue[]" id="po_priceValue<?php echo $x; ?>" autocomplete="off" class="form-control" />-->
+                                <input type="text" name="po_price[]" id="po_price<?php echo $x; ?>" autocomplete="off" disabled="true" class="form-control" />
+                                <input type="hidden" name="po_priceValue[]" id="po_priceValue<?php echo $x; ?>" autocomplete="off" class="form-control" />
                               </td>
                               <td>
                                 <div class="form-group"><!--QTY-->
@@ -211,8 +207,8 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
                               </td>
                               <td>
                                 <!--TOTAL PRICE-->
-                                <input type="number" name="po_total[]" id="po_total<?php echo $x; ?>" autocomplete="off" class="form-control" disabled="true" />
-                                <!--<input type="hidden" name="po_totalValue[]" id="po_totalValue<?php echo $x; ?>" autocomplete="off" class="form-control" />-->
+                                <input type="text" name="po_total[]" id="po_total<?php echo $x; ?>" autocomplete="off" class="form-control" disabled="true" />
+                                <input type="hidden" name="po_totalValue[]" id="po_totalValue<?php echo $x; ?>" autocomplete="off" class="form-control" />
                               </td>
                               <td>
                                 <button class="btn btn-default removeProductRowBtn" type="button" id="removeProductRowBtn" onclick="removeProductRow(<?php echo $x; ?>)"><i class="glyphicon glyphicon-trash"></i></button>
@@ -227,8 +223,8 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
                               <td></td><td></td><td><label for="subTotal" class="pull-right">Sub Amount:</label></td>
                               <td>
                                 <div class="form-group">
-                                  <input type="number" class="form-control" id="subTotal" name="subTotal" disabled />
-                                  <!--<input type="hidden" class="form-control" id="subTotalValue" name="subTotalValue" />-->
+                                  <input type="text" class="form-control" id="subTotal" name="subTotal" disabled />
+                                  <input type="hidden" class="form-control" id="subTotalValue" name="subTotalValue" />
                                 </div>
                               </td>
                             </tr>
