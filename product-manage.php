@@ -38,9 +38,6 @@
     <!-- Main content -->
     <section class="content">
       <?php  echo $_SESSION['usertype']; ?>
-
-
-
     </section>
   <!-- /.content-wrapper -->
 </div>

@@ -9,25 +9,24 @@ $supplier_address=$status="";
 
 require_once "config.php";
 
-$users_id = $_GET['id'];
+$po_trans_id = $_GET['po_trans_id'];
 
-$query = "SELECT request_po.po_trans_id, suppliers.supplier_address,po_transactions.supplier_name,po_transactions.po_status, suppliers.supplier_address, request_po.po_qty, request_po.po_unit, request_po.po_unit_price, request_po.po_description, request_po.po_unit_price, request_po.po_total_amount,po_transactions.inv_date, po_transactions.paymentTerms, po_transactions.totalPrice, request_po.user from suppliers " .
-"INNER JOIN po_transactions ON suppliers.supplier_name = po_transactions.supplier_name ".
-"INNER JOIN request_po ON po_transactions.po_trans_id = request_po.po_trans_id WHERE po_transactions.po_trans_id = $users_id";
+$query = "SELECT suppliers_products.sup_prod_model, request_po.po_trans_id,po_transactions.po_supplier_name,po_transactions.po_status, suppliers.supplier_address, request_po.po_qty, request_po.po_price, request_po.po_total, po_transactions.po_inv_date, po_transactions.subTotal, po_transactions.po_notes ,po_transactions.po_user from suppliers
+JOIN po_transactions ON suppliers.supplier_name = po_transactions.po_supplier_name
+JOIN request_po ON po_transactions.po_trans_id = request_po.po_trans_id
+JOIN suppliers_products ON request_po.po_model = suppliers_products.suppliers_product_id WHERE po_transactions.po_trans_id = '$po_trans_id' ";
 
 $result = mysqli_query($link, $query) or die(mysqli_error($link));
 if (mysqli_num_rows($result) > 0) {
 
   while ($row = mysqli_fetch_assoc($result)){
-    $po_supplier_name   = $row['supplier_name'];
-    $totalPrice         = $row['totalPrice'];
+    $po_supplier_name   = $row['po_supplier_name'];
+    $totalPrice         = $row['subTotal'];
     $po_qty             = $row['po_qty'];
-    $po_description     = $row['po_description'];
-    $po_unit_price      = $row['po_unit_price'];
-    $po_total_amount    = $row['po_total_amount'];
+    $po_description     = $row['sup_prod_model'];
+    $po_total_amount    = $row['po_total'];
     $supplier_address   = $row['supplier_address'];
-    $po_unit            = $row['po_unit'];
-    $note               = $row['paymentTerms'];
+    $note               = $row['po_notes'];
 
     if($row['po_status'] == 1){
       $showStatus = "<p class='label label-warning invoice-col'>Pending</p>";
@@ -51,16 +50,33 @@ if (mysqli_num_rows($result) > 0) {
   echo "<p class='lead'><em>No records were found.</em></p>";
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST"){
+/*if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
   $query = "UPDATE po_transactions SET po_status = 2 WHERE po_trans_id='$users_id'";
   $approved = mysqli_query($link, $query) or die(mysqli_error($link));
 
-  $showStatus = "<span class='label label-success'>Approved</span>";
   header("Location: PO-manage.php");
+  $showStatus = "<span class='label label-success'>Approved</span>";
+}*/
 
+    if($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['Approved']))
+    {
+       $query = "UPDATE po_transactions SET po_status = 2 WHERE po_trans_id='$po_trans_id'";
+       $approved = mysqli_query($link, $query) or die(mysqli_error($link));
 
-}
+       $showStatus = "<span class='label label-success'>Approved</span>";
+       header("Location: PO-manage.php");
+    }
+
+    elseif ($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['Void']))
+    {
+       $query = "UPDATE po_transactions SET po_status = 3 WHERE po_trans_id='$po_trans_id'";
+       $approved = mysqli_query($link, $query) or die(mysqli_error($link));
+
+       $showStatus = "<span class='label label-success'>Approved</span>";
+       header("Location: PO-manage.php");
+    }
+
 ?>
 <!-- =================================================== -->
 <!DOCTYPE html>
@@ -110,7 +126,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
           </div>
           <!-- info row -->
           <div class="row invoice-info">
-            <div class="col-sm-3 invoice-col">
+            <div class="col-sm-4 invoice-col">
               From
               <address>
                 <strong>
@@ -124,7 +140,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
               </address>
             </div>
             <!-- /.col -->
-            <div class="col-sm-3 invoice-col">
+            <div class="col-sm-4 invoice-col">
               To
               <address>
                 <strong>MyHome Interior Furniture Co.</strong><br>
@@ -135,11 +151,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
               </address>
             </div>
             <!-- /.col -->
-            <div class="col-sm-3 invoice-col">
+            <div class="col-sm-4 invoice-col pull-right">
               <h4>
                 <b>Purchase Order &nbsp;</b>#
                   <?php
-                  echo $users_id;
+                  echo $po_trans_id;
                   ?>
 
                 <br>
@@ -160,9 +176,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
                 <thead>
                   <tr>
 
-                    <th width="40%">Product Description</th>
+                    <th width="40%">Product Model</th>
                     <th width="15%">Quantity</th>
-                    <th width="15%">Unit</th>
                     <th width="15%">Unit Price</th>
                     <th width="15%">Total Amount</th>
                   </tr>
@@ -175,16 +190,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
                   if (mysqli_num_rows($result) > 0) {
                     while ($row = mysqli_fetch_assoc($result)){
 
-                      $totalPrice  =  $row['totalPrice'];
+                      $totalPrice  =  $row['subTotal'];
 
                       echo "<tr>";
                       //echo "<td>" .$row['po_trans_id'] . "</td>";
 
-                      echo "<td>" . $row['po_description'] . "</td>";
+                      echo "<td>" . $row['sup_prod_model'] . "</td>";
                       echo "<td>" .$row['po_qty'] . "</td>";
-                      echo "<td>" . $row['po_unit'] . "</td>";
-                      echo "<td>₱ " . number_format($row['po_unit_price'],2) . "</td>";
-                      echo "<td>₱ " . number_format($row['po_total_amount'],2) . "</td>";
+                      echo "<td>₱ " . number_format((float)$row['po_price'],2) . "</td>";
+                      echo "<td>₱ " . number_format((float)$row['po_total'],2) . "</td>";
 
                       echo "</tr>";
 
@@ -205,9 +219,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
                     <td>No of Items : <?php echo $num_rows; ?></td>
                     <td></td>
-                    <td></td>
                     <td align="right"><h4>Grand Total: &nbsp;</h4></td>
-                    <td><h4> ₱ <?php echo number_format($totalPrice,2,'.',',');?></h4></td>
+                    <td><h4> ₱ <?php echo number_format((float)$totalPrice,2);?></h4></td>
 
                 </tfooter>
               </table>
@@ -232,13 +245,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
             </div>
             <!-- /.col -->
             <div class="col-xs-6">
-              <div>
+            <!--  <div>
                 <table class="table-responsive">
-                  <!--
+
                   <tr>
                   <th style="width:50%">Subtotal:</th>
                   <td>₱ <?php
-                  echo number_format($totalPrice,2,'.',',');
+                  echo number_format((float)$totalPrice,2);
                   ?></td>
                 </tr>
                 <
@@ -250,14 +263,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
               <th>Shipping:</th>
               <td>Kailangan paba ito?</td>
             </tr>
-          -->
+
           <tr>
             <td width="40%"><h3>Grand Total: &nbsp;</h3></td>
             <td width="60%"><h3> ₱ <?php
-            echo number_format($totalPrice,2,'.',',');?></h3></td>
+            echo number_format((float)$totalPrice,2);?></h3></td>
           </tr>
         </table>
-      </div>
+      </div>-->
     </div>
     <!-- /.col -->
   </div>
@@ -269,7 +282,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
 
 
-      <form  method="POST"  action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>?id=<?php echo $users_id; ?>">
+      <form  method="POST"  action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>?po_trans_id=<?php echo $po_trans_id; ?>">
         <?php
           //<button type="submit" class="btn btn-success pull-right" name="Approved"><i class="fa fa-thumbs-o-up"></i> Approve Purchase Order</button>
 
@@ -284,7 +297,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
       </form>
 
 
-      <form  method="POST"  action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>?id=<?php echo $users_id; ?>">
+      <form  method="POST"  action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>?po_trans_id=<?php echo $po_trans_id; ?>">
         <?php
         if($Status == "Void"){
           echo "<button type='submit' class='btn btn-danger' name='Void' disabled><i class='fa fa-trash'></i> Void Purchase Order</button>"; //disable void
@@ -298,31 +311,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
         ?>
       </form>
-
-
-
-
-      <?php
-          if($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['Approved']))
-          {
-             $query = "UPDATE po_transactions SET po_status = 2 WHERE po_trans_id='$users_id'";
-             $approved = mysqli_query($link, $query) or die(mysqli_error($link));
-
-             $showStatus = "<span class='label label-success'>Approved</span>";
-             header("Location: PO-manage.php");
-          }
-
-          elseif ($_SERVER['REQUEST_METHOD'] == "POST" and isset($_POST['Void']))
-          {
-             $query = "UPDATE po_transactions SET po_status = 3 WHERE po_trans_id='$users_id'";
-             $approved = mysqli_query($link, $query) or die(mysqli_error($link));
-
-             $showStatus = "<span class='label label-success'>Approved</span>";
-             header("Location: PO-manage.php");
-          }
-
-      ?>
-
 
         </div>
       </div>
@@ -339,99 +327,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
 <!-- =========================== JAVASCRIPT ========================= -->
       <?php include('template/js.php'); ?>
-
-
-<!-- =========================== PAGE SCRIPT ======================== -->
-
-<!-- Alert animation -->
-<script type="text/javascript">
-$(document).ready(function () {
-
-  window.setTimeout(function() {
-    $(".alert").fadeTo(1000, 0).slideUp(1000, function(){
-      $(this).remove();
-    });
-  }, 1000);
-
-});
-</script>
-
-<script>
-  $(function () {
-    //Initialize Select2 Elements
-    $('.select2').select2()
-
-    //Datemask dd/mm/yyyy
-    $('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
-    //Datemask2 mm/dd/yyyy
-    $('#datemask2').inputmask('mm/dd/yyyy', { 'placeholder': 'mm/dd/yyyy' })
-    //Money Euro
-    $('[data-mask]').inputmask()
-
-    //Date range picker
-    $('#reservation').daterangepicker()
-    //Date range picker with time picker
-    $('#reservationtime').daterangepicker({ timePicker: true, timePickerIncrement: 30, format: 'MM/DD/YYYY h:mm A' })
-    //Date range as a button
-    $('#daterange-btn').daterangepicker(
-      {
-        ranges   : {
-          'Today'       : [moment(), moment()],
-          'Yesterday'   : [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-          'Last 7 Days' : [moment().subtract(6, 'days'), moment()],
-          'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-          'This Month'  : [moment().startOf('month'), moment().endOf('month')],
-          'Last Month'  : [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-        },
-        startDate: moment().subtract(29, 'days'),
-        endDate  : moment()
-      },
-      function (start, end) {
-        $('#daterange-btn span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'))
-      }
-    )
-
-    //Date picker
-    $('#datepicker').datepicker({
-      autoclose: true
-    })
-
-    //iCheck for checkbox and radio inputs
-    $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
-      checkboxClass: 'icheckbox_minimal-blue',
-      radioClass   : 'iradio_minimal-blue'
-    })
-    //Red color scheme for iCheck
-    $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
-      checkboxClass: 'icheckbox_minimal-red',
-      radioClass   : 'iradio_minimal-red'
-    })
-    //Flat red color scheme for iCheck
-    $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
-      checkboxClass: 'icheckbox_flat-green',
-      radioClass   : 'iradio_flat-green'
-    })
-
-    //Colorpicker
-    $('.my-colorpicker1').colorpicker()
-    //color picker with addon
-    $('.my-colorpicker2').colorpicker()
-
-    //Timepicker
-    $('.timepicker').timepicker({
-      showInputs: false
-    })
-  })
-</script>
-
-<script>
-  //uppercase text box
-  function upperCaseF(a){
-    setTimeout(function(){
-        a.value = a.value.toUpperCase();
-    }, 1);
-}
-</script>
 
 </body>
 </html>

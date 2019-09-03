@@ -69,11 +69,11 @@
 
                           echo "<tr>";
                           echo "<td>#" . $row['po_trans_id'] . "</td>";
-                          echo "<td>" . $row['inv_date'] . "</td>";
+                          echo "<td>" . $row['po_inv_date'] . "</td>";
 
-                          echo "<td>" . $row['supplier_name'] . "</td>";
-                          echo "<td>" . $row['paymentTerms'] . "</td>";
-                          echo "<td>₱" . number_format($row['totalPrice'],2) . "</td>";
+                          echo "<td>" . $row['po_supplier_name'] . "</td>";
+                          echo "<td>" . $row['po_notes'] . "</td>";
+                          echo "<td>₱" . number_format((float)$row['subTotal'],2) . "</td>";
 
                           // eto ung mag chcheck kung ano value nung 'po status' tapos papalitan nya color
                           // STATUS: 1=PENDING; 2=APPROVED; 3=VOID
@@ -91,7 +91,7 @@
                           //echo "<td> <span class='label label-warning'>Pending</span> </td>";
                           echo "<td>";
 
-                          echo "<a href='PO-view.php?id=". $row['po_trans_id'] ."' title='View Record' data-toggle='tooltip'><span class='glyphicon glyphicon-share'></span></a>";
+                          echo "<a href='PO-view.php?po_trans_id=". $row['po_trans_id'] ."' title='View Record' data-toggle='tooltip'><span class='glyphicon glyphicon-share'></span></a>";
                           //echo " &nbsp; <a href='PO-delete.php?id=". $row['po_trans_id'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash remove'></span></a>";
                           echo "</td>";
                           echo "</tr>";

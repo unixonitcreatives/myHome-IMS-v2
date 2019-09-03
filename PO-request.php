@@ -28,7 +28,7 @@ $alertMessage="<div class='alert alert-danger' role='alert'>Theres Nothing to se
 }*/
 
 
-$po_supplier_name=$po_notes=$po_subTotal=$po_status="";
+$po_supplier_name=$po_notes=$po_subTotal=$po_status=$alertMessage="";
 
 //If the form is submitted
 if($_SERVER['REQUEST_METHOD'] == "POST"){
@@ -123,7 +123,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
           <section class="content">
             <?php  echo $_SESSION['usertype']; ?>
 
-
+            <?php echo $alertMessage; ?>
             <div class="box box-success">
               <div class="box-header with-border">
                 <h3 class="box-title">Purchase Order Form </h3>
