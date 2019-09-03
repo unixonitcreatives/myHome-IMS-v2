@@ -56,12 +56,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
   }
   else
-  if ($rows['usertype'] == 'Accounting') {
+  if ($rows['usertype'] == "Accounting") {
     $_SESSION["loggedin"] = true;
     $_SESSION["username"] = $username;
     $_SESSION["usertype"] = "Accounting";
     header('location: index.php');
-
+    exit;
   }
   else
   {
@@ -162,38 +162,13 @@ body {
 <!-- =========================== JAVASCRIPT =========================== -->
     Powered by: <a href="http://www.unixondev.com" class="text-center">Unixon IT Creatives</a>
 <!-- =========================== JAVASCRIPT =========================== -->
-  
+<?php
+// remove all session variables
+session_unset();
 
-
-<!-- =========================== JAVASCRIPT =========================== -->
-<!-- jQuery 3 -->
-<script src="bower_components/jquery/dist/jquery.min.js"></script>
-<!-- Bootstrap 3.3.7 -->
-<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-<!-- iCheck -->
-<script src="plugins/iCheck/icheck.min.js"></script>
-<script>
-  $(function () {
-    $('input').iCheck({
-      checkboxClass: 'icheckbox_square-blue',
-      radioClass: 'iradio_square-blue',
-      increaseArea: '20%' /* optional */
-    });
-  });
-</script>
-
-<!-- Alert animation -->
-<script type="text/javascript">
-$(document).ready(function () {
-
-  window.setTimeout(function() {
-    $(".alert").fadeTo(1000, 0).slideUp(1000, function(){
-      $(this).remove();
-    });
-  }, 1000);
-
-});
-</script>
+// destroy the session
+session_destroy();
+?>
 
 </body>
 </html>
