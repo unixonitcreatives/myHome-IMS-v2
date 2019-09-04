@@ -9,6 +9,8 @@ require_once "config.php";
 $username = $password = "";
 $alertError = $alertMessage = $username_err = $password_err = $hashed_password = "";
 
+
+
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 
@@ -30,8 +32,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
   if($result){
 
   $rows = mysqli_fetch_array($result);
-
-
 
   //Direct pages with different user levels
   if ($rows['usertype'] == "Administrator") {
@@ -61,6 +61,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $_SESSION["username"] = $username;
     $_SESSION["usertype"] = "Accounting";
     header('location: index.php');
+    exit;
+  }else
+  if ($rows['usertype'] == "Sales") {
+    $alertMessage = "<div class='alert alert-danger' role='alert'>You have to privilage to login, Please contact your administrator for this issue.</div>";
     exit;
   }
   else
@@ -134,7 +138,7 @@ body {
 
     <img class="img-responsive pad" src="dist/img/logo-01.png">
     <p class="login-box-msg">Sign in your credentials</p>
-
+<?php echo $alertMessage; ?>
 <?php echo $alertError; ?>
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
       <div class="form-group has-feedback">

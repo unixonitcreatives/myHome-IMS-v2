@@ -24,7 +24,8 @@
 <script src="bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 
-<script src="dist/js/orderSample.js"></script>
+<script src="dist/js/poRequest.js"></script>
+<script src="dist/js/soOrder.js"></script>
 
 <!-- =========================== PAGE SCRIPT ========================-->
 <!-- Alert animation -->
@@ -117,3 +118,55 @@ function upperCaseF(a){
   }, 1);
 }
 </script>
+
+
+<script>
+//print function
+function Print() {
+  window.print();
+}
+</script>
+
+<script>
+//prevent selecting future date
+$(function(){
+    var dtToday = new Date();
+
+    var month = dtToday.getMonth() + 1;
+    var day = dtToday.getDate();
+    var year = dtToday.getFullYear();
+    if(month < 12)
+        month = '0' + month.toString();
+    if(day < 12)
+        day = '0' + day.toString();
+
+    var maxDate = year + '-' + month + '-' + day;
+    //alert(maxDate);
+    //prevent future date
+    $('#pfDate').attr('max', maxDate);
+});
+</script>
+
+<script>
+  $(function () {
+    $('#example1').DataTable()
+    $('#example2').DataTable({
+      'paging'      : true,
+      'lengthChange': false,
+      'searching'   : false,
+      'ordering'    : true,
+      'info'        : true,
+      'autoWidth'   : false
+    })
+  })
+</script>
+
+<!-- script for onload date -->
+          <script>
+          var field = document.querySelector('#so_date');
+          var date = new Date();
+
+          // Set the date
+          field.value = date.getFullYear().toString() + '-' + (date.getMonth() + 1).toString().padStart(2, 0) +
+          '-' + date.getDate().toString().padStart(2, 0);
+        </script>

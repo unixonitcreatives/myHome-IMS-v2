@@ -1,7 +1,7 @@
 <!-- ======================= SESSION =================== -->
 <?php include('template/session.php'); ?>
 <!-- ======================= USER AUTHENTICATION  =================== -->
-<?php 
+<?php
   $Admin_auth = 1;
   $Manager_auth = 0;
   $Accounting_auth = 0;
@@ -19,34 +19,29 @@ require_once "config.php";
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
     //Assigning posted values to variables.
     $username = test_input($_POST['username']);
-    $password = test_input($_POST['password']);
+    $password = $_POST['password'];
     $usertype = test_input($_POST['usertype']);
 
     // Validate username
-
     if(empty($username)){
         $alertMessage = "Please enter a username.";
     }
-
     // Validate password
-
     if(empty($password)){
         $alertMessage = "Please enter a password.";
     }
-
     // Validate user type
-
     if(empty($usertype)){
         $alertMessage = "Please enter a user type.";
     }
 
 
     // Check input errors before inserting in database
-    if(empty($alertMessage)){
+    if(!empty($alertMessage)){
 
-    //$hash = password_hash($password, PASSWORD_DEFAULT);
+    $hash = password_hash($password, PASSWORD_DEFAULT);
     //Checking the values are existing in the database or not
-    $query = "INSERT INTO users (username, password, usertype, time_created) VALUES ('$username', '$password', '$usertype', CURRENT_TIMESTAMP)";
+    $query = "INSERT INTO users (username, password, usertype, time_created) VALUES ('$username', '$hash', '$usertype', CURRENT_TIMESTAMP)";
     $result = mysqli_query($link, $query) or die(mysqli_error($link));
 
     if($result){
@@ -121,22 +116,25 @@ function test_input($data) {
             <!-- form start -->
             <form  method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
               <div class="box-body">
+                <?php echo $alertMessage; ?>
                 <div class="form-group">
                   <label>Username</label>
                   <input type="text" class="form-control" placeholder="Username" name="username" required>
                 </div>
-
+                <?php echo $alertMessage; ?>
                 <div class="form-group">
                   <label>Password</label>
                   <input type="password" class="form-control" placeholder="Password" name="password" required>
                 </div>
-
+                <?php echo $alertMessage; ?>
                 <div class="form-group">
                 <label>User Type</label>
                 <select class="form-control select2" style="width: 100%;" name="usertype" required>
-                  <option>Administrator</option>
-                  <option>Manager</option>
-                  <option>Accounting</option>
+                  <option value="">~~SELECT USER TYPE~~</option>
+                  <option value="Administrator">Administrator</option>
+                  <option value="Manager">Manager</option>
+                  <option value="Accounting">Accounting</option>
+                  <option value="Sales">Sales</option>
                 </select>
               </div>
               <!-- /.box-body -->
