@@ -98,7 +98,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
     <head>
       <meta charset="utf-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <title>MyHome | Purchase Order</title>
+      <title>MyHome | Sales Order Form</title>
       <!-- ======================= CSS ================================= -->
       <?php include('template/css.php'); ?>
     </head>
@@ -114,7 +114,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
           <!-- Content Header (Page header) -->
           <section class="content-header">
             <h1>
-              Purchase Order Request
+              Sales Order Request
               <small></small>
             </h1>
           </section>
@@ -126,7 +126,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
             <?php echo $alertMessage; ?>
             <div class="box box-success">
               <div class="box-header with-border">
-                <h3 class="box-title">Purchase Order Form </h3>
+                <h3 class="box-title">Sales Order Form </h3>
               </div>
               <!-- /.box-header -->
               <div class="box-body">
@@ -180,7 +180,23 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
                     <div class="form-group">
                       <label class="text text-red">*</label>
                       <label>Sales Person</label>
-                      <input type="text" class="form-control"  name="so_remarks" required>
+                      <select class="form-control select2" style="width: 100%;" id="" maxlength="50" placeholder="customer name" name="so_customer_name" required>
+                        <option selected="selected">~~SELECT~~</option>
+                        <?php
+
+                        // Include config file
+                        require_once "config.php";
+                        // Attempt select query execution
+                        // $query = "SELECT * FROM orders WHERE name LIKE '%$name%' AND item LIKE '%$item%' AND status LIKE '%$status%'";
+                        $query = "SELECT username FROM users WHERE usertype = 'Sales' ";
+                        $result = mysqli_query($link, $query);
+
+                        //$customer_name = $_POST['customer_name'];
+
+                        while ($row = mysqli_fetch_assoc($result)) {
+                          echo "<option value='" .$row['username']. "'>" .$row['username']. "</option>";
+                        } ?>
+                      </select>
                     </div>
                   </div>
 
