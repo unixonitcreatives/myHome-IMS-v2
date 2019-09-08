@@ -110,13 +110,13 @@ function test_input($data) {
                     <select class="form-control select2" style="width: 100%;" name="subCategory">
                       <?php
 
-                      $query = "select sup_prod_category from suppliers_products order by sup_prod_category";
+                      $query = "select subCategory from subCategory order by subCategory";
                       $result = mysqli_query($link, $query);
 
                       //$category = $_POST['sup_prod_category'];
 
                       while ($row = mysqli_fetch_assoc($result)) { ?>
-                        <option value="<?php echo $row['sup_prod_category']; ?>"><?php echo $row['sup_prod_category']; ?></option>
+                        <option value="<?php echo $row['subCategory']; ?>"><?php echo $row['subCategory']; ?></option>
                       <?php } ?>
                     </select>
                   </div>
@@ -205,8 +205,6 @@ function test_input($data) {
 
                 </div>
               </div>
-
-              <!-- /.box-body -->
             </div>
             <div class="box-footer">
               <button type="submit" class="btn btn-success" onclick="this.disabled=true;this.value='Submitting...'; this.form.submit();" >Save</button>

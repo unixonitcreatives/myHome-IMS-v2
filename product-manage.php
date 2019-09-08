@@ -75,7 +75,7 @@
 
                             while($row = mysqli_fetch_array($result)){
                               echo "<tr>";
-                              echo "<td>" . $row['inv_id'] . "</td>";
+                              echo "<td><a href='product-stocks.php?inv_id=". $row['inv_id'] ."' title='View History' data-toggle='tooltip'>" . $row['inv_id'] . "</a></td>";
                               echo "<td>" . $row['category'] . "</td>";
                               echo "<td>" . $row['subCategory'] . "</td>";
                               echo "<td>" . $row['branch_name'] . "</td>";
@@ -87,8 +87,9 @@
                               echo "<td>" . $row['date_arriv'] . "</td>";
                               echo "<td>" . $row['remarks'] . "</td>";
                               echo "<td>";
-                              echo "<a href='product-update.php?inv_id=". $row['inv_id'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
-                              echo " &nbsp; <a href='product-delete.php?inv_id=". $row['inv_id'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
+                              echo "<a href='product-add-stocks.php?inv_id=". $row['inv_id'] ."&&sku_code=".$row['sku_code']."' title='Add Stocks' data-toggle='tooltip'><span class='glyphicon glyphicon-plus'></span></a>";
+                              echo "&nbsp; <a href='product-update.php?inv_id=". $row['inv_id'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
+                              echo "&nbsp; <a href='product-delete.php?inv_id=". $row['inv_id'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
                               echo "</td>";
                               echo "</tr>";
                             }

@@ -41,6 +41,18 @@
                         </li>
 
                         <li class="treeview">
+                            <a href="#"><i class="fa fa-th-large"></i> <span>Sub-category</span>
+                                <span class="pull-right-container">
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li><a href="sub-category-add.php">Add Sub-category</a></li>
+                                <li><a href="sub-category-manage.php">Manage Sub-category</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="treeview">
                             <a href="#"><i class="fa fa-archive"></i> <span>Branches</span>
                                 <span class="pull-right-container">
                                     <i class="fa fa-angle-left pull-right"></i>
