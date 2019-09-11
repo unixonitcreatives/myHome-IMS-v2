@@ -45,9 +45,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     $query = "INSERT INTO add_inv (inv_id, add_inv_po_number, add_inv_qty, add_inv_date_arriv) VALUES ('$inv_id', '$poNum', '$qty', '$date')";
     $result = mysqli_query($link, $query) or die(mysqli_error($link));
     if($result){
-      $alertMessage = "<div class='alert alert-success' role='alert'>
-      Stocks data successfully added in database.
-      </div>";
+      header("Location: product-manage.php?alert=success");
+      exit();
     }else {
       $alertMessage = "<div class='alert alert-success' role='alert'>
       Error updating record.
