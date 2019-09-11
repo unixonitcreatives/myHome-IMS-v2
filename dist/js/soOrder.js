@@ -256,6 +256,11 @@ function resetOrderForm() {
 } // /reset order form
 
 
+function delFeeSubamount() {
+
+
+}
+
 // remove order from server
 /*function removeOrder(orderId = null) {
 	if(orderId) {

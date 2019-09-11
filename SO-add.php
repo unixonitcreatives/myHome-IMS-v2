@@ -290,7 +290,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
                               <td></td><td></td><td></td><td><label for="subTotal" class="pull-right">Delivery Fee:</label></td>
                               <td>
                                 <div class="form-group">
-                                  <input type="number" class="form-control" id="so_delivery_fee" name="so_delivery_fee"  value="0.00" />
+                                  <input type="number" class="form-control" id="so_delivery_fee" name="so_delivery_fee"  value="0.00"/>
                                 </div>
                               </td>
                             </tr>
