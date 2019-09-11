@@ -52,6 +52,8 @@ $so_get_amount_receive=
                   $alertMessage = "<div class='alert alert-success' role='alert'>Receive Payment Successful</div>";
               }elseif ($_GET['alert'] == 'deletesuccess'){
                   $alertMessage = "<div class='alert alert-danger' role='alert'>Data deleted.</div>";
+              }elseif ($_GET['alert'] == 'success'){
+                  $alertMessage = "<div class='alert alert-success' role='alert'>Product Delivered Succefully.</div>";
               }
           } ?>
           <div class="row">

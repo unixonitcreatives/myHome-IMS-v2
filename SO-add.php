@@ -27,43 +27,50 @@ $created_at                 =   $row['created_at'];
 $alertMessage="<div class='alert alert-danger' role='alert'>Theres Nothing to see Here.</div>";
 }*/
 
+//so_items
+$so_trans_id=$so_model=$so_qty=$so_unit_price=$price=$so_total_amount=$so_date_delivered=$alertMessage="";
 
-$po_supplier_name=$po_notes=$po_subTotal=$po_status=$alertMessage="";
+//so_transactions
+$so_date=$so_customer_name=$so_sub_total=$so_paymentTerms=$so_deliveryFee=$so_grand_total=$so_staff=$so_remarks=$so_user="";
+
 
 //If the form is submitted
 if($_SERVER['REQUEST_METHOD'] == "POST"){
-  //po_transactions
-  $po_inv_date;
-  $po_supplier_name           =$_POST['po_supplier_name'];
-  $po_notes                   =$_POST['po_notes'];
-  $po_subTotal                =$_POST['subTotalValue'];
-  $po_status;
+  $so_customer_name               =$_POST['so_customer_name'];
+  $so_sub_total                   =$_POST['so_sub_total'];
+  $so_paymentTerms                =$_POST['so_paymentTerms'];
+  $so_deliveryFee                 =$_POST['so_delivery_fee'];
+  $so_grand_total                 =$_POST['so_grand_total'];
+  $so_staff                       =$_POST['so_staff'];
+  $so_remarks                     =$_POST['so_remarks'];
 
 
   //loggedin username
   $user = $_SESSION["username"];
 
   //INSERT query to so_transactions table
-  $query = "INSERT INTO po_transactions (po_inv_date, po_supplier_name, po_notes, subTotal, po_status) VALUES (CURRENT_TIMESTAMP, '$po_supplier_name', '$po_notes', '$po_subTotal', 1)";
+  $query = "INSERT INTO so_transactions (so_date, so_customer_name, so_sub_total, so_paymentTerms, so_deliveryFee, so_grand_total, so_staff, so_remarks, so_user) VALUES (CURRENT_TIMESTAMP, '$so_customer_name', '$so_sub_total', '$so_paymentTerms', '$so_deliveryFee', '$so_grand_total', '$so_staff', '$so_remarks', '$user')";
   $result = mysqli_query($link, $query) or die(mysqli_error($link));
 
   if ($result) {
     $j = 0;
 
     //Counts the elements in array
-    $count = count($_POST['sup_prod_model']);
+    $count = count($_POST['so_model']);
 
     // Use insert_id property to get the id of previous table (po_transactions)
-    $po_trans_id = $link->insert_id;
+    $so_trans_id = $link->insert_id;
 
     for ($j = 0; $j < $count; $j++) {
 
-      $query = "INSERT INTO request_po (po_trans_id, po_model, po_price, po_qty, po_total) VALUES (
-        '".$po_trans_id."',
-        '".$_POST['sup_prod_model'][$j]."',
-        '".$_POST['po_priceValue'][$j]."',
-        '".$_POST['po_qty'][$j]."',
-        '".$_POST['po_totalValue'][$j]."')";
+      $query = "INSERT INTO so_items (so_trans_id, so_model, so_qty, so_unit_price, price, so_total_amount, so_date_delivered) VALUES (
+        '".$so_trans_id."',
+        '".$_POST['so_model'][$j]."',
+        '".$_POST['so_unit_price'][$j]."',
+        '".$_POST['so_qty'][$j]."',
+        '".$_POST['price'][$j]."',
+        '".$_POST['so_total_amount'][$j]."',
+        '".$_POST['so_date_delivered'][$j]."')";
 
         $result = mysqli_multi_query($link, $query) or die(mysqli_error($link));
 
@@ -212,9 +219,10 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
                       <table class="table" id="productTable">
                         <thead>
                           <tr>
-                            <th>Model</th>
-                            <th>Price</th>
+                            <th>Product Code</th>
+                            <th>SRP Price</th>
                             <th>Quantity</th>
+                            <th>Price</th>
                             <th>Total</th>
                             <th>Action</th>
                           </tr>
@@ -227,7 +235,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
                             <tr id="row<?php echo $x; ?>" class="<?php echo $arrayNumber; ?>">
                               <td>
                                 <div class="form-group">
-                                  <select class="form-control" name="sup_prod_model[]" id="sup_prod_model<?php echo $x; ?>" onchange="getProductData(<?php echo $x; ?>)">
+                                  <select class="form-control" name="so_model[]" id="so_model<?php echo $x; ?>" onchange="getProductData(<?php echo $x; ?>)">
                                     <option value="">~~SELECT MODEL~~</option>
                                     <?php
                                     $productSql = "SELECT * FROM suppliers_products ";
@@ -243,18 +251,21 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
                               </td>
                               <td>
                                 <!--UNIT PRICE-->
-                                <input type="text" name="po_price[]" id="po_price<?php echo $x; ?>" autocomplete="off" disabled="true" class="form-control" />
-                                <input type="hidden" name="po_priceValue[]" id="po_priceValue<?php echo $x; ?>" autocomplete="off" class="form-control" />
+                                <input type="text" name="so_unit_price[]" id="so_unit_price<?php echo $x; ?>" autocomplete="off" disabled="true" class="form-control" />
+                                <input type="hidden" name="so_unit_priceValue[]" id="so_unit_priceValue<?php echo $x; ?>" autocomplete="off" class="form-control" />
                               </td>
                               <td>
                                 <div class="form-group"><!--QTY-->
-                                  <input type="number" name="po_qty[]" id="po_qty<?php echo $x; ?>" onkeyup="getTotal(<?php echo $x; ?>)" autocomplete="off" class="form-control" min="1" />
+                                  <input type="number" name="so_qty[]" id="so_qty<?php echo $x; ?>" onkeyup="getTotal(<?php echo $x; ?>)" autocomplete="off" class="form-control" min="1" />
                                 </div>
                               </td>
                               <td>
+                                  <input type="text" name="price[]" id="price<?php echo $x; ?>" onkeyup="getTotal(<?php echo $x; ?>)" autocomplete="off" class="form-control" />
+                              </td>
+                              <td>
                                 <!--TOTAL PRICE-->
-                                <input type="text" name="po_total[]" id="po_total<?php echo $x; ?>" autocomplete="off" class="form-control" disabled="true" />
-                                <input type="hidden" name="po_totalValue[]" id="po_totalValue<?php echo $x; ?>" autocomplete="off" class="form-control" />
+                                <input type="text" name="so_total_amount[]" id="so_total_amount<?php echo $x; ?>" autocomplete="off" class="form-control" disabled="true" />
+                                <input type="hidden" name="so_total_amountValue[]" id="so_total_amountValue<?php echo $x; ?>" autocomplete="off" class="form-control" />
                               </td>
                               <td>
                                 <button class="btn btn-default removeProductRowBtn" type="button" id="removeProductRowBtn" onclick="removeProductRow(<?php echo $x; ?>)"><i class="glyphicon glyphicon-trash"></i></button>
@@ -266,11 +277,30 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 
                           <tfoot>
                             <tr>
-                              <td></td><td></td><td><label for="subTotal" class="pull-right">Sub Amount:</label></td>
+                              <td></td><td></td><td></td><td><label for="subTotal" class="pull-right">Sub Amount:</label></td>
                               <td>
                                 <div class="form-group">
-                                  <input type="text" class="form-control" id="subTotal" name="subTotal" disabled />
-                                  <input type="hidden" class="form-control" id="subTotalValue" name="subTotalValue" />
+                                  <input type="text" class="form-control" id="so_sub_total" name="so_sub_total" disabled />
+                                  <input type="hidden" class="form-control" id="so_sub_totalValue" name="so_sub_totalValue" />
+                                </div>
+                              </td>
+                            </tr>
+
+                            <tr>
+                              <td></td><td></td><td></td><td><label for="subTotal" class="pull-right">Delivery Fee:</label></td>
+                              <td>
+                                <div class="form-group">
+                                  <input type="number" class="form-control" id="so_delivery_fee" name="so_delivery_fee"  value="0.00" />
+                                </div>
+                              </td>
+                            </tr>
+
+                            <tr>
+                              <td></td><td></td><td></td><td><label for="subTotal" class="pull-right">Total Amount:</label></td>
+                              <td>
+                                <div class="form-group">
+                                  <input type="text" class="form-control" id="so_total_amount" name="so_total_amount" disabled />
+                                  <input type="hidden" class="form-control" id="so_total_amountValue" name="so_total_amountValue" />
                                 </div>
                               </td>
                             </tr>
@@ -279,7 +309,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
                         <!-- /table -->
                       </div>
                       <!--/table-responsive-->
-                      <button type="button" class="btn btn-default" onclick="addRow()" id="soAddRowBtn" data-loading-text="Loading..."> <i class="glyphicon glyphicon-plus-sign"></i> Add Row </button>
+                      <button type="button" class="btn btn-default" onclick="soAddRow()" id="soAddRowBtn" data-loading-text="Loading..."> <i class="glyphicon glyphicon-plus-sign"></i> Add Row </button>
                     </div>
 
                     <!-- ========================= /FORM ============================ -->
@@ -287,7 +317,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
                   <!-- /.box-body -->
                   <div class="box-footer">
                     <!-- Buttons -->
-                    <button type="submit" name="save" id="save" onclick="this.disabled=true;this.value='Submitting...'; this.form.submit();" class="btn btn-success">Request</button>
+                    <button type="submit" name="save" id="save" onclick="this.disabled=true;this.value='Submitting...'; this.form.submit();" class="btn btn-success">Create</button>
                     <button type="reset" class="btn btn-default" onclick="resetOrderForm()"><i class="glyphicon glyphicon-erase"></i> Clear</button>
                   </div>
                 </form>

@@ -9,16 +9,16 @@
 ?>
 <!-- ======================= UPDATE  =================== -->
 <?php
-$so_trans_id=$so_model=$so_qty=$so_unit=$so_unit_price=$so_total_amount=$so_date_delivered="";
-
+$alertMessage=$so_trans_id=$so_model=$so_qty=$so_unit=$so_unit_price=$so_total_amount=$so_date_delivered="";
+$model=$qty=$unit=$unitPrice=$totalAmount=$dateDelivered="";
 require_once "config.php";
 
 $so_request_id = $_GET['so_request_id'];
-$query = "SELECT * from so_items WHERE so_request_id='$so_request_id'";
+$query = "SELECT * FROM so_items WHERE so_request_id='$so_request_id'";
 $result = mysqli_query($link, $query) or die(mysqli_error($link));
 if (mysqli_num_rows($result) > 0) {
     while ($row = mysqli_fetch_assoc($result)){
-    $so_trans_id        =$row['so_trans_id'];
+    $so_trans_id        = $row['so_trans_id'];
     $so_model           = $row['so_model'];
     $so_qty             = $row['so_qty'];
     $so_unit            = $row['so_unit'];
@@ -29,31 +29,27 @@ if (mysqli_num_rows($result) > 0) {
 }else {
     $alertMessage="<div class='alert alert-danger' role='alert'>Theres Nothing to see Here.</div>";
 }
-//If the form is submitted or not.
+
 //If the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
     //Assigning posted values to variables.
-    $so_trans_id        = test_input($_POST['so_trans_id']);
-    $so_model           = test_input($_POST['so_model']);
-    $so_qty             = test_input($_POST['so_qty']);
-    $so_unit            = test_input($_POST['so_unit']);
-    $so_unit_price      = test_input($_POST['so_unit_price']);
-    $so_total_amount    = test_input($_POST['so_total_amount']);
-    $so_date_delivered  = test_input($_POST['so_date_delivered']);
+
+    $dateDelivered  = test_input($_POST['dateDelivered']);
+
+
 
     //Checking the values are existing in the database or not
-    $query = "UPDATE so_items SET so_trans_id='$so_trans_id',so_model='$so_model', so_qty='$so_qty', so_unit='$so_unit', so_unit_price='$so_unit_price', so_total_amount='$so_total_amount', so_date_delivered='$so_date_delivered' WHERE so_request_id='$so_request_id'";
+    $query = "UPDATE so_items SET so_date_delivered='$dateDelivered' WHERE so_items.so_request_id='$so_request_id'";
     $result = mysqli_query($link, $query) or die(mysqli_error($link));
     if($result){
-        $alertMessage = "<div class='alert alert-success' role='alert'>
-  Stocks data successfully updated in database.
-</div>";
+        header("Location: SO-manage.php?alert=success");
     }else {
         $alertMessage = "<div class='alert alert-success' role='alert'>
   Error updating record.
 </div>";
     }
 }
+
 
 function test_input($data) {
     $data = trim($data);
@@ -109,37 +105,38 @@ function test_input($data) {
                   <form  method="POST"  action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>?so_request_id=<?php echo $so_request_id; ?>">
                     <div class="col-md-12">
                       <div class="form-group">
-                        <input type="hidden" class="form-control" name="so_trans_id" value="<?php echo $so_trans_id; ?>" disabled>
+                        <input type="hidden" class="form-control"  value="<?php echo $so_trans_id; ?>" disabled>
                       </div>
                       <div class="form-group">
                         <label>Model</label>
-                        <input type="text" class="form-control" placeholder="Model" name="so_model" value="<?php echo $so_model; ?>" disabled>
+                        <input type="text" class="form-control" placeholder="Model"  value="<?php echo $so_model; ?>" disabled>
                       </div>
                       <div class="form-group">
                         <label>Qty</label>
-                        <input type="number" class="form-control" placeholder="Qty" name="so_qty" value="<?php echo $so_qty; ?>" disabled>
+                        <input type="number" class="form-control" placeholder="Qty"  value="<?php echo $so_qty; ?>" disabled>
                       </div>
                       <div class="form-group">
                         <label>Unit</label>
-                        <input type="text" class="form-control" placeholder="Unit" name="so_unit" value="<?php echo $so_unit; ?>" disabled>
+                        <input type="text" class="form-control" placeholder="Unit"  value="<?php echo $so_unit; ?>" disabled>
                       </div>
                       <div class="form-group">
                         <label>Unit Price</label>
-                        <input type="number" class="form-control" placeholder="Unit Price" name="so_unit_price" value="<?php echo $so_unit_price; ?>" disabled>
+                        <input type="number" class="form-control" placeholder="Unit Price"  value="<?php echo $so_unit_price; ?>" disabled>
                       </div>
                       <div class="form-group">
                         <label>Total Amount</label>
-                        <input type="number" class="form-control" placeholder="Total Amount" name="so_total_amount" value="<?php echo $so_total_amount; ?>" disabled>
+                        <input type="number" class="form-control" placeholder="Total Amount"  value="<?php echo $so_total_amount; ?>" disabled>
                       </div>
                       <div class="form-group">
                         <label>Date Delivered</label>
-                        <input type="date" class="form-control" placeholder="date" name="so_delivered_date">
+                        <input type="date" class="form-control" placeholder="date" name="dateDelivered">
                       </div>
                     </div>
-                  </div>
+
 
                 <div class="box-footer">
-                  <button type="submit" class="btn btn-success" onclick="this.disabled=true;this.value='Submitting...'; this.form.submit();" >Save</button>
+                  <button type="submit" class="btn btn-success" name="save" onclick="this.disabled=true;this.value='Submitting...'; this.form.submit();" >Save</button>
+                </div>
                 </div>
               </div>
             </form>

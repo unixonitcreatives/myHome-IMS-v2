@@ -137,8 +137,8 @@ ob_start();
                   <tr>
                     <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Model</th>
                     <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Quantity</th>
-                    <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Unit</th>
                     <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Retail Price</th>
+                    <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Price</th>
                     <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Date Delivered</th>
                     <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Total Amount</th>
                     <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Actions</th>
@@ -153,8 +153,8 @@ ob_start();
                       <tr>
                         <td><?php echo htmlspecialchars($row['so_model']);?></td>
                         <td><?php echo htmlspecialchars($row['so_qty']);?></td>
-                        <td><?php echo htmlspecialchars($row['so_unit']);?></td>
                         <td><?php echo htmlspecialchars($row['so_unit_price']);?></td>
+                        <td><?php echo htmlspecialchars($row['price']);?></td>
                         <td><?php echo htmlspecialchars($row['so_date_delivered']);?></td>
                         <td><?php echo htmlspecialchars($row['so_total_amount']);?></td>
                         <td>

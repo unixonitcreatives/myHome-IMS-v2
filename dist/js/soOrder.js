@@ -37,7 +37,7 @@ function soAddRow() {
 				'<td>'+
 					'<div class="form-group">'+
 
-					'<select class="form-control" name="sup_prod_model[]" id="sup_prod_model'+count+'" onchange="getProductData('+count+')" >'+
+					'<select class="form-control" name="so_model[]" id="so_model'+count+'" onchange="getProductData('+count+')" >'+
 						'<option value="">~~SELECT MODEL~~</option>';
 						//console.log(response);
 						$.each(response, function(index, value) {
@@ -48,17 +48,20 @@ function soAddRow() {
 					'</div>'+
 				'</td>'+
 				'<td>'+
-					'<input type="text" name="po_price[]" id="po_price'+count+'" autocomplete="off" disabled="true" class="form-control" />'+
-					'<input type="hidden" name="po_priceValue[]" id="po_priceValue'+count+'" autocomplete="off" class="form-control" />'+
+					'<input type="text" name="so_unit_price[]" id="so_unit_price'+count+'" autocomplete="off" disabled="true" class="form-control" />'+
+					'<input type="hidden" name="so_unit_priceValue[]" id="so_unit_priceValue'+count+'" autocomplete="off" class="form-control" />'+
 				'</td>'+
 				'<td>'+
 					'<div class="form-group">'+
-					'<input type="number" name="po_qty[]" id="po_qty'+count+'" onkeyup="getTotal('+count+')" autocomplete="off" class="form-control" min="1" />'+
+					'<input type="number" name="so_qty[]" id="so_qty'+count+'" onkeyup="getTotal('+count+')" autocomplete="off" class="form-control" min="1" />'+
 					'</div>'+
 				'</td>'+
 				'<td>'+
-					'<input type="text" name="po_total[]" id="po_total'+count+'" autocomplete="off" class="form-control" disabled="true" />'+
-					'<input type="hidden" name="po_totalValue[]" id="po_totalValue'+count+'" autocomplete="off" class="form-control" />'+
+					'<input type="text" name="price[]" id="price'+count+'" onkeyup="getTotal('+count+')" autocomplete="off" class="form-control"  />'+
+				'</td>'+
+				'<td>'+
+					'<input type="text" name="so_total_amount[]" id="so_total_amount'+count+'" autocomplete="off" class="form-control" disabled="true" />'+
+					'<input type="hidden" name="so_total_amountValue[]" id="so_total_amountValue'+count+'" autocomplete="off" class="form-control" />'+
 				'</td>'+
 				'<td>'+
 					'<button class="btn btn-default removeProductRowBtn" type="button" onclick="removeProductRow('+count+')"><i class="glyphicon glyphicon-trash"></i></button>'+
@@ -87,13 +90,14 @@ function removeProductRow(row = null) {
 // select on product data
 function getProductData(row = null) {
 	if(row) {
-		var suppliers_product_id = $("#sup_prod_model"+row).val();
+		var suppliers_product_id = $("#so_model"+row).val();
 
 		if(suppliers_product_id == "") {
-			$("#po_price"+row).val("");
+			$("#so_unit_price"+row).val("");
 
-			$("#po_qty"+row).val("");
-			$("#po_total"+row).val("");
+			$("#so_qty"+row).val("");
+			$("#so_price"+row).val("");
+			$("#so_total_amount"+row).val("");
 
 
 		} else {
@@ -104,15 +108,16 @@ function getProductData(row = null) {
 				dataType: 'json',
 				success:function(response) {
 					// setting the rate value into the rate input field
-					$("#po_price"+row).val(response.sup_prod_price);
-					$("#po_priceValue"+row).val(response.sup_prod_price);
+					$("#so_unit_price"+row).val(response.sup_prod_price);
+					$("#so_total_amountValue"+row).val(response.sup_prod_price);
 
-					$("#po_qty"+row).val(1);
+					$("#so_qty"+row).val(1);
 
 					var total = Number(response.sup_prod_price) * 1;
 					total = total.toFixed(2);
-					$("#po_total"+row).val(total);
-					$("#po_totalValue"+row).val(total);
+					$("#price"+row).val(total);
+					$("#so_total_amount"+row).val(total);
+					$("#so_total_amountValue"+row).val(total);
 
 
 					subAmount();
@@ -128,9 +133,9 @@ function getProductData(row = null) {
 // table total
 function getTotal(row = null) {
 	if(row) {
-		var total = Number($("#po_price"+row).val()) * Number($("#po_qty"+row).val());
+		var total = Number($("#price"+row).val()) * Number($("#so_qty"+row).val());
 		total = total.toFixed(2);
-		$("#po_total"+row).val(total);
+		$("#so_total_amount"+row).val(total);
 		//$("#po_totalValue"+row).val(total);
 
 		subAmount();
@@ -148,14 +153,13 @@ function subAmount() {
 		var count = $(tr).attr('id');
 		count = count.substring(3);
 
-		totalSubAmount = Number(totalSubAmount) + Number($("#po_total"+count).val());
+		totalSubAmount = Number(totalSubAmount) + Number($("#so_total_amount"+count).val());
 	} // /for
 
 	totalSubAmount = totalSubAmount.toFixed(2);
-
 	// sub total
-	$("#subTotal").val(totalSubAmount);
-	$("#subTotalValue").val(totalSubAmount);
+	$("#so_sub_total").val(totalSubAmount);
+	$("#so_sub_totalValue").val(totalSubAmount);
 
 	/* vat
 	var vat = (Number($("#subTotal").val())/100) * 13;
@@ -163,12 +167,17 @@ function subAmount() {
 	$("#vat").val(vat);
 	$("#vatValue").val(vat); */
 
+	//delivery fee
+	var delFee = Number($("#so_delivery_fee").val());
+	delFee = delFee.toFixed(2);
+	$("#so_delivery_fee").val(delFee);
+
 	// total amount
-	var totalAmount = $("#subTotal").val();
+	var totalAmount = Number($("#so_delivery_fee").val()) + Number($("#so_sub_total").val());
 	//var totalAmount = (Number($("#subTotal").val()) + Number($("#vat").val()));
 	totalAmount = totalAmount.toFixed(2);
-	$("#totalAmount").val(totalAmount);
-	$("#totalAmountValue").val(totalAmount);
+	$("#so_total_amount").val(totalAmount);
+	$("#so_total_amountValue").val(totalAmount);
 
 	/*var discount = $("#discount").val();
 	if(discount) {
