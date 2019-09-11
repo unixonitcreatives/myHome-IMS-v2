@@ -9,7 +9,7 @@
 ?>
 <!-- ======================= UPDATE  =================== -->
 <?php
-$so_model=$so_qty=$so_unit=$so_unit_price=$so_total_amount=$so_date_delivered="";
+$alertMessage=$so_model=$so_qty=$so_unit=$so_unit_price=$so_total_amount=$so_date_delivered="";
 
 require_once "config.php";
 
@@ -33,6 +33,7 @@ if (mysqli_num_rows($result) > 0) {
 //If the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
     //Assigning posted values to variables.
+    $so_trans_id        = test_input($_POST['so_trans_id']);
     $so_model           = test_input($_POST['so_model']);
     $so_qty             = test_input($_POST['so_qty']);
     $so_unit            = test_input($_POST['so_unit']);
@@ -44,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     // Check if input has no errors before inserting in database
     if(empty($emptyMessage)){
     //Checking the values are existing in the database or not
-    $query = "UPDATE so_items SET so_model='$so_model',so_qty='$so_qty',so_unit='$so_unit',so_unit_price='$so_unit_price',so_total_amount='$so_total_amount',so_date_delivered='$so_date_delivered' WHERE so_request_id='$so_request_id'";
+    $query = "UPDATE so_items SET so_trans_id='$so_trans_id', so_model='$so_model', so_qty='$so_qty', so_unit='$so_unit', so_unit_price='$so_unit_price', so_total_amount='$so_total_amount', so_date_delivered='$so_date_delivered' WHERE so_request_id='$so_request_id'";
     $result = mysqli_query($link, $query) or die(mysqli_error($link));
     if($result){
         $alertMessage = "<div class='alert alert-success' role='alert'>
@@ -111,6 +112,9 @@ function test_input($data) {
                   <!-- form start -->
                   <form  method="POST"  action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>?so_request_id=<?php echo $so_request_id; ?>">
                     <div class="col-md-12">
+                      <div class="form-group">
+                        <input type="hidden" class="form-control" placeholder="so trans id" name="so_trans_id" value="<?php echo $so_trans_id; ?>" disabled>
+                      </div>
                       <div class="form-group">
                         <label>Model</label>
                         <input type="text" class="form-control" placeholder="Model" name="so_model" value="<?php echo $so_model; ?>" disabled>
