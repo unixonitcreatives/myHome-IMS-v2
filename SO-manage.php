@@ -80,9 +80,10 @@ $so_get_amount_receive=
                              if(mysqli_num_rows($result) > 0){
 
                                      while($row = mysqli_fetch_array($result)){
+
                                          echo "<tr>";
                                              echo "<td>" . $row['so_trans_id'] . "</td>";
-                                             echo "<td>" . $row['so_customer_name'] . "</td>";
+                                             echo "<td>" . $row['so_customer_name']  . "</td>";
                                              echo "<td>  ₱ " . number_format($row['so_grand_total'],2) . "</td>";
                                              echo "<td>" . $row['so_paymentTerms'] . "</td>";
                                             echo "<td>";

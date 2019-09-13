@@ -238,11 +238,11 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
                                   <select class="form-control" name="so_model[]" id="so_model<?php echo $x; ?>" onchange="getProductData(<?php echo $x; ?>)">
                                     <option value="">~~SELECT MODEL~~</option>
                                     <?php
-                                    $productSql = "SELECT * FROM suppliers_products ";
+                                    $productSql = "SELECT * FROM inventory ";
                                     $productData = $link->query($productSql);
 
                                     while($row = $productData->fetch_array()) {
-                                      echo "<option value='".$row['suppliers_product_id']."' id='changeProduct".$row['suppliers_product_id']."'>".$row['sup_prod_model']."</option>";
+                                      echo "<option value='".$row['inv_id']."' id='changeProduct".$row['inv_id']."'>".$row['sku_code']."</option>";
                                     } // /while
 
                                     ?>

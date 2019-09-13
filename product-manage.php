@@ -55,10 +55,8 @@
                           <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Branch</th>
                           <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Product Code</th>
                           <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Model</th>
-                          <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">PO Number</th>
                           <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Qty</th>
                           <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">SRP</th>
-                          <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Date Receive</th>
                           <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Remarks</th>
                           <th>Action</th>
                         </tr>
@@ -69,10 +67,9 @@
                         require_once "config.php";
 
                         // Attempt select query execution
-                        $query = "SELECT * FROM inventory ORDER BY inv_id DESC";
+                        $query = "SELECT inventory.inv_id,inventory.category,inventory.subCategory,inventory.branch_name,inventory.sku_code,inventory.model,inventory.retail_price,inventory.remarks, SUM(add_inv.add_inv_qty) AS stockCount FROM inventory JOIN add_inv WHERE add_inv.inv_id = inventory.inv_id GROUP BY inventory.inv_id";
                         if($result = mysqli_query($link, $query)){
                           if(mysqli_num_rows($result) > 0){
-
                             while($row = mysqli_fetch_array($result)){
                               echo "<tr>";
                               echo "<td><a href='product-stocks.php?inv_id=". $row['inv_id'] ."' title='View History' data-toggle='tooltip'>" . $row['inv_id'] . "</a></td>";
@@ -81,10 +78,8 @@
                               echo "<td>" . $row['branch_name'] . "</td>";
                               echo "<td>" . $row['sku_code'] . "</td>";
                               echo "<td>" . $row['model'] . "</td>";
-                              echo "<td>" . $row['po_number'] . "</td>";
-                              echo "<td>" . $row['qty'] . "</td>";
+                              echo "<td>" . $row['stockCount'] . "</td>";
                               echo "<td>" . $row['retail_price'] . "</td>";
-                              echo "<td>" . $row['date_arriv'] . "</td>";
                               echo "<td>" . $row['remarks'] . "</td>";
                               echo "<td>";
                               echo "<a href='product-add-stocks.php?inv_id=". $row['inv_id'] ."&&sku_code=".$row['sku_code']."' title='Add Stocks' data-toggle='tooltip'><span class='glyphicon glyphicon-plus'></span></a>";

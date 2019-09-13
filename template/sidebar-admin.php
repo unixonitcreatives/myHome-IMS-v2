@@ -84,8 +84,8 @@
                             </a>
                             <ul class="treeview-menu">
                                 <!-- <li><a href="PO-add.php">Add PO</a></li> -->
-                                <li><a href="product-add.php">Recieve Stocks</a></li>
-                                <li><a href="product-manage.php">Manage Stocks</a></li>
+                                <li><a href="product-add.php">Add Product</a></li>
+                                <li><a href="product-manage.php">Manage Products</a></li>
                                 <li><a href="#">Returns</a></li>
                             </ul>
                         </li>

@@ -1,6 +1,7 @@
 var manageOrderTable;
 var suppliers_product_id;
 var suppliers_id;
+var inv_id;
 
 
 
@@ -27,7 +28,7 @@ function soAddRow() {
 	}
 
 	$.ajax({
-		url: "fetchProductData.php",
+		url: "soFetchProductData.php",
 		type: 'post',
 		dataType: 'json',
 		success:function(response) {
@@ -102,18 +103,18 @@ function getProductData(row = null) {
 
 		} else {
 			$.ajax({
-				url: 'fetchSelectedProduct.php',
+				url: 'soFetchSelectedProduct.php',
 				type: 'POST',
-				data: {suppliers_product_id : suppliers_product_id},
+				data: {inv_id:inv_id},
 				dataType: 'json',
 				success:function(response) {
 					// setting the rate value into the rate input field
-					$("#so_unit_price"+row).val(response.sup_prod_price);
-					$("#so_total_amountValue"+row).val(response.sup_prod_price);
+					$("#so_unit_price"+row).val(response.retail_price);
+					$("#so_total_amountValue"+row).val(response.retail_price);
 
 					$("#so_qty"+row).val(1);
 
-					var total = Number(response.sup_prod_price) * 1;
+					var total = Number(response.retail_price) * 1;
 					total = total.toFixed(2);
 					$("#price"+row).val(total);
 					$("#so_total_amount"+row).val(total);
@@ -255,11 +256,6 @@ function resetOrderForm() {
 	$(".form-group").removeClass('has-success').removeClass('has-error');
 } // /reset order form
 
-
-function delFeeSubamount() {
-
-
-}
 
 // remove order from server
 /*function removeOrder(orderId = null) {

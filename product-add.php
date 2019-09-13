@@ -19,13 +19,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     $branch = test_input($_POST['branch_name']);
     $pCode = test_input($_POST['pCode']);
     $model = test_input($_POST['model']);
-    $poNum = test_input($_POST['po_number']);
-    $qty = test_input($_POST['qty']);
     $srp = test_input($_POST['retail_price']);
-    $date = test_input($_POST['date_receive']);
     $remarks = test_input($_POST['remarks']);
 
-    $query = "INSERT INTO inventory (category, subCategory, branch_name, sku_code, model, po_number, qty, retail_price, date_arriv, remarks) VALUES ('$category', '$subCategory', '$branch', '$pCode', '$model', '$poNum', '$qty', '$srp', '$date', '$remarks')";
+    $query = "INSERT INTO inventory (category, subCategory, branch_name, sku_code, model, retail_price, remarks) VALUES ('$category', '$subCategory', '$branch', '$pCode', '$model', '$srp', '$remarks')";
     $result = mysqli_query($link, $query) or die(mysqli_error($link));
 
     if($result){
@@ -168,34 +165,10 @@ function test_input($data) {
                 </div>
 
                 <div class="col-md-6">
-                  <div class="form-group">
-                    <label>PO Number</label>
-                    <select class="form-control select2" style="width: 100%;" name="po_number">
-                      <?php
-
-                      $query = "select po_trans_id from po_transactions order by po_trans_id desc";
-                      $result = mysqli_query($link, $query);
-
-
-                      while ($row = mysqli_fetch_assoc($result)) { ?>
-                        <option value="<?php echo $row['po_trans_id']; ?>"><?php echo $row['po_trans_id']; ?></option>
-                      <?php } ?>
-                    </select>
-                  </div>
-
-                  <div class="form-group">
-                    <label>Quantity</label>
-                    <input type="number" class="form-control" placeholder="Quantity" name="qty">
-                  </div>
 
                   <div class="form-group">
                     <label>Retail Price</label>
                     <input type="number" class="form-control" placeholder="Retail Price" name="retail_price">
-                  </div>
-
-                  <div class="form-group">
-                    <label>Date Recieve</label>
-                    <input type="date" class="form-control" placeholder="Date Receive" name="date_receive" id="pfDate">
                   </div>
 
                   <div class="form-group">
