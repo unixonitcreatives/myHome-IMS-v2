@@ -163,7 +163,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 
                   <div class="col-md-12" ><!--id="txtHint"-->
                     <div class="table-responsive">
-                      <table class="table" id="productTable">
+                      <table class="table" id="poproductTable">
                         <thead>
                           <tr>
                             <th>Model</th>
@@ -181,7 +181,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
                             <tr id="row<?php echo $x; ?>" class="<?php echo $arrayNumber; ?>">
                               <td>
                                 <div class="form-group">
-                                  <select class="form-control" name="sup_prod_model[]" id="sup_prod_model<?php echo $x; ?>" onchange="getProductData(<?php echo $x; ?>)">
+                                  <select class="form-control" name="sup_prod_model[]" id="sup_prod_model<?php echo $x; ?>" onchange="pogetProductData(<?php echo $x; ?>)">
                                     <option value="">~~SELECT MODEL~~</option>
                                     <?php
                                     $productSql = "SELECT * FROM suppliers_products ";
@@ -202,7 +202,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
                               </td>
                               <td>
                                 <div class="form-group"><!--QTY-->
-                                  <input type="number" name="po_qty[]" id="po_qty<?php echo $x; ?>" onkeyup="getTotal(<?php echo $x; ?>)" autocomplete="off" class="form-control" min="1" />
+                                  <input type="number" name="po_qty[]" id="po_qty<?php echo $x; ?>" onkeyup="pogetTotal(<?php echo $x; ?>)" autocomplete="off" class="form-control" min="1" />
                                 </div>
                               </td>
                               <td>
@@ -233,7 +233,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
                         <!-- /table -->
                       </div>
                       <!--/table-responsive-->
-                      <button type="button" class="btn btn-default" onclick="addRow()" id="addRowBtn" data-loading-text="Loading..."> <i class="glyphicon glyphicon-plus-sign"></i> Add Row </button>
+                      <button type="button" class="btn btn-default" onclick="poaddRow()" id="poaddRowBtn" data-loading-text="Loading..."> <i class="glyphicon glyphicon-plus-sign"></i> Add Row </button>
                     </div>
 
                     <!-- ========================= /FORM ============================ -->
