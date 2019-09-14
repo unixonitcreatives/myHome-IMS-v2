@@ -1,23 +1,17 @@
-var manageOrderTable;
-var suppliers_product_id;
-var suppliers_id;
-var inv_id;
-
-
 
 function soAddRow() {
-	$("#addRowBtn").button("loading");
+	$("#soaddRowBtn").button("loading");
 
 
-	var tableLength = $("#productTable tbody tr").length;
+	var tableLength = $("#soproductTable tbody tr").length;
 
 	var tableRow;
 	var arrayNumber;
 	var count;
 
 	if(tableLength > 0) {
-		tableRow = $("#productTable tbody tr:last").attr('id');
-		arrayNumber = $("#productTable tbody tr:last").attr('class');
+		tableRow = $("#soproductTable tbody tr:last").attr('id');
+		arrayNumber = $("#soproductTable tbody tr:last").attr('class');
 		count = tableRow.substring(3);
 		count = Number(count) + 1;
 		arrayNumber = Number(arrayNumber) + 1;
@@ -32,13 +26,13 @@ function soAddRow() {
 		type: 'post',
 		dataType: 'json',
 		success:function(response) {
-			$("#addRowBtn").button("reset");
+			$("#soaddRowBtn").button("reset");
 
 			var tr = '<tr id="row'+count+'" class="'+arrayNumber+'">'+
 				'<td>'+
 					'<div class="form-group">'+
 
-					'<select class="form-control" name="so_model[]" id="so_model'+count+'" onchange="getProductData('+count+')" >'+
+					'<select class="form-control" name="so_model[]" id="so_model'+count+'" onchange="sogetProductData('+count+')" >'+
 						'<option value="">~~SELECT MODEL~~</option>';
 						//console.log(response);
 						$.each(response, function(index, value) {
@@ -69,9 +63,9 @@ function soAddRow() {
 				'</td>'+
 			'</tr>';
 			if(tableLength > 0) {
-				$("#productTable tbody tr:last").after(tr);
+				$("#soproductTable tbody tr:last").after(tr);
 			} else {
-				$("#productTable tbody").append(tr);
+				$("#soproductTable tbody").append(tr);
 			}
 
 		} // /success
@@ -89,11 +83,11 @@ function removeProductRow(row = null) {
 }
 
 // select on product data
-function getProductData(row = null) {
+function sogetProductData(row = null) {
 	if(row) {
-		var suppliers_product_id = $("#so_model"+row).val();
+		var inv_id = $("#so_model"+row).val();
 
-		if(suppliers_product_id == "") {
+		if(inv_id == "") {
 			$("#so_unit_price"+row).val("");
 
 			$("#so_qty"+row).val("");
@@ -132,7 +126,7 @@ function getProductData(row = null) {
 } // /select on product data
 
 // table total
-function getTotal(row = null) {
+function sogetTotal(row = null) {
 	if(row) {
 		var total = Number($("#price"+row).val()) * Number($("#so_qty"+row).val());
 		total = total.toFixed(2);
@@ -147,10 +141,10 @@ function getTotal(row = null) {
 }
 
 function subAmount() {
-	var tableProductLength = $("#productTable tbody tr").length;
+	var tableProductLength = $("#soproductTable tbody tr").length;
 	var totalSubAmount = 0;
 	for(x = 0; x < tableProductLength; x++) {
-		var tr = $("#productTable tbody tr")[x];
+		var tr = $("#soproductTable tbody tr")[x];
 		var count = $(tr).attr('id');
 		count = count.substring(3);
 

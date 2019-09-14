@@ -216,7 +216,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 
                   <div class="col-md-12" ><!--id="txtHint"-->
                     <div class="table-responsive">
-                      <table class="table" id="productTable">
+                      <table class="table" id="soproductTable">
                         <thead>
                           <tr>
                             <th>Product Code</th>
@@ -235,7 +235,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
                             <tr id="row<?php echo $x; ?>" class="<?php echo $arrayNumber; ?>">
                               <td>
                                 <div class="form-group">
-                                  <select class="form-control" name="so_model[]" id="so_model<?php echo $x; ?>" onchange="getProductData(<?php echo $x; ?>)">
+                                  <select class="form-control" name="so_model[]" id="so_model<?php echo $x; ?>" onchange="sogetProductData(<?php echo $x; ?>)">
                                     <option value="">~~SELECT MODEL~~</option>
                                     <?php
                                     $productSql = "SELECT * FROM inventory ";
@@ -256,11 +256,11 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
                               </td>
                               <td>
                                 <div class="form-group"><!--QTY-->
-                                  <input type="number" name="so_qty[]" id="so_qty<?php echo $x; ?>" onkeyup="getTotal(<?php echo $x; ?>)" autocomplete="off" class="form-control" min="1" />
+                                  <input type="number" name="so_qty[]" id="so_qty<?php echo $x; ?>" onkeyup="sogetTotal(<?php echo $x; ?>)" autocomplete="off" class="form-control" min="1" />
                                 </div>
                               </td>
                               <td>
-                                  <input type="text" name="price[]" id="price<?php echo $x; ?>" onkeyup="getTotal(<?php echo $x; ?>)" autocomplete="off" class="form-control" />
+                                  <input type="text" name="price[]" id="price<?php echo $x; ?>" onkeyup="sogetTotal(<?php echo $x; ?>)" autocomplete="off" class="form-control" />
                               </td>
                               <td>
                                 <!--TOTAL PRICE-->

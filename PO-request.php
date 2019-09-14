@@ -223,8 +223,8 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
                               <td></td><td></td><td><label for="subTotal" class="pull-right">Sub Amount:</label></td>
                               <td>
                                 <div class="form-group">
-                                  <input type="text" class="form-control" id="subTotal" name="subTotal" disabled />
-                                  <input type="hidden" class="form-control" id="subTotalValue" name="subTotalValue" />
+                                  <input type="text" class="form-control" id="posubTotal" name="subTotal" disabled />
+                                  <input type="hidden" class="form-control" id="posubTotal" name="subTotalValue" />
                                 </div>
                               </td>
                             </tr>

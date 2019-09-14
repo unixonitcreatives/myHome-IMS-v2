@@ -139,10 +139,10 @@ function pogetTotal(row = null) {
 }
 
 function posubAmount() {
-	var tableProductLength = $("#productTable tbody tr").length;
+	var tableProductLength = $("#poproductTable tbody tr").length;
 	var totalSubAmount = 0;
 	for(x = 0; x < tableProductLength; x++) {
-		var tr = $("#productTable tbody tr")[x];
+		var tr = $("#poproductTable tbody tr")[x];
 		var count = $(tr).attr('id');
 		count = count.substring(3);
 
@@ -152,87 +152,10 @@ function posubAmount() {
 	totalSubAmount = totalSubAmount.toFixed(2);
 
 	// sub total
-	$("#subTotal").val(totalSubAmount);
-	$("#subTotalValue").val(totalSubAmount);
-
-	/* vat
-	var vat = (Number($("#subTotal").val())/100) * 13;
-	vat = vat.toFixed(2);
-	$("#vat").val(vat);
-	$("#vatValue").val(vat); */
-
-	// total amount
-	var totalAmount = $("#subTotal").val();
-	//var totalAmount = (Number($("#subTotal").val()) + Number($("#vat").val()));
-	totalAmount = totalAmount.toFixed(2);
-	$("#totalAmount").val(totalAmount);
-	$("#totalAmountValue").val(totalAmount);
-
-	/*var discount = $("#discount").val();
-	if(discount) {
-		var grandTotal = Number($("#totalAmount").val()) - Number(discount);
-		grandTotal = grandTotal.toFixed(2);
-		$("#grandTotal").val(grandTotal);
-		$("#grandTotalValue").val(grandTotal);
-	} else {
-		$("#grandTotal").val(totalAmount);
-		$("#grandTotalValue").val(totalAmount);
-	} // /else discount
-
-	var paidAmount = $("#paid").val();
-	if(paidAmount) {
-		paidAmount =  Number($("#grandTotal").val()) - Number(paidAmount);
-		paidAmount = paidAmount.toFixed(2);
-		$("#due").val(paidAmount);
-		$("#dueValue").val(paidAmount);
-	} else {
-		$("#due").val($("#grandTotal").val());
-		$("#dueValue").val($("#grandTotal").val());
-	} // else */
+	$("#posubTotal").val(totalSubAmount);
+	$("#posubTotalValue").val(totalSubAmount);
 
 } // /sub total amount
-
-/*function discountFunc() {
-	var discount = $("#discount").val();
- 	var totalAmount = Number($("#totalAmount").val());
- 	totalAmount = totalAmount.toFixed(2);
-
- 	var grandTotal;
- 	if(totalAmount) {
- 		grandTotal = Number($("#totalAmount").val()) - Number($("#discount").val());
- 		grandTotal = grandTotal.toFixed(2);
-
- 		$("#grandTotal").val(grandTotal);
- 		$("#grandTotalValue").val(grandTotal);
- 	} else {
- 	}
-
- 	var paid = $("#paid").val();
-
- 	var dueAmount;
- 	if(paid) {
- 		dueAmount = Number($("#grandTotal").val()) - Number($("#paid").val());
- 		dueAmount = dueAmount.toFixed(2);
-
- 		$("#due").val(dueAmount);
- 		$("#dueValue").val(dueAmount);
- 	} else {
- 		$("#due").val($("#grandTotal").val());
- 		$("#dueValue").val($("#grandTotal").val());
- 	}
-
-} // /discount function */
-
-/*function paidAmount() {
-	var grandTotal = $("#grandTotal").val();
-
-	if(grandTotal) {
-		var dueAmount = Number($("#grandTotal").val()) - Number($("#paid").val());
-		dueAmount = dueAmount.toFixed(2);
-		$("#due").val(dueAmount);
-		$("#dueValue").val(dueAmount);
-	} // /if
-} // /paid amoutn function */
 
 
 function resetOrderForm() {
@@ -245,167 +168,6 @@ function resetOrderForm() {
 } // /reset order form
 
 
-// remove order from server
-/*function removeOrder(orderId = null) {
-	if(orderId) {
-		$("#removeOrderBtn").unbind('click').bind('click', function() {
-			$("#removeOrderBtn").button('loading');
-
-			$.ajax({
-				url: 'php_action/removeOrder.php',
-				type: 'post',
-				data: {orderId : orderId},
-				dataType: 'json',
-				success:function(response) {
-					$("#removeOrderBtn").button('reset');
-
-					if(response.success == true) {
-
-						manageOrderTable.ajax.reload(null, false);
-						// hide modal
-						$("#removeOrderModal").modal('hide');
-						// success messages
-						$("#success-messages").html('<div class="alert alert-success">'+
-	            '<button type="button" class="close" data-dismiss="alert">&times;</button>'+
-	            '<strong><i class="glyphicon glyphicon-ok-sign"></i></strong> '+ response.messages +
-	          '</div>');
-
-						// remove the mesages
-	          $(".alert-success").delay(500).show(10, function() {
-							$(this).delay(3000).hide(10, function() {
-								$(this).remove();
-							});
-						}); // /.alert
-
-					} else {
-						// error messages
-						$(".removeOrderMessages").html('<div class="alert alert-warning">'+
-	            '<button type="button" class="close" data-dismiss="alert">&times;</button>'+
-	            '<strong><i class="glyphicon glyphicon-ok-sign"></i></strong> '+ response.messages +
-	          '</div>');
-
-						// remove the mesages
-	          $(".alert-success").delay(500).show(10, function() {
-							$(this).delay(3000).hide(10, function() {
-								$(this).remove();
-							});
-						}); // /.alert
-					} // /else
-
-				} // /success
-			});  // /ajax function to remove the order
-
-		}); // /remove order button clicked
-
-
-	} else {
-		alert('error! refresh the page again');
-	}
-}*/
-// /remove order from server
-
-// Payment ORDER
-/*function paymentOrder(orderId = null) {
-	if(orderId) {
-
-		$("#orderDate").datepicker();
-
-		$.ajax({
-			url: 'php_action/fetchOrderData.php',
-			type: 'post',
-			data: {orderId: orderId},
-			dataType: 'json',
-			success:function(response) {
-
-				// due
-				$("#due").val(response.order[10]);
-
-				// pay amount
-				$("#payAmount").val(response.order[10]);
-
-				var paidAmount = response.order[9]
-				var dueAmount = response.order[10];
-				var grandTotal = response.order[8];
-
-				// update payment
-				$("#updatePaymentOrderBtn").unbind('click').bind('click', function() {
-					var payAmount = $("#payAmount").val();
-					var paymentType = $("#paymentType").val();
-					var paymentStatus = $("#paymentStatus").val();
-
-					if(payAmount == "") {
-						$("#payAmount").after('<p class="text-danger">The Pay Amount field is required</p>');
-						$("#payAmount").closest('.form-group').addClass('has-error');
-					} else {
-						$("#payAmount").closest('.form-group').addClass('has-success');
-					}
-
-					if(paymentType == "") {
-						$("#paymentType").after('<p class="text-danger">The Pay Amount field is required</p>');
-						$("#paymentType").closest('.form-group').addClass('has-error');
-					} else {
-						$("#paymentType").closest('.form-group').addClass('has-success');
-					}
-
-					if(paymentStatus == "") {
-						$("#paymentStatus").after('<p class="text-danger">The Pay Amount field is required</p>');
-						$("#paymentStatus").closest('.form-group').addClass('has-error');
-					} else {
-						$("#paymentStatus").closest('.form-group').addClass('has-success');
-					}
-
-					if(payAmount && paymentType && paymentStatus) {
-						$("#updatePaymentOrderBtn").button('loading');
-						$.ajax({
-							url: 'php_action/editPayment.php',
-							type: 'post',
-							data: {
-								orderId: orderId,
-								payAmount: payAmount,
-								paymentType: paymentType,
-								paymentStatus: paymentStatus,
-								paidAmount: paidAmount,
-								grandTotal: grandTotal
-							},
-							dataType: 'json',
-							success:function(response) {
-								$("#updatePaymentOrderBtn").button('loading');
-
-								// remove error
-								$('.text-danger').remove();
-								$('.form-group').removeClass('has-error').removeClass('has-success');
-
-								$("#paymentOrderModal").modal('hide');
-
-								$("#success-messages").html('<div class="alert alert-success">'+
-			            '<button type="button" class="close" data-dismiss="alert">&times;</button>'+
-			            '<strong><i class="glyphicon glyphicon-ok-sign"></i></strong> '+ response.messages +
-			          '</div>');
-
-								// remove the mesages
-			          $(".alert-success").delay(500).show(10, function() {
-									$(this).delay(3000).hide(10, function() {
-										$(this).remove();
-									});
-								}); // /.alert
-
-			          // refresh the manage order table
-								manageOrderTable.ajax.reload(null, false);
-
-							} //
-
-						});
-					} // /if
-
-					return false;
-				}); // /update payment
-
-			} // /success
-		}); // fetch order data
-	} else {
-		alert('Error ! Refresh the page again');
-	}
-}*/
 
 function printSupplier() {
 
