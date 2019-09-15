@@ -76,7 +76,7 @@ function poaddRow() {
 function removeProductRow(row = null) {
 	if(row) {
 		$("#row"+row).remove();
-		subAmount();
+		posubAmount();
 	} else {
 		alert('error! Refresh the page again');
 	}
@@ -113,7 +113,7 @@ function pogetProductData(row = null) {
 					$("#po_totalValue"+row).val(total);
 
 
-					subAmount();
+					posubAmount();
 				} // /success
 			}); // /ajax function to fetch the product data
 		}
@@ -129,7 +129,7 @@ function pogetTotal(row = null) {
 		var total = Number($("#po_price"+row).val()) * Number($("#po_qty"+row).val());
 		total = total.toFixed(2);
 		$("#po_total"+row).val(total);
-		//$("#po_totalValue"+row).val(total);
+		$("#po_totalValue"+row).val(total);
 
 		posubAmount();
 

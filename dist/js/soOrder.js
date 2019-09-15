@@ -48,15 +48,15 @@ function soAddRow() {
 				'</td>'+
 				'<td>'+
 					'<div class="form-group">'+
-					'<input type="number" name="so_qty[]" id="so_qty'+count+'" onkeyup="getTotal('+count+')" autocomplete="off" class="form-control" min="1" />'+
+					'<input type="number" name="so_qty[]" id="so_qty'+count+'" onkeyup="sogetTotal('+count+')" autocomplete="off" class="form-control" min="1" />'+
 					'</div>'+
 				'</td>'+
 				'<td>'+
-					'<input type="text" name="price[]" id="price'+count+'" onkeyup="getTotal('+count+')" autocomplete="off" class="form-control"  />'+
+					'<input type="text" name="price[]" id="price'+count+'" onkeyup="sogetTotal('+count+')" autocomplete="off" class="form-control"  />'+
 				'</td>'+
 				'<td>'+
 					'<input type="text" name="so_total_amount[]" id="so_total_amount'+count+'" autocomplete="off" class="form-control" disabled="true" />'+
-					'<input type="hidden" name="so_total_amountValue[]" id="so_total_amountValue'+count+'" autocomplete="off" class="form-control" />'+
+					'<input type="hidden" name="so_totalValue[]" id="so_totalValue'+count+'" autocomplete="off" class="form-control" />'+
 				'</td>'+
 				'<td>'+
 					'<button class="btn btn-default removeProductRowBtn" type="button" onclick="removeProductRow('+count+')"><i class="glyphicon glyphicon-trash"></i></button>'+
@@ -104,15 +104,15 @@ function sogetProductData(row = null) {
 				success:function(response) {
 					// setting the rate value into the rate input field
 					$("#so_unit_price"+row).val(response.retail_price);
-					$("#so_total_amountValue"+row).val(response.retail_price);
+					$("#so_unit_priceValue"+row).val(response.retail_price);
 
 					$("#so_qty"+row).val(1);
 
 					var total = Number(response.retail_price) * 1;
 					total = total.toFixed(2);
 					$("#price"+row).val(total);
-					$("#so_total_amount"+row).val(total);
-					$("#so_total_amountValue"+row).val(total);
+					//$("#so_total_amount"+row).val();
+					//$("#so_total_amountValue"+row).val();
 
 
 					subAmount();
@@ -131,7 +131,9 @@ function sogetTotal(row = null) {
 		var total = Number($("#price"+row).val()) * Number($("#so_qty"+row).val());
 		total = total.toFixed(2);
 		$("#so_total_amount"+row).val(total);
-		//$("#po_totalValue"+row).val(total);
+		$("#so_totalValue"+row).val(total);
+
+
 
 		subAmount();
 
@@ -156,23 +158,14 @@ function subAmount() {
 	$("#so_sub_total").val(totalSubAmount);
 	$("#so_sub_totalValue").val(totalSubAmount);
 
+
+
 	/* vat
 	var vat = (Number($("#subTotal").val())/100) * 13;
 	vat = vat.toFixed(2);
 	$("#vat").val(vat);
 	$("#vatValue").val(vat); */
 
-	//delivery fee
-	var delFee = Number($("#so_delivery_fee").val());
-	delFee = delFee.toFixed(2);
-	$("#so_delivery_fee").val(delFee);
-
-	// total amount
-	var totalAmount = Number($("#so_delivery_fee").val()) + Number($("#so_sub_total").val());
-	//var totalAmount = (Number($("#subTotal").val()) + Number($("#vat").val()));
-	totalAmount = totalAmount.toFixed(2);
-	$("#so_total_amount").val(totalAmount);
-	$("#so_total_amountValue").val(totalAmount);
 
 	/*var discount = $("#discount").val();
 	if(discount) {
@@ -197,6 +190,25 @@ function subAmount() {
 	} // else */
 
 } // /sub total amount
+
+function delFee(){
+
+	//delivery fee
+	var delFee = Number($("#so_delivery_fee").val());
+	delFee = delFee.toFixed(2);
+	$("#so_delivery_fee").val(delFee);
+
+	var subTotalAmount = $("#so_sub_total").val();
+
+	// total amount
+	var totalAmount = Number(delFee) + Number(subTotalAmount);
+	//var totalAmount = (Number($("#subTotal").val()) + Number($("#vat").val()));
+	totalAmount = totalAmount.toFixed(2);
+	$("#so_grand_total").val(totalAmount);
+	$("#so_grand_totalAmount").val(totalAmount);
+
+
+}
 
 /*function discountFunc() {
 	var discount = $("#discount").val();

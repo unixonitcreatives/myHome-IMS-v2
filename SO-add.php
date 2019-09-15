@@ -9,23 +9,6 @@ $Accounting_auth = 0;
 include('template/user_auth.php');
 
 
-/*$get_suppliers_id = $_GET['suppliers_id'];
-
-$query = "SELECT * from suppliers WHERE suppliers_id='$get_suppliers_id'";
-$result = mysqli_query($link, $query) or die(mysqli_error($link));
-if (mysqli_num_rows($result) > 0) {
-while ($row = mysqli_fetch_assoc($result)){
-$supplier_name              =   $row['supplier_name'];
-$supplier_contact_person    =   $row['supplier_contact_person'];
-$supplier_email             =   $row['supplier_email'];
-$supplier_number            =   $row['supplier_number'];
-$supplier_address           =   $row['supplier_address'];
-$created_at                 =   $row['created_at'];
-
-}
-}else {
-$alertMessage="<div class='alert alert-danger' role='alert'>Theres Nothing to see Here.</div>";
-}*/
 
 //so_items
 $so_trans_id=$so_model=$so_qty=$so_unit_price=$price=$so_total_amount=$so_date_delivered=$alertMessage="";
@@ -33,14 +16,17 @@ $so_trans_id=$so_model=$so_qty=$so_unit_price=$price=$so_total_amount=$so_date_d
 //so_transactions
 $so_date=$so_customer_name=$so_sub_total=$so_paymentTerms=$so_deliveryFee=$so_grand_total=$so_staff=$so_remarks=$so_user="";
 
+require_once "config.php";
+
 
 //If the form is submitted
 if($_SERVER['REQUEST_METHOD'] == "POST"){
+
   $so_customer_name               =$_POST['so_customer_name'];
-  $so_sub_total                   =$_POST['so_sub_total'];
+  $so_sub_total                   =$_POST['so_sub_totalValue'];
   $so_paymentTerms                =$_POST['so_paymentTerms'];
   $so_deliveryFee                 =$_POST['so_delivery_fee'];
-  $so_grand_total                 =$_POST['so_grand_total'];
+  $so_grand_total                 =$_POST['so_grand_totalAmount'];
   $so_staff                       =$_POST['so_staff'];
   $so_remarks                     =$_POST['so_remarks'];
 
@@ -49,7 +35,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
   $user = $_SESSION["username"];
 
   //INSERT query to so_transactions table
-  $query = "INSERT INTO so_transactions (so_date, so_customer_name, so_sub_total, so_paymentTerms, so_deliveryFee, so_grand_total, so_staff, so_remarks, so_user) VALUES (CURRENT_TIMESTAMP, '$so_customer_name', '$so_sub_total', '$so_paymentTerms', '$so_deliveryFee', '$so_grand_total', '$so_staff', '$so_remarks', '$user')";
+  $query = "INSERT INTO so_transactions (so_date, so_customer_name, so_sub_total, so_paymentTerms, so_delivery_fee, so_grand_total, so_staff, so_remarks, so_user) VALUES (CURRENT_TIMESTAMP, '$so_customer_name', '$so_sub_total', '$so_paymentTerms', '$so_deliveryFee', '$so_grand_total', '$so_staff', '$so_remarks', '$user')";
   $result = mysqli_query($link, $query) or die(mysqli_error($link));
 
   if ($result) {
@@ -63,32 +49,43 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 
     for ($j = 0; $j < $count; $j++) {
 
-      $query = "INSERT INTO so_items (so_trans_id, so_model, so_qty, so_unit_price, price, so_total_amount, so_date_delivered) VALUES (
-        '".$so_trans_id."',
-        '".$_POST['so_model'][$j]."',
-        '".$_POST['so_unit_price'][$j]."',
-        '".$_POST['so_qty'][$j]."',
-        '".$_POST['price'][$j]."',
-        '".$_POST['so_total_amount'][$j]."',
-        '".$_POST['so_date_delivered'][$j]."')";
+      $query = "SELECT stock_qty FROM inventory WHERE inv_id='".$_POST['so_model'][$j]."'";
+      $updateProductQuantityData = $link->query($query);
 
-        $result = mysqli_multi_query($link, $query) or die(mysqli_error($link));
+        while ($updateProductQuantityResult = $updateProductQuantityData->fetch_row()){
+          $updateQty[$j] = $updateProductQuantityResult[0] - $_POST['so_qty'][$j];
+          //update add_inv
+          $update_table_query = "UPDATE inventory SET stock_qty='".$updateQty[$j]."' WHERE inv_id = '".$_POST['so_model'][$j]."' ";
+          $link->query($update_table_query);
 
-      }
+            //add order in so_items table
+            $insert_order_query = "INSERT INTO so_items (so_trans_id, so_model, so_unit_price, so_qty, price, so_total_amount, so_date_delivered) VALUES (
+              '".$so_trans_id."',
+              '".$_POST['so_model'][$j]."',
+              '".$_POST['so_unit_priceValue'][$j]."',
+              '".$_POST['so_qty'][$j]."',
+              '".$_POST['price'][$j]."',
+              '".$_POST['so_totalValue'][$j]."',
+              NULL)";
 
-      if($result){
-        $alertMessage = "<div class='alert alert-success' role='alert'>
-        New Sales Order Created.
-        </div>";
+              $insert_order_query_result = mysqli_multi_query($link, $insert_order_query) or die(mysqli_error($link));
+              //INSERT query to so_transactions table end
+              if($insert_order_query_result){
+                $alertMessage = "<div class='alert alert-success' role='alert'>
+                New Sales Order Created.
+                </div>";
 
-      }else{
-        $alertMessage = "<div class='alert alert-danger' role='alert'>
-        Error Creating Sales Order.
-        </div>";}
-        //INSERT query to so_transactions table end
+              }else{
+                $alertMessage = "<div class='alert alert-danger' role='alert'>
+                Error Creating Sales Order.
+                </div>";}
 
-      }
-    }
+          }// /while
+
+      }// /for
+    }// /if(result)
+  }// /POST
+
 
     function test_input($data) {
       $data = trim($data);
@@ -168,7 +165,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
                     <div class="form-group">
                       <label class="text text-red">*</label>
                       <label>Date</label>
-                      <input type="date" onload="getDate()" class="form-control" id="so_date"  name="so_date"  disabled>
+                      <input type="date" onload="getDate()" class="form-control" id="so_date"  disabled>
                     </div>
                   </div>
                   <div class="col-md-6">
@@ -187,7 +184,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
                     <div class="form-group">
                       <label class="text text-red">*</label>
                       <label>Sales Person</label>
-                      <select class="form-control select2" style="width: 100%;" id="" maxlength="50" placeholder="customer name" name="so_customer_name" required>
+                      <select class="form-control select2" style="width: 100%;" id="" maxlength="50" placeholder="customer name" name="so_staff" required>
                         <option selected="selected">~~SELECT~~</option>
                         <?php
 
@@ -260,12 +257,12 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
                                 </div>
                               </td>
                               <td>
-                                  <input type="text" name="price[]" id="price<?php echo $x; ?>" onkeyup="sogetTotal(<?php echo $x; ?>)" autocomplete="off" class="form-control" />
+                                <input type="text" name="price[]" id="price<?php echo $x; ?>" onkeyup="sogetTotal(<?php echo $x; ?>)" autocomplete="off" class="form-control" />
                               </td>
                               <td>
                                 <!--TOTAL PRICE-->
                                 <input type="text" name="so_total_amount[]" id="so_total_amount<?php echo $x; ?>" autocomplete="off" class="form-control" disabled="true" />
-                                <input type="hidden" name="so_total_amountValue[]" id="so_total_amountValue<?php echo $x; ?>" autocomplete="off" class="form-control" />
+                                <input type="hidden" name="so_totalValue[]" id="so_totalValue<?php echo $x; ?>" autocomplete="off" class="form-control" />
                               </td>
                               <td>
                                 <button class="btn btn-default removeProductRowBtn" type="button" id="removeProductRowBtn" onclick="removeProductRow(<?php echo $x; ?>)"><i class="glyphicon glyphicon-trash"></i></button>
@@ -290,17 +287,17 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
                               <td></td><td></td><td></td><td><label for="subTotal" class="pull-right">Delivery Fee:</label></td>
                               <td>
                                 <div class="form-group">
-                                  <input type="number" class="form-control" id="so_delivery_fee" name="so_delivery_fee"  value="0.00"/>
+                                  <input type="number" class="form-control" id="so_delivery_fee" name="so_delivery_fee" onchange="delFee()" value="0.00"/>
                                 </div>
                               </td>
                             </tr>
 
                             <tr>
-                              <td></td><td></td><td></td><td><label for="subTotal" class="pull-right">Total Amount:</label></td>
+                              <td></td><td></td><td></td><td><label for="subTotal" class="pull-right">Grand Total Amount:</label></td>
                               <td>
                                 <div class="form-group">
-                                  <input type="text" class="form-control" id="so_total_amount" name="so_total_amount" disabled />
-                                  <input type="hidden" class="form-control" id="so_total_amountValue" name="so_total_amountValue" />
+                                  <input type="text" class="form-control" id="so_grand_total" name="so_grand_total" disabled />
+                                  <input type="hidden" class="form-control" id="so_grand_totalAmount" name="so_grand_totalAmount" />
                                 </div>
                               </td>
                             </tr>

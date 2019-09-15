@@ -23,10 +23,9 @@ if (mysqli_num_rows($result) > 0) {
       $branch       = $row['branch_name'];
       $pCode        = $row['sku_code'];
       $model        = $row['model'];
-      $poNum        = $row['po_number'];
-      $qty          = $row['qty'];
+      $qty          = $row['stock_qty'];
       $srp          = $row['retail_price'];
-      $date         = $row['date_arriv'];
+      $date         = $row['date_arrive'];
       $remarks      = $row['remarks'];
     }
 }else {
@@ -41,7 +40,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     $branch       = test_input($_POST['branch_name']);
     $pCode        = test_input($_POST['pCode']);
     $model        = test_input($_POST['model']);
-    $poNum        = test_input($_POST['po_number']);
     $qty          = test_input($_POST['qty']);
     $srp          = test_input($_POST['retail_price']);
     $date         = test_input($_POST['date_receive']);
@@ -64,9 +62,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     if (empty($model)){
         $emptyMessage = "Please enter a model.";
     }
-    if (empty($poNum)){
-        $emptyMessage = "Please enter a po-number.";
-    }
     if (empty($qty)){
         $emptyMessage = "Please enter a qty.";
     }
@@ -84,12 +79,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     // Check if input has no errors before inserting in database
     if(empty($emptyMessage)){
     //Checking the values are existing in the database or not
-    $query = "UPDATE inventory SET category='$category', subCategory='$subCategory', branch_name='$branch', sku_code='$pCode', model='$model', po_number='$poNum', qty='$qty', retail_price='$srp', date_arriv='$date', remarks='$remarks' WHERE inv_id='$inv_id'";
+    $query = "UPDATE inventory SET category='$category', subCategory='$subCategory', branch_name='$branch', sku_code='$pCode', model='$model', stock_qty='$qty', retail_price='$srp', date_arrive='$date', remarks='$remarks' WHERE inv_id='$inv_id'";
     $result = mysqli_query($link, $query) or die(mysqli_error($link));
     if($result){
-        $alertMessage = "<div class='alert alert-success' role='alert'>
-  Stocks data successfully updated in database.
-</div>";
+        header("Location: product-manage.php?alert=success");
     }else {
         $alertMessage = "<div class='alert alert-success' role='alert'>
   Error updating record.
@@ -235,22 +228,6 @@ function test_input($data) {
                     </div>
 
                     <div class="col-md-6">
-                      <div class="form-group">
-                        <label>PO Number</label>
-                        <select class="form-control select2" style="width: 100%;" name="po_number">
-                          <option value="<?php echo $poNum; ?>"><?php echo $poNum; ?></option>
-                          <?php
-
-                          $query = "select po_trans_id from po_transactions order by po_trans_id desc";
-                          $result = mysqli_query($link, $query);
-
-
-                          while ($row = mysqli_fetch_assoc($result)) { ?>
-                            <option value="<?php echo $row['po_trans_id']; ?>"><?php echo $row['po_trans_id']; ?></option>
-                          <?php } ?>
-                        </select>
-                      </div>
-
                       <div class="form-group">
                         <label>Quantity</label>
                         <input type="number" class="form-control" placeholder="Quantity" name="qty" value="<?php echo $qty; ?>">

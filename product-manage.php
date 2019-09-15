@@ -67,7 +67,8 @@
                         require_once "config.php";
 
                         // Attempt select query execution
-                        $query = "SELECT inventory.inv_id,inventory.category,inventory.subCategory,inventory.branch_name,inventory.sku_code,inventory.model,inventory.retail_price,inventory.remarks, SUM(add_inv.add_inv_qty) AS stockCount FROM inventory JOIN add_inv WHERE add_inv.inv_id = inventory.inv_id GROUP BY inventory.inv_id";
+                        //$query = "SELECT inventory.inv_id,inventory.category,inventory.subCategory,inventory.branch_name,inventory.sku_code,inventory.model,inventory.retail_price,inventory.remarks, SUM(add_inv.add_inv_qty) AS stockCount FROM inventory JOIN add_inv WHERE add_inv.inv_id = inventory.inv_id GROUP BY inventory.inv_id";
+                        $query = "SELECT * FROM inventory";
                         if($result = mysqli_query($link, $query)){
                           if(mysqli_num_rows($result) > 0){
                             while($row = mysqli_fetch_array($result)){
@@ -78,7 +79,7 @@
                               echo "<td>" . $row['branch_name'] . "</td>";
                               echo "<td>" . $row['sku_code'] . "</td>";
                               echo "<td>" . $row['model'] . "</td>";
-                              echo "<td>" . $row['stockCount'] . "</td>";
+                              echo "<td>" . $row['stock_qty'] . "</td>";
                               echo "<td>" . $row['retail_price'] . "</td>";
                               echo "<td>" . $row['remarks'] . "</td>";
                               echo "<td>";

@@ -42,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
   if(empty($emptyMessage)){
     //Checking the values are existing in the database or not
     $query = "INSERT INTO add_inv (inv_id, add_inv_po_number, add_inv_qty, add_inv_date_arriv) VALUES ('$inv_id', '$poNum', '$qty', '$date')";
-    $result = mysqli_query($link, $query) or die(mysqli_error($link));
+    $insert_result = mysqli_query($link, $query) or die(mysqli_error($link));
     if($result){
       $alertMessage = "<div class='alert alert-success' role='alert'>
       Stocks data successfully added in database.
@@ -135,7 +135,7 @@ function test_input($data) {
                       }
 
                       // Free result set
-                      mysqli_free_result($result); 
+                      mysqli_free_result($result);
                     } else{
                       echo "<p class='lead'><em>No records were found.</em></p>";
                     }

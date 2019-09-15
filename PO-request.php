@@ -44,7 +44,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
   $user = $_SESSION["username"];
 
   //INSERT query to so_transactions table
-  $query = "INSERT INTO po_transactions (po_inv_date, po_supplier_name, po_notes, subTotal, po_status) VALUES (CURRENT_TIMESTAMP, '$po_supplier_name', '$po_notes', '$po_subTotal', 1)";
+  $query = "INSERT INTO po_transactions (po_inv_date, po_supplier_name, po_notes, subTotal, po_status, po_user) VALUES (CURRENT_TIMESTAMP, '$po_supplier_name', '$po_notes', '$po_subTotal', 1, '$user')";
   $result = mysqli_query($link, $query) or die(mysqli_error($link));
 
   if ($result) {
@@ -224,7 +224,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
                               <td>
                                 <div class="form-group">
                                   <input type="text" class="form-control" id="posubTotal" name="subTotal" disabled />
-                                  <input type="hidden" class="form-control" id="posubTotal" name="subTotalValue" />
+                                  <input type="hidden" class="form-control" id="posubTotalValue" name="subTotalValue" />
                                 </div>
                               </td>
                             </tr>
