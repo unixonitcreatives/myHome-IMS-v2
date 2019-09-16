@@ -176,6 +176,7 @@ mysqli_close($link);
           <div class="box box-success">
             <div class="box-header with-border">
               <h3 class="box-title">Branch's Information</h3>
+              <p><a href="branch-manage.php">View Branches</a></p>
             </div>
             <!-- /.box-header -->
             <?php echo $alertMessage; ?>

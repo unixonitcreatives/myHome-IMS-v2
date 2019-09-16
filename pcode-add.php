@@ -88,11 +88,12 @@ function test_input($data) {
         <div class="col-md-6">
           <!-- general form elements -->
           <div class="box box-success">
-            <?php echo $alertMessage; ?>
+
             <div class="box-header with-border">
               <h3 class="box-title">Product Code</h3>
               <br><a href="pCode-manage.php" class="text-center">View Product Codes</a>
             </div>
+            <?php echo $alertMessage; ?>
             <!-- /.box-header -->
             <!-- form start -->
             <form  method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">

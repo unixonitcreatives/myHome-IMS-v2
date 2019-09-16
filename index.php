@@ -73,7 +73,7 @@ if (mysqli_num_rows($soresult) > 0) {
           </div> <!-- /1st box -->
 
           <div class="col-md-3">
-            <div class="small-box bg-green">
+            <div class="small-box bg-yellow">
               <div class="inner">
                 <h3><?php echo $porows; ?></h3>
 
@@ -183,8 +183,7 @@ if (mysqli_num_rows($soresult) > 0) {
                         echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
                       }
 
-                      // Close connection
-                      mysqli_close($link);
+
                       ?>
                     </tbody>
                   </table>
@@ -194,13 +193,72 @@ if (mysqli_num_rows($soresult) > 0) {
               <!-- /.box-body -->
               <div class="box-footer clearfix">
                 <a href="PO-request.php" class="btn btn-sm btn-info btn-flat pull-left">Create New PO</a>
-                <a href="PO-manage.php" class="btn btn-sm btn-default btn-flat pull-right">View All Orders</a>
+                <a href="PO-manage.php" class="btn btn-sm btn-default btn-flat pull-right">View All Purchase Order</a>
+              </div>
+              <!-- /.box-footer -->
+            </div>
+
+            <!-- LATEST PRODUCTS TABLE -->
+            <div class="box box-success">
+              <div class="box-header with-border">
+                <h3 class="box-title">Recently Added Products</h3>
+
+              </div>
+              <!-- /.box-header -->
+              <div class="box-body">
+                <div class="table-responsive">
+                  <table class="table no-margin">
+                    <thead>
+                      <tr>
+                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">SO Number</th>
+                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Customer Name</th>
+                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Total Amount</th>
+                        <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Payment Terms</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                                <?php
+                                 // Attempt select query execution
+                                 $so_query = "SELECT * FROM so_transactions ORDER BY so_trans_id DESC LIMIT 5";
+                                 if($so_result = mysqli_query($link, $so_query)){
+                                     if(mysqli_num_rows($so_result) > 0){
+
+                                             while($so_row = mysqli_fetch_array($so_result)){
+
+                                                 echo "<tr>";
+                                                     echo "<td>" . $so_row['so_trans_id'] . "</td>";
+                                                     echo "<td>" . $so_row['so_customer_name']  . "</td>";
+                                                     echo "<td>  ₱ " . number_format($so_row['so_grand_total'],2) . "</td>";
+                                                     echo "<td>" . $so_row['so_paymentTerms'] . "</td>";
+
+                                                 echo "</tr>";
+                                             }
+
+                                         // Free result set
+                                         mysqli_free_result($so_result);
+                                     } else{
+                                         echo "<p class='lead'><em>No records were found.</em></p>";
+                                     }
+                                 } else{
+                                     echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
+                                 }
+
+                                 ?>
+                                </tbody>
+                  </table>
+                </div>
+                <!-- /.table-responsive -->
+              </div>
+              <!-- /.box-body -->
+              <div class="box-footer clearfix">
+                <a href="product-add.php" class="btn btn-sm btn-info btn-flat pull-left">Create New Products</a>
+                <a href="product-manage.php" class="btn btn-sm btn-default btn-flat pull-right">View All Products</a>
               </div>
               <!-- /.box-footer -->
             </div>
           </div> <!-- / col -->
 
-
+          <!-- SO TABLE -->
           <div class="col-md-6">
             <div class="box box-success">
               <div class="box-header with-border">
@@ -222,7 +280,7 @@ if (mysqli_num_rows($soresult) > 0) {
                     <tbody>
                                 <?php
                                  // Attempt select query execution
-                                 $so_query = "SELECT * FROM so_transactions ORDER BY so_trans_id DESC";
+                                 $so_query = "SELECT * FROM so_transactions ORDER BY so_trans_id DESC LIMIT 5";
                                  if($so_result = mysqli_query($link, $so_query)){
                                      if(mysqli_num_rows($so_result) > 0){
 
@@ -233,22 +291,6 @@ if (mysqli_num_rows($soresult) > 0) {
                                                      echo "<td>" . $so_row['so_customer_name']  . "</td>";
                                                      echo "<td>  ₱ " . number_format($so_row['so_grand_total'],2) . "</td>";
                                                      echo "<td>" . $so_row['so_paymentTerms'] . "</td>";
-                                                    echo "<td>";
-
-
-
-                                                    if($so_row['so_paymentTerms'] == "Installment"){
-                                                     echo "<a href='SO-installments.php?so_trans_id=".$so_row['so_trans_id']." && so_customer_name=".$so_row['so_customer_name']." && so_date=".$so_row['so_date']." && so_paymentTerms=".$so_row['so_paymentTerms']."  && so_sub_total=".$so_row['so_sub_total']." && so_delivery_fee=".$so_row['so_delivery_fee']."  && so_grand_total=".$so_row['so_grand_total']."' title='View Record' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
-                                                   }else if($so_row['so_paymentTerms'] == "Fully Paid"){
-                                                      echo "<a href='SO-fullyPaid.php?so_trans_id=".$so_row['so_trans_id']." && so_customer_name=".$so_row['so_customer_name']." && so_date=".$so_row['so_date']." && so_paymentTerms=".$so_row['so_paymentTerms']."  && so_sub_total=".$so_row['so_sub_total']." && so_delivery_fee=".$so_row['so_delivery_fee']."  && so_grand_total=".$so_row['so_grand_total']."' title='View Record' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
-                                                   }
-
-                                                     echo " &nbsp; <a href='SO-update.php?so_trans_id=". $so_row['so_trans_id'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
-
-                                                     echo " &nbsp; <a href='SO-delete.php?so_trans_id=". $so_row['so_trans_id'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash remove'></span></a>";
-
-                                                     echo "</td>";
-                                                 echo "</tr>";
                                              }
 
                                          // Free result set
@@ -270,11 +312,13 @@ if (mysqli_num_rows($soresult) > 0) {
               </div>
               <!-- /.box-body -->
               <div class="box-footer clearfix">
-                <a href="PO-request.php" class="btn btn-sm btn-info btn-flat pull-left">Create New PO</a>
-                <a href="PO-manage.php" class="btn btn-sm btn-default btn-flat pull-right">View All Orders</a>
+                <a href="SO-add.php" class="btn btn-sm btn-info btn-flat pull-left">Create New SO</a>
+                <a href="SO-manage.php" class="btn btn-sm btn-default btn-flat pull-right">View All Sales Orders</a>
               </div>
               <!-- /.box-footer -->
             </div>
+
+            
           </div> <!-- / col -->
         </div>
       </section>
@@ -290,7 +334,6 @@ if (mysqli_num_rows($soresult) > 0) {
 
     <!-- =========================== JAVASCRIPT ========================= -->
     <?php include('template/js.php'); ?>
-
 
 
 </body>

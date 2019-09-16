@@ -30,9 +30,7 @@ if (mysqli_num_rows($result) > 0) {
   while ($row = mysqli_fetch_assoc($result)){
     $sup_prod_model               =   $row['sup_prod_model'];
     $sup_prod_category            =   $row['sup_prod_category'];
-    $sup_prod_subCategory         =   $row['sup_prod_subCategory'];
     $sup_prod_price               =   $row['sup_prod_price'];
-    $sup_prod_srp                 =   $row['sup_prod_srp'];
     $sup_prod_date                =   $row['sup_prod_date'];
 
   }
@@ -45,9 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     //Assigning posted values to variables.
     $sup_prod_model               =   test_input($_POST['sup_prod_model']);
     $sup_prod_category            =   test_input($_POST['sup_prod_category']);
-    $sup_prod_subCategory         =   test_input($_POST['sup_prod_subCategory']);
     $sup_prod_price               =   test_input($_POST['sup_prod_price']);
-    $sup_prod_srp                 =   test_input($_POST['sup_prod_srp']);
     $sup_prod_date                =   test_input($_POST['sup_prod_date']);
 
 
@@ -60,17 +56,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
         $alertMessage = "Please enter a category.";
     }
     // Validate category
-    if(empty($sup_prod_subCategory)){
-        $alertMessage = "Please enter a sub-category.";
-    }
-    // Validate category
     if(empty($sup_prod_price)){
         $alertMessage = "Please enter a price.";
     }
-    // Validate category
-    if(empty($sup_prod_srp)){
-        $alertMessage = "Please enter a retail price.";
-    }
+
     // Validate category
     if(empty($sup_prod_date)){
         $alertMessage = "Please enter a date.";
@@ -79,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     // Check input errors before inserting in database
     if(empty($alertMessage)){
     //Checking the values are existing in the database or not
-    $query = "UPDATE suppliers_products SET sup_prod_model='$sup_prod_model', sup_prod_category='$sup_prod_category', sup_prod_subCategory='$sup_prod_subCategory', sup_prod_price='$sup_prod_price', sup_prod_srp='$sup_prod_srp',  sup_prod_date='$sup_prod_date' WHERE suppliers_product_id='$get_suppliers_id'";
+    $query = "UPDATE suppliers_products SET sup_prod_model='$sup_prod_model', sup_prod_category='$sup_prod_category',  sup_prod_price='$sup_prod_price',  sup_prod_date='$sup_prod_date' WHERE suppliers_product_id='$get_suppliers_id'";
     $result = mysqli_query($link, $query) or die(mysqli_error($link));
     if($result){
         $alertMessage = "<div class='alert alert-success' role='alert'>
@@ -154,20 +143,9 @@ mysqli_close($link);
                 <input type="text" class="form-control" id="sup_prod_category" name="sup_prod_category"  value="<?php echo $sup_prod_category; ?>" required/>
               </div>
 
-
-              <div class="form-group">
-                <label>Sub-Category</label>
-                <input type="text" class="form-control" id="sup_prod_subCategory" name="sup_prod_subCategory"  value="<?php echo $sup_prod_subCategory; ?>" required/>
-              </div>
-
               <div class="form-group">
                 <label>Price</label>
                 <input type="number" class="form-control" id="sup_prod_price" name="sup_prod_price"  value="<?php echo $sup_prod_price; ?>" required/>
-              </div>
-
-              <div class="form-group">
-                <label>Retail Price:</label>
-                <input type="number" class="form-control" id="sup_prod_srp" name="sup_prod_srp"  value="<?php echo $sup_prod_srp; ?>" required/>
               </div>
 
               <div class="form-group">

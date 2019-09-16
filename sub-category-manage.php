@@ -6,6 +6,19 @@
   $Manager_auth = 0;
   $Accounting_auth = 0;
  include('template/user_auth.php');
+
+$alertMessage="";
+
+ if(isset($_GET['alert'])){
+     if( $_GET['alert'] == 'receive'){
+         $alertMessage = "<div class='alert alert-success' role='alert'>Receive Payment Successful</div>";
+     }elseif ($_GET['alert'] == 'deletesuccess'){
+         $alertMessage = "<div class='alert alert-danger' role='alert'>Data deleted.</div>";
+     }elseif ($_GET['alert'] == 'success'){
+         $alertMessage = "<div class='alert alert-success' role='alert'>Product Delivered Succefully.</div>";
+     }
+ }
+
 ?>
 
 <!DOCTYPE html>
@@ -27,23 +40,27 @@
   <!-- ======================== HEADER CONTENT ==================== -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
+
     <section class="content-header">
       <h1>
         Manage Sub-category
         <small></small>
       </h1>
+
     </section>
   <!-- ======================== MAIN CONTENT ======================= -->
     <!-- Main content -->
+
     <section class="content">
       <div class="col-md-6">
           <!-- general form elements -->
+
           <div class="box box-success">
             <div class="box-header with-border">
               <h3 class="box-title">Sub-category</h3>
               <br><a href="pCode-add.php" class="text-center">+ add new Sub-category</a>
             </div>
-
+            <?php echo $alertMessage; ?>
             <div class="box-body">
               <table id="example1" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
                       <thead>

@@ -4,63 +4,78 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>MyHome | Report</title>
-<!-- ======================= CSS ================================= -->
-<?php include('template/css.php'); ?>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>MyHome | Report</title>
+  <!-- ======================= CSS ================================= -->
+  <?php include('template/css.php'); ?>
 </head>
 <body class="hold-transition skin-green fixed sidebar-mini">
-<div class="wrapper">
+  <div class="wrapper">
 
-  <!-- ======================= MENU BAR =========================== -->
-  <?php include('template/menu-bar.php'); ?>
-  <!-- ======================= SIDEBAR ============================ -->
-  <?php include('template/sidebar-manage.php'); ?>
-  <!-- ======================== HEADER CONTENT ==================== -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <h1>
-        Report
-        <small></small>
-      </h1>
-    </section>
-  <!-- ======================== MAIN CONTENT ======================= -->
-    <!-- Main content -->
-    <section class="content">
-      <?php  echo $_SESSION['usertype']; ?>
-    </section>
-  <!-- /.content-wrapper -->
-</div>
+    <!-- ======================= MENU BAR =========================== -->
+    <?php include('template/menu-bar.php'); ?>
+    <!-- ======================= SIDEBAR ============================ -->
+    <?php include('template/sidebar-manage.php'); ?>
+    <!-- ======================== HEADER CONTENT ==================== -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <h1>
+          Report
+          <small></small>
+        </h1>
+      </section>
+      <!-- ======================== MAIN CONTENT ======================= -->
+      <!-- Main content -->
+      <section class="content">
+        <?php  echo $_SESSION['usertype']; ?>
+          <div class="col-md-12">
+            <form class="form-horizontal" action="template/getOrderReport.php" method="post" id="getOrderReportForm">
+              <div class="form-group">
+                <label for="startDate" class="control-label">Start Date</label>
+                <input type="text" class="form-control" id="startDate" name="startDate" placeholder="Start Date" />
+              </div>
+              <div class="form-group">
+                <label for="endDate" class="control-label">End Date</label>
+                <input type="text" class="form-control" id="endDate" name="endDate" placeholder="End Date" />
+              </div>
+              <div class="form-group">
+                <button type="submit" class="btn btn-success" id="generateReportBtn"> <i class="glyphicon glyphicon-ok-sign"></i> Generate Report</button>
+              </div>
+            </form>
+          </div>
+      </section>
+      <!-- /.content-wrapper -->
+    </div>
 
 
-<!-- =========================== FOOTER =========================== -->
-  <footer class="main-footer">
+    <!-- =========================== FOOTER =========================== -->
+    <footer class="main-footer">
       <?php include('template/footer.php'); ?>
-  </footer>
+    </footer>
 
 
-<!-- =========================== JAVASCRIPT ========================= -->
-      <?php include('template/js.php'); ?>
+    <!-- =========================== JAVASCRIPT ========================= -->
+    <?php include('template/js.php'); ?>
 
 
-<!-- =========================== PAGE SCRIPT ======================== -->
+    <!-- =========================== PAGE SCRIPT ======================== -->
 
-<!-- Alert animation -->
-<script type="text/javascript">
-$(document).ready(function () {
+    <!-- Alert animation -->
+    <script type="text/javascript">
+    $(document).ready(function () {
 
-  window.setTimeout(function() {
-    $(".alert").fadeTo(1000, 0).slideUp(1000, function(){
-      $(this).remove();
+      window.setTimeout(function() {
+        $(".alert").fadeTo(1000, 0).slideUp(1000, function(){
+          $(this).remove();
+        });
+      }, 1000);
+
     });
-  }, 1000);
+  </script>
 
-});
-</script>
-
-<script>
+  <script>
   $(function () {
     //Initialize Select2 Elements
     $('.select2').select2()
@@ -129,11 +144,11 @@ $(document).ready(function () {
 </script>
 
 <script>
-  //uppercase text box
-  function upperCaseF(a){
-    setTimeout(function(){
-        a.value = a.value.toUpperCase();
-    }, 1);
+//uppercase text box
+function upperCaseF(a){
+  setTimeout(function(){
+    a.value = a.value.toUpperCase();
+  }, 1);
 }
 </script>
 
