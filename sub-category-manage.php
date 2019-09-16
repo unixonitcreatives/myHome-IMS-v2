@@ -10,12 +10,10 @@
 $alertMessage="";
 
  if(isset($_GET['alert'])){
-     if( $_GET['alert'] == 'receive'){
-         $alertMessage = "<div class='alert alert-success' role='alert'>Receive Payment Successful</div>";
-     }elseif ($_GET['alert'] == 'deletesuccess'){
+    if ($_GET['alert'] == 'deletesuccess'){
          $alertMessage = "<div class='alert alert-danger' role='alert'>Data deleted.</div>";
      }elseif ($_GET['alert'] == 'success'){
-         $alertMessage = "<div class='alert alert-success' role='alert'>Product Delivered Succefully.</div>";
+         $alertMessage = "<div class='alert alert-success' role='alert'>Data Succefully Updated.</div>";
      }
  }
 

@@ -19,19 +19,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     $branch = test_input($_POST['branch_name']);
     $pCode = test_input($_POST['pCode']);
     $model = test_input($_POST['model']);
+    $qty = test_input($_POST['stock_qty']);
     $srp = test_input($_POST['retail_price']);
     $remarks = test_input($_POST['remarks']);
 
-    $query = "INSERT INTO inventory (category, subCategory, branch_name, sku_code, model, retail_price, remarks) VALUES ('$category', '$subCategory', '$branch', '$pCode', '$model', '$srp', '$remarks')";
+    $query = "INSERT INTO inventory (category, subCategory, branch_name, sku_code, model, stock_qty, retail_price, remarks) VALUES ('$category', '$subCategory', '$branch', '$pCode', '$model', $qty, '$srp', '$remarks')";
     $result = mysqli_query($link, $query) or die(mysqli_error($link));
 
     if($result){
          $alertMessage = "<div class='alert alert-success' role='alert'>
-                            New branch successfully added in Database.
+                            New product successfully added in Database.
                           </div>";
     }else {
         $alertMessage = "<div class='alert alert-danger' role='alert'>
-                            Error Adding data in Database.
+                            Error adding data in Database.
                           </div>";
     }
 }
@@ -72,7 +73,7 @@ function test_input($data) {
       <!-- ======================== MAIN CONTENT ======================= -->
       <!-- Main content -->
       <section class="content">
-        <?php echo $alertMessage; ?>
+
         <!-- general form elements -->
         <div class="box box-success">
           <div class="box-header with-border">
@@ -80,6 +81,7 @@ function test_input($data) {
             <br><a href="product-manage.php" class="text-center">View Stocks</a>
           </div>
           <!-- /.box-header -->
+            <?php echo $alertMessage; ?>
           <!-- form start -->
           <div class="box-body">
             <div class="row">
@@ -147,7 +149,9 @@ function test_input($data) {
                       <?php } ?>
                     </select>
                   </div>
+                </div>
 
+                <div class="col-md-6">
                   <div class="form-group">
                     <label>Model</label>
                     <select class="form-control select2" style="width: 100%;" name="model">
@@ -162,9 +166,11 @@ function test_input($data) {
                       <?php } ?>
                     </select>
                   </div>
-                </div>
 
-                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Qty</label>
+                    <input type="number" class="form-control" placeholder="Quantity" name="stock_qty">
+                  </div>
 
                   <div class="form-group">
                     <label>Retail Price</label>

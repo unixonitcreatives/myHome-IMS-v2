@@ -6,6 +6,16 @@
   $Manager_auth = 1;
   $Accounting_auth = 1;
  include('template/user_auth.php');
+
+$alertMessage="";
+
+ if(isset($_GET['alert'])){
+     if ($_GET['alert'] == 'deletesuccess'){
+         $alertMessage = "<div class='alert alert-danger' role='alert'>Data Deleted.</div>";
+     }elseif ($_GET['alert'] == 'success'){
+         $alertMessage = "<div class='alert alert-success' role='alert'>Data Successfully Updated.</div>";
+     }
+ }
 ?>
 
 <!DOCTYPE html>
@@ -42,8 +52,9 @@
           <div class="box box-success">
             <div class="box-header with-border">
               <h3 class="box-title">Branch's Information</h3>
-              <br><a href="branch-add.php" class="text-center">+ add new branch</a>
+              <br><a href="product-add.php" class="text-center">+ add new product</a>
             </div>
+            <?php echo $alertMessage; ?>
 
             <div class="box-body">
               <table id="example1" class="table table-bordered table-striped">
@@ -57,6 +68,7 @@
                           <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Model</th>
                           <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Qty</th>
                           <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">SRP</th>
+                          <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Date Received</th>
                           <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Remarks</th>
                           <th>Action</th>
                         </tr>
@@ -68,7 +80,7 @@
 
                         // Attempt select query execution
                         //$query = "SELECT inventory.inv_id,inventory.category,inventory.subCategory,inventory.branch_name,inventory.sku_code,inventory.model,inventory.retail_price,inventory.remarks, SUM(add_inv.add_inv_qty) AS stockCount FROM inventory JOIN add_inv WHERE add_inv.inv_id = inventory.inv_id GROUP BY inventory.inv_id";
-                        $query = "SELECT * FROM inventory";
+                        $query = "SELECT * FROM inventory ORDER BY inv_id DESC";
                         if($result = mysqli_query($link, $query)){
                           if(mysqli_num_rows($result) > 0){
                             while($row = mysqli_fetch_array($result)){
@@ -81,6 +93,7 @@
                               echo "<td>" . $row['model'] . "</td>";
                               echo "<td>" . $row['stock_qty'] . "</td>";
                               echo "<td>" . $row['retail_price'] . "</td>";
+                              echo "<td>" . $row['date_arrive'] . "</td>";
                               echo "<td>" . $row['remarks'] . "</td>";
                               echo "<td>";
                               echo "&nbsp; <a href='product-update.php?inv_id=". $row['inv_id'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";

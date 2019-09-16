@@ -126,8 +126,6 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
           <!-- Main content -->
           <section class="content">
             <?php  echo $_SESSION['usertype']; ?>
-
-            <?php echo $alertMessage; ?>
             <div class="box box-success">
               <div class="box-header with-border">
                 <h3 class="box-title">Sales Order Form </h3>

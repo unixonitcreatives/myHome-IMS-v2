@@ -1,7 +1,7 @@
 <!-- ======================= SESSION =================== -->
 <?php include('template/session.php'); ?>
 <!-- ======================= USER AUTHENTICATION  =================== -->
-<?php 
+<?php
   $Admin_auth = 1;
   $Manager_auth = 1;
   $Accounting_auth = 0;
@@ -52,7 +52,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     $logsquery = "INSERT INTO logs (user,description) VALUES ('" . htmlspecialchars($_SESSION["username"]) . "','Added customer $customers_name')";
 
     $logsresult = mysqli_query($link, $logsquery) or die(mysqli_error($link));
-
 
 
     $result = mysqli_query($link, $query) or die(mysqli_error($link));
@@ -120,6 +119,7 @@ mysqli_close($link);
               <br><a href="customer-manage.php" class="text-center">View Customers</a>
             </div>
             <!-- /.box-header -->
+            <?php echo $alertMessage; ?>
             <!-- form start -->
             <form  method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
               <div class="box-body">

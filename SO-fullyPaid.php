@@ -85,29 +85,29 @@ $get_so_grand_total= $_GET['so_grand_total'];
                 <input type="text" class="form-control"  name="get_customer_id" value="<?php echo htmlspecialchars($get_so_paymentTerms); ?>" disabled>
               </div>
             </div><br>
-            <table id="example1" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
+            <table class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
               <thead>
                 <tr>
-                  <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Model</th>
-                  <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Quantity</th>
-                  <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Unit</th>
-                  <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Retail Price</th>
-                  <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Total Amount</th>
+                  <th>Model</th>
+                  <th>Quantity</th>
+                  <th>Unit Price</th>
+                  <th>Retail Price</th>
+                  <th>Total Amount</th>
                 </tr>
               </thead>
               <tbody>
                 <?php
-                $query = "SELECT * FROM so_items WHERE so_trans_id = '$get_customer_id' ";
+                $query = "SELECT so_items.so_model, so_items.so_qty AS qty, so_items.so_unit_price AS unitPrice, so_items.so_total_amount AS totalAmount, so_items.price AS price, inventory.model AS model FROM inventory, so_items WHERE inventory.inv_id = so_items.so_model AND so_items.so_trans_id = '$get_customer_id' ";
                 $result = mysqli_query($link, $query);
                   if(mysqli_num_rows($result) > 0){
                     while ($row = mysqli_fetch_assoc($result)){ ?>
 
                 <tr>
-                  <td><?php echo htmlspecialchars($row['so_model']);?></td>
-                  <td><?php echo htmlspecialchars($row['so_qty']);?></td>
-                  <td><?php echo htmlspecialchars($row['so_unit']);?></td>
-                  <td><?php echo htmlspecialchars($row['so_unit_price']);?></td>
-                  <td><?php echo htmlspecialchars($row['so_total_amount']);?></td>
+                  <td><?php echo htmlspecialchars($row['model']);?></td>
+                  <td><?php echo htmlspecialchars(number_format($row['qty']));?></td>
+                  <td><?php echo htmlspecialchars(number_format($row['unitPrice']));?></td>
+                  <td><?php echo htmlspecialchars(number_format($row['price']));?></td>
+                  <td><?php echo htmlspecialchars(number_format($row['totalAmount']));?></td>
                 </tr>
 
               <?php }
@@ -128,13 +128,6 @@ $get_so_grand_total= $_GET['so_grand_total'];
               <td></td>
               <td>Delivery Fee:</td>
               <td><?php echo htmlspecialchars($get_so_delivery_fee); ?></td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td>Discount:</td>
-              <td><?php echo htmlspecialchars($get_so_discount); ?></td>
             </tr>
             <tr>
               <td></td>

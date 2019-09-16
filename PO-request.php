@@ -71,12 +71,12 @@ if($_SERVER['REQUEST_METHOD'] == "POST"){
 
       if($result){
         $alertMessage = "<div class='alert alert-success' role='alert'>
-        New Sales Order Created.
+        New Purchase Order Created.
         </div>";
 
       }else{
         $alertMessage = "<div class='alert alert-danger' role='alert'>
-        Error Creating Sales Order.
+        Error Creating Purchase Order.
         </div>";}
         //INSERT query to so_transactions table end
 

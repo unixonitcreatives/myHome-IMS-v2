@@ -1,11 +1,21 @@
 <!-- ======================= SESSION =================== -->
 <?php include('template/session.php'); ?>
 <!-- ======================= USER AUTHENTICATION  =================== -->
-<?php 
+<?php
   $Admin_auth = 1;
   $Manager_auth = 0;
   $Accounting_auth = 0;
  include('template/user_auth.php');
+
+ $alertMessage="";
+
+ if(isset($_GET['alert'])){
+     if ($_GET['alert'] == 'deletesuccess'){
+         $alertMessage = "<div class='alert alert-danger' role='alert'>Data Deleted.</div>";
+     }elseif ($_GET['alert'] == 'success'){
+         $alertMessage = "<div class='alert alert-success' role='alert'>Data Successfully Updated.</div>";
+     }
+ }
 ?>
 
 <!DOCTYPE html>
@@ -43,7 +53,7 @@
               <h3 class="box-title">Branch's Information</h3>
               <br><a href="branch-add.php" class="text-center">+ add new branch</a>
             </div>
-
+            <?php echo $alertMessage; ?>
             <div class="box-body">
               <table id="example1" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
                       <thead>

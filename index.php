@@ -217,34 +217,34 @@ if (mysqli_num_rows($soresult) > 0) {
                       </tr>
                     </thead>
                     <tbody>
-                                <?php
-                                 // Attempt select query execution
-                                 $so_query = "SELECT * FROM so_transactions ORDER BY so_trans_id DESC LIMIT 5";
-                                 if($so_result = mysqli_query($link, $so_query)){
-                                     if(mysqli_num_rows($so_result) > 0){
+                      <?php
+                      // Attempt select query execution
+                      $so_query = "SELECT * FROM so_transactions ORDER BY so_trans_id DESC LIMIT 5";
+                      if($so_result = mysqli_query($link, $so_query)){
+                        if(mysqli_num_rows($so_result) > 0){
 
-                                             while($so_row = mysqli_fetch_array($so_result)){
+                          while($so_row = mysqli_fetch_array($so_result)){
 
-                                                 echo "<tr>";
-                                                     echo "<td>" . $so_row['so_trans_id'] . "</td>";
-                                                     echo "<td>" . $so_row['so_customer_name']  . "</td>";
-                                                     echo "<td>  ₱ " . number_format($so_row['so_grand_total'],2) . "</td>";
-                                                     echo "<td>" . $so_row['so_paymentTerms'] . "</td>";
+                            echo "<tr>";
+                            echo "<td>" . $so_row['so_trans_id'] . "</td>";
+                            echo "<td>" . $so_row['so_customer_name']  . "</td>";
+                            echo "<td>  ₱ " . number_format($so_row['so_grand_total'],2) . "</td>";
+                            echo "<td>" . $so_row['so_paymentTerms'] . "</td>";
 
-                                                 echo "</tr>";
-                                             }
+                            echo "</tr>";
+                          }
 
-                                         // Free result set
-                                         mysqli_free_result($so_result);
-                                     } else{
-                                         echo "<p class='lead'><em>No records were found.</em></p>";
-                                     }
-                                 } else{
-                                     echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
-                                 }
+                          // Free result set
+                          mysqli_free_result($so_result);
+                        } else{
+                          echo "<p class='lead'><em>No records were found.</em></p>";
+                        }
+                      } else{
+                        echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
+                      }
 
-                                 ?>
-                                </tbody>
+                      ?>
+                    </tbody>
                   </table>
                 </div>
                 <!-- /.table-responsive -->
@@ -278,34 +278,34 @@ if (mysqli_num_rows($soresult) > 0) {
                       </tr>
                     </thead>
                     <tbody>
-                                <?php
-                                 // Attempt select query execution
-                                 $so_query = "SELECT * FROM so_transactions ORDER BY so_trans_id DESC LIMIT 5";
-                                 if($so_result = mysqli_query($link, $so_query)){
-                                     if(mysqli_num_rows($so_result) > 0){
+                      <?php
+                      // Attempt select query execution
+                      $so_query = "SELECT * FROM so_transactions ORDER BY so_trans_id DESC LIMIT 5";
+                      if($so_result = mysqli_query($link, $so_query)){
+                        if(mysqli_num_rows($so_result) > 0){
 
-                                             while($so_row = mysqli_fetch_array($so_result)){
+                          while($so_row = mysqli_fetch_array($so_result)){
 
-                                                 echo "<tr>";
-                                                     echo "<td>" . $so_row['so_trans_id'] . "</td>";
-                                                     echo "<td>" . $so_row['so_customer_name']  . "</td>";
-                                                     echo "<td>  ₱ " . number_format($so_row['so_grand_total'],2) . "</td>";
-                                                     echo "<td>" . $so_row['so_paymentTerms'] . "</td>";
-                                             }
+                            echo "<tr>";
+                            echo "<td>" . $so_row['so_trans_id'] . "</td>";
+                            echo "<td>" . $so_row['so_customer_name']  . "</td>";
+                            echo "<td>  ₱ " . number_format($so_row['so_grand_total'],2) . "</td>";
+                            echo "<td>" . $so_row['so_paymentTerms'] . "</td>";
+                          }
 
-                                         // Free result set
-                                         mysqli_free_result($so_result);
-                                     } else{
-                                         echo "<p class='lead'><em>No records were found.</em></p>";
-                                     }
-                                 } else{
-                                     echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
-                                 }
+                          // Free result set
+                          mysqli_free_result($so_result);
+                        } else{
+                          echo "<p class='lead'><em>No records were found.</em></p>";
+                        }
+                      } else{
+                        echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
+                      }
 
-                                 // Close connection
-                                 mysqli_close($link);
-                                 ?>
-                                </tbody>
+                      // Close connection
+                      mysqli_close($link);
+                      ?>
+                    </tbody>
                   </table>
                 </div>
                 <!-- /.table-responsive -->
@@ -318,23 +318,52 @@ if (mysqli_num_rows($soresult) > 0) {
               <!-- /.box-footer -->
             </div>
 
-            
-          </div> <!-- / col -->
-        </div>
-      </section>
-      <!-- /.content-wrapper -->
-    </div>
+            <!-- Support Widget -->
+            <div class="box box-warning">
+              <div class="box-header ui-sortable-handle" style="cursor: move;">
+                <i class="fa fa-envelope"></i>
+
+                <h3 class="box-title">Email Us for Suggestions and Inquiries</h3>
+                <!-- tools box -->
+                <div class="pull-right box-tools">
+                  <!-- /. tools -->
+                </div>
+                <div class="box-body">
+                  <form action="#" method="post">
+                    <div class="form-group">
+                      <input type="email" class="form-control" name="emailto" placeholder="Email to: admin@unixondev.com">
+                    </div>
+                    <div class="form-group">
+                      <input type="text" class="form-control" name="subject" placeholder="Subject">
+                    </div>
+                    <div>
+                      <textarea class="textarea" style="width: 100%; height: 125px; font-size: 14px; line-height: 18px; border: 1px solid rgb(221, 221, 221); padding: 10px; display: none;" placeholder="Message"></textarea><input type="hidden" name="_wysihtml5_mode" value="1"><iframe class="wysihtml5-sandbox" security="restricted" allowtransparency="true" frameborder="0" width="0" height="0" marginwidth="0" marginheight="0" style="display: inline-block; background-color: rgb(255, 255, 255); border-collapse: separate; border-color: rgb(221, 221, 221); border-style: solid; border-width: 1px; clear: none; float: none; margin: 0px; outline: rgb(51, 51, 51) none 0px; outline-offset: 0px; padding: 10px; position: static; top: auto; left: auto; right: auto; bottom: auto; z-index: auto; vertical-align: baseline; text-align: start; box-sizing: border-box; box-shadow: none; border-radius: 0px; width: 100%; height: 125px;"></iframe>
+                  </div>
+                </form>
+              </div>
+              <div class="box-footer clearfix">
+                <button type="button" class="pull-right btn btn-default" id="sendEmail">Send
+                  <i class="fa fa-arrow-circle-right"></i></button>
+                </div>
+              </div>
 
 
-    <!-- =========================== FOOTER =========================== -->
-    <footer class="main-footer">
-      <?php include('template/footer.php'); ?>
-    </footer>
+            </div> <!-- / col -->
+          </div>
+        </section>
+        <!-- /.content-wrapper -->
+      </div>
 
 
-    <!-- =========================== JAVASCRIPT ========================= -->
-    <?php include('template/js.php'); ?>
+      <!-- =========================== FOOTER =========================== -->
+      <footer class="main-footer">
+        <?php include('template/footer.php'); ?>
+      </footer>
 
 
-</body>
-</html>
+      <!-- =========================== JAVASCRIPT ========================= -->
+      <?php include('template/js.php'); ?>
+
+
+    </body>
+    </html>
