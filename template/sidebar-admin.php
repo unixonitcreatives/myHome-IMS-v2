@@ -86,7 +86,8 @@
                                 <!-- <li><a href="PO-add.php">Add PO</a></li> -->
                                 <li><a href="product-add.php">Add Product</a></li>
                                 <li><a href="product-manage.php">Manage Products</a></li>
-                                <li><a href="#">Returns</a></li>
+                                <li><a href="product-returns-add.php">Add Returns</a></li>
+                                <li><a href="product-returns-manage.php">Manage Returns</a></li>
                             </ul>
                         </li>
 

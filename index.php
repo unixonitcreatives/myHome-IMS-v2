@@ -66,8 +66,8 @@ if (mysqli_num_rows($soresult) > 0) {
               <div class="icon">
                 <i class="fa fa-shopping-cart"></i>
               </div>
-              <a href="#" class="small-box-footer">
-                More info <i class="fa fa-arrow-circle-right"></i>
+              <a href="product-manage.php" class="small-box-footer">
+                View Stocks <i class="fa fa-arrow-circle-right"></i>
               </a>
             </div>
           </div> <!-- /1st box -->
@@ -82,8 +82,8 @@ if (mysqli_num_rows($soresult) > 0) {
               <div class="icon">
                 <i class="fa fa-shopping-cart"></i>
               </div>
-              <a href="#" class="small-box-footer">
-                More info <i class="fa fa-arrow-circle-right"></i>
+              <a href="PO-manage.php" class="small-box-footer">
+                View Purchase Orders <i class="fa fa-arrow-circle-right"></i>
               </a>
             </div>
           </div> <!-- /2nd box -->
@@ -98,8 +98,8 @@ if (mysqli_num_rows($soresult) > 0) {
               <div class="icon">
                 <i class="fa fa-shopping-cart"></i>
               </div>
-              <a href="#" class="small-box-footer">
-                More info <i class="fa fa-arrow-circle-right"></i>
+              <a href="SO-manage.php" class="small-box-footer">
+                View Sales Orders <i class="fa fa-arrow-circle-right"></i>
               </a>
             </div>
           </div> <!-- /3rd box -->
@@ -114,8 +114,8 @@ if (mysqli_num_rows($soresult) > 0) {
               <div class="icon">
                 <i class="fa fa-shopping-cart"></i>
               </div>
-              <a href="#" class="small-box-footer">
-                More info <i class="fa fa-arrow-circle-right"></i>
+              <a href="stock-returns-manage.php" class="small-box-footer">
+                View Returns <i class="fa fa-arrow-circle-right"></i>
               </a>
             </div>
           </div> <!-- /4th box -->
