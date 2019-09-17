@@ -1,6 +1,7 @@
 
 <!-- jQuery 3 -->
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
 <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- FastClick -->
@@ -166,8 +167,21 @@ $(function () {
 <script>
 var field = document.querySelector('#so_date');
 var date = new Date();
-
 // Set the date
 field.value = date.getFullYear().toString() + '-' + (date.getMonth() + 1).toString().padStart(2, 0) +
 '-' + date.getDate().toString().padStart(2, 0);
+</script>
+
+<!-- script for returned items -->
+<script>
+$(function(){
+  $("#returnedQty,#returnedAmount,#returnedGpl,#returnedTotalGpl").keyup(function(){
+
+    var totalAmountQty = $('#returnedQty').val() * $('#returnedAmount').val();
+    var totalGPL = $('#returnedQty').val() * $('#returnedGpl').val();
+
+    $('#returnedTotalAmount').val((totalAmountQty).toFixed(2));
+    $('#returnedTotalGpl').val((totalGPL).toFixed(2));
+  });
+});
 </script>

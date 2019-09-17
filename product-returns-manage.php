@@ -9,42 +9,15 @@ include('template/user_auth.php');
 ?>
 
 <?php
-require_once "config.php";
+$alertMessage="";
 
-$alertMessage=$category=$subCategory=$branch=$pCode=$model=$poNum=$qty=$srp=$date=$remarks="";
-
-if ($_SERVER["REQUEST_METHOD"] == "POST"){
-    $category = test_input($_POST['category']);
-    $subCategory = test_input($_POST['subCategory']);
-    $branch = test_input($_POST['branch_name']);
-    $pCode = test_input($_POST['pCode']);
-    $model = test_input($_POST['model']);
-    $poNum = test_input($_POST['po_number']);
-    $qty = test_input($_POST['qty']);
-    $srp = test_input($_POST['retail_price']);
-    $date = test_input($_POST['date_receive']);
-    $remarks = test_input($_POST['remarks']);
-
-    $query = "INSERT INTO inventory (category, subCategory, branch_name, sku_code, model, po_number, qty, retail_price, date_arriv, remarks) VALUES ('$category', '$subCategory', '$branch', '$pCode', '$model', '$poNum', '$qty', '$srp', '$date', '$remarks')";
-    $result = mysqli_query($link, $query) or die(mysqli_error($link));
-
-    if($result){
-         $alertMessage = "<div class='alert alert-success' role='alert'>
-                            New branch successfully added in Database.
-                          </div>";
-    }else {
-        $alertMessage = "<div class='alert alert-danger' role='alert'>
-                            Error Adding data in Database.
-                          </div>";
-    }
+if(isset($_GET['alert'])){
+  if ($_GET['alert'] == 'deletesuccess'){
+    $alertMessage = "<div class='alert alert-danger' role='alert'>Data Deleted.</div>";
+  }elseif ($_GET['alert'] == 'success'){
+    $alertMessage = "<div class='alert alert-success' role='alert'>Data Successfully Updated.</div>";
+  }
 }
-function test_input($data) {
-    $data = trim($data);
-    $data = stripslashes($data);
-    $data = htmlspecialchars($data);
-    return $data;
-}
-
 ?>
 
 <!DOCTYPE html>
@@ -52,7 +25,7 @@ function test_input($data) {
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>MyHome | Product</title>
+  <title>MyHome | Returned</title>
   <!-- ======================= CSS ================================= -->
   <?php include('template/css.php'); ?>
 </head>
@@ -68,7 +41,7 @@ function test_input($data) {
       <!-- Content Header (Page header) -->
       <section class="content-header">
         <h1>
-          Add Product
+          Manage Returned Stocks
           <small></small>
         </h1>
       </section>
@@ -79,156 +52,98 @@ function test_input($data) {
         <!-- general form elements -->
         <div class="box box-success">
           <div class="box-header with-border">
-            <h3 class="box-title">Product's Information</h3>
-            <br><a href="product-manage.php" class="text-center">View Stocks</a>
+            <h3 class="box-title">Returned Stocks Information</h3>
+            <br><a href="product-returns-add.php" class="text-center">+ New Returned Stocks</a>
           </div>
           <!-- /.box-header -->
           <!-- form start -->
           <div class="box-body">
             <div class="row">
+              <table id="example2" class="table table-bordered table-striped">
+                <thead>
+                  <tr>
+                    <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Returned Stock ID</th>
+                    <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Series No</th>
+                    <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Model</th>
+                    <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Qty</th>
+                    <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Product Code</th>
+                    <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Model</th>
+                    <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Qty</th>
+                    <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Amount</th>
+                    <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Total Amount</th>
+                    <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">GPL Amount</th>
+                    <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Total GPL</th>
+                    <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Pickup Date</th>
+                    <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Returned Date</th>
+                    <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Order No</th>
+                    <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Reason</th>
+                    <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Actions</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php
+                  // Include config file
+                  require_once "config.php";
 
-              <form  method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label>Category</label>
-                    <select class="form-control select2" style="width: 100%;" name="category">
-                      <?php
+                  // Attempt select query execution
+                  //$query = "SELECT inventory.inv_id,inventory.category,inventory.subCategory,inventory.branch_name,inventory.sku_code,inventory.model,inventory.retail_price,inventory.remarks, SUM(add_inv.add_inv_qty) AS stockCount FROM inventory JOIN add_inv WHERE add_inv.inv_id = inventory.inv_id GROUP BY inventory.inv_id";
+                  $query = "SELECT * FROM returns ORDER BY return_id DESC";
+                  if($result = mysqli_query($link, $query)){
+                    if(mysqli_num_rows($result) > 0){
+                      while($row = mysqli_fetch_array($result)){
+                        echo "<tr>";
+                        echo "<td>" . $row['return_id'] . "</td>";
+                        echo "<td>" . $row['r_seriesNum'] . "</td>";
+                        echo "<td>" . $row['r_model'] . "</td>";
+                        echo "<td>" . $row['r_qty'] . "</td>";
+                        echo "<td>" . $row['r_amount'] . "</td>";
+                        echo "<td>" . $row['r_totalAmount'] . "</td>";
+                        echo "<td>" . $row['r_gpl'] . "</td>";
+                        echo "<td>" . $row['r_totalGpl'] . "</td>";
+                        echo "<td>" . $row['r_pickDate'] . "</td>";
+                        echo "<td>" . $row['r_returnDate'] . "</td>";
+                        echo "<td>" . $row['r_orderNum'] . "</td>";
+                        echo "<td>" . $row['r_reason'] . "</td>";
+                        echo "<td>";
+                        echo "&nbsp; <a href='product-returns-update.php?return_id=". $row['return_id'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
+                        echo "&nbsp; <a href='product-returns-delete.php?return_id=". $row['return_id'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
+                        echo "</td>";
+                        echo "</tr>";
+                      }
 
-                      $query = "select sup_prod_category from suppliers_products order by sup_prod_category";
-                      $result = mysqli_query($link, $query);
+                      // Free result set
+                      mysqli_free_result($result);
+                    } else{
+                      echo "<p class='lead'><em>No records were found.</em></p>";
+                    }
+                  } else{
+                    echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
+                  }
 
-                      //$category = $_POST['sup_prod_category'];
-
-                      while ($row = mysqli_fetch_assoc($result)) { ?>
-                        <option value="<?php echo $row['sup_prod_category']; ?>"><?php echo $row['sup_prod_category']; ?></option>
-                      <?php } ?>
-                    </select>
-                  </div>
-
-                  <div class="form-group">
-                    <label>Sub-Category</label> <a href="sub-category-add.php">+add new</a>
-                    <select class="form-control select2" style="width: 100%;" name="subCategory">
-                      <?php
-
-                      $query = "select sup_prod_category from suppliers_products order by sup_prod_category";
-                      $result = mysqli_query($link, $query);
-
-                      //$category = $_POST['sup_prod_category'];
-
-                      while ($row = mysqli_fetch_assoc($result)) { ?>
-                        <option value="<?php echo $row['sup_prod_category']; ?>"><?php echo $row['sup_prod_category']; ?></option>
-                      <?php } ?>
-                    </select>
-                  </div>
-
-                  <div class="form-group">
-                    <label>Branch</label> <a href="branch-add.php">+add new</a>
-                    <select class="form-control select2" style="width: 100%;" name="branch_name">
-                      <?php
-
-                      $query = "select branch_name from branches order by branch_name";
-                      $result = mysqli_query($link, $query);
-
-                      //$branch_name = $_POST['branch_name'];
-
-                      while ($row = mysqli_fetch_assoc($result)) { ?>
-                        <option value="<?php echo $row['branch_name']; ?>"><?php echo $row['branch_name']; ?></option>
-                      <?php } ?>
-                    </select>
-                  </div>
-
-                  <div class="form-group">
-                    <label>Product Code</label>
-                    <select class="form-control select2" style="width: 100%;" name="pCode">
-                      <?php
-
-                      $query = "select pCode from prod_code order by pCode";
-                      $result = mysqli_query($link, $query);
-
-                      while ($row = mysqli_fetch_assoc($result)) { ?>
-                        <option value="<?php echo $row['pCode']; ?>"><?php echo $row['pCode']; ?></option>
-                      <?php } ?>
-                    </select>
-                  </div>
-
-                  <div class="form-group">
-                    <label>Model</label>
-                    <select class="form-control select2" style="width: 100%;" name="model">
-                      <?php
-
-                      $query = "select sup_prod_model from suppliers_products order by sup_prod_model";
-                      $result = mysqli_query($link, $query);
-
-
-                      while ($row = mysqli_fetch_assoc($result)) { ?>
-                        <option value="<?php echo $row['sup_prod_model']; ?>"><?php echo $row['sup_prod_model']; ?></option>
-                      <?php } ?>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label>PO Number</label>
-                    <select class="form-control select2" style="width: 100%;" name="po_number">
-                      <?php
-
-                      $query = "select po_trans_id from po_transactions order by po_trans_id desc";
-                      $result = mysqli_query($link, $query);
-
-
-                      while ($row = mysqli_fetch_assoc($result)) { ?>
-                        <option value="<?php echo $row['po_trans_id']; ?>"><?php echo $row['po_trans_id']; ?></option>
-                      <?php } ?>
-                    </select>
-                  </div>
-
-                  <div class="form-group">
-                    <label>Quantity</label>
-                    <input type="number" class="form-control" placeholder="Quantity" name="qty">
-                  </div>
-
-                  <div class="form-group">
-                    <label>Retail Price</label>
-                    <input type="number" class="form-control" placeholder="Retail Price" name="retail_price">
-                  </div>
-
-                  <div class="form-group">
-                    <label>Date Recieve</label>
-                    <input type="date" class="form-control" placeholder="Date Receive" name="date_receive" id="pfDate">
-                  </div>
-
-                  <div class="form-group">
-                    <label>Remarks</label>
-                    <input type="text" class="form-control" placeholder="Remarks" name="remarks">
-                  </div>
-
-                </div>
-              </div>
-
-              <!-- /.box-body -->
+                  // Close connection
+                  mysqli_close($link);
+                  ?>
+                </tbody>
+              </table>
             </div>
-            <div class="box-footer">
-              <button type="submit" class="btn btn-success" onclick="this.disabled=true;this.value='Submitting...'; this.form.submit();" >Save</button>
-            </div>
+            <!-- /row -->
           </div>
-        </form>
+          <!-- /.box -->
+
+        </section>
+        <!-- /.content-wrapper -->
       </div>
-      <!-- /.box -->
-
-    </section>
-    <!-- /.content-wrapper -->
-  </div>
 
 
-  <!-- =========================== FOOTER =========================== -->
-  <footer class="main-footer">
-    <?php include('template/footer.php'); ?>
-  </footer>
+      <!-- =========================== FOOTER =========================== -->
+      <footer class="main-footer">
+        <?php include('template/footer.php'); ?>
+      </footer>
 
 
-  <!-- =========================== JAVASCRIPT ========================= -->
-  <?php include('template/js.php'); ?>
+      <!-- =========================== JAVASCRIPT ========================= -->
+      <?php include('template/js.php'); ?>
 
-</body>
-</html>
+    </body>
+    </html>

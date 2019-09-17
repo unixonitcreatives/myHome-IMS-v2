@@ -11,32 +11,72 @@ include('template/user_auth.php');
 <?php
 require_once "config.php";
 
-$alertMessage=$category=$subCategory=$branch=$pCode=$model=$poNum=$qty=$srp=$date=$remarks="";
+$alertMessage=$return_id=$r_seriesNum=$r_model=$r_qty=$r_amount=$r_totalAmount=$r_gpl=$r_totalGpl=$r_pickDate=$r_returnDate=$r_orderNum=$r_reason="";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
-    $category = test_input($_POST['category']);
-    $subCategory = test_input($_POST['subCategory']);
-    $branch = test_input($_POST['branch_name']);
-    $pCode = test_input($_POST['pCode']);
-    $model = test_input($_POST['model']);
-    $poNum = test_input($_POST['po_number']);
-    $qty = test_input($_POST['qty']);
-    $srp = test_input($_POST['retail_price']);
-    $date = test_input($_POST['date_receive']);
-    $remarks = test_input($_POST['remarks']);
+    $r_seriesNum      = test_input($_POST['seriesNum']);
+    $r_model          = test_input($_POST['model']);
+    $r_qty            = test_input($_POST['qty']);
+    $r_amount         = test_input($_POST['amount']);
+    $r_totalAmount    = test_input($_POST['totalAmount']);
+    $r_gpl            = test_input($_POST['gpl']);
+    $r_totalGpl       = test_input($_POST['totalgpl']);
+    $r_pickDate       = test_input($_POST['pickDate']);
+    $r_returnDate     = test_input($_POST['returnDate']);
+    $r_orderNum       = test_input($_POST['orderNum']);
+    $r_reason         = test_input($_POST['reason']);
 
-    $query = "INSERT INTO inventory (category, subCategory, branch_name, sku_code, model, po_number, qty, retail_price, date_arriv, remarks) VALUES ('$category', '$subCategory', '$branch', '$pCode', '$model', '$poNum', '$qty', '$srp', '$date', '$remarks')";
+    //validation
+    // Validate category
+    if(empty($r_seriesNum)){
+        $alertMessage = "Please enter a series number";
+    }
+    if(empty($r_model)){
+        $alertMessage = "Please enter a model";
+    }
+    if(empty($r_qty)){
+        $alertMessage = "Please enter a qty";
+    }
+    if(empty($r_amount)){
+        $alertMessage = "Please enter a amount";
+    }
+    if(empty($r_totalAmount)){
+        $alertMessage = "Please enter a total amount";
+    }
+    if(empty($r_gpl)){
+        $alertMessage = "Please enter a gpl";
+    }
+    if(empty($r_totalGpl)){
+        $alertMessage = "Please enter a total gpl";
+    }
+    if(empty($r_pickDate)){
+        $alertMessage = "Please enter a pickup date";
+    }
+    if(empty($r_returnDate)){
+        $alertMessage = "Please enter a returned date";
+    }
+    if(empty($r_orderNum)){
+        $alertMessage = "Please enter a order number";
+    }
+    if(empty($r_reason)){
+        $alertMessage = "Please enter a reason";
+    }
+
+    if(empty($alertMessage)){
+
+    $query = "INSERT INTO returns (r_seriesNum, r_model, r_qty, r_amount, r_totalAmount, r_gpl, r_totalGpl, r_pickDate, r_returnDate, r_orderNum, r_reason) VALUES ('$r_seriesNum', '$r_model', '$r_qty', '$r_amount', '$r_totalAmount', '$r_gpl', '$r_totalGpl', '$r_pickDate', '$r_returnDate', '$r_orderNum', '$r_reason')";
     $result = mysqli_query($link, $query) or die(mysqli_error($link));
 
     if($result){
          $alertMessage = "<div class='alert alert-success' role='alert'>
-                            New branch successfully added in Database.
+                            New returns successfully added in Database.
                           </div>";
     }else {
         $alertMessage = "<div class='alert alert-danger' role='alert'>
                             Error Adding data in Database.
                           </div>";
     }
+  }
 }
 function test_input($data) {
     $data = trim($data);
@@ -52,7 +92,7 @@ function test_input($data) {
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>MyHome | Product</title>
+  <title>MyHome | Returned</title>
   <!-- ======================= CSS ================================= -->
   <?php include('template/css.php'); ?>
 </head>
@@ -68,21 +108,22 @@ function test_input($data) {
       <!-- Content Header (Page header) -->
       <section class="content-header">
         <h1>
-          Add Product
+          Add Returns
           <small></small>
         </h1>
       </section>
       <!-- ======================== MAIN CONTENT ======================= -->
       <!-- Main content -->
       <section class="content">
-        <?php echo $alertMessage; ?>
+
         <!-- general form elements -->
         <div class="box box-success">
           <div class="box-header with-border">
-            <h3 class="box-title">Product's Information</h3>
-            <br><a href="product-manage.php" class="text-center">View Stocks</a>
+            <h3 class="box-title">Returned Stocks Information</h3>
+            <br><a href="product-returns-manage.php" class="text-center">View Returned Stocks</a>
           </div>
           <!-- /.box-header -->
+          <?php echo $alertMessage; ?>
           <!-- form start -->
           <div class="box-body">
             <div class="row">
@@ -90,117 +131,61 @@ function test_input($data) {
               <form  method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label>Category</label>
-                    <select class="form-control select2" style="width: 100%;" name="category">
-                      <?php
-
-                      $query = "select sup_prod_category from suppliers_products order by sup_prod_category";
-                      $result = mysqli_query($link, $query);
-
-                      //$category = $_POST['sup_prod_category'];
-
-                      while ($row = mysqli_fetch_assoc($result)) { ?>
-                        <option value="<?php echo $row['sup_prod_category']; ?>"><?php echo $row['sup_prod_category']; ?></option>
-                      <?php } ?>
-                    </select>
-                  </div>
-
-                  <div class="form-group">
-                    <label>Sub-Category</label> <a href="sub-category-add.php">+add new</a>
-                    <select class="form-control select2" style="width: 100%;" name="subCategory">
-                      <?php
-
-                      $query = "select subCategory from subCategory order by subCategory";
-                      $result = mysqli_query($link, $query);
-
-                      //$category = $_POST['sup_prod_category'];
-
-                      while ($row = mysqli_fetch_assoc($result)) { ?>
-                        <option value="<?php echo $row['subCategory']; ?>"><?php echo $row['subCategory']; ?></option>
-                      <?php } ?>
-                    </select>
-                  </div>
-
-                  <div class="form-group">
-                    <label>Branch</label> <a href="branch-add.php">+add new</a>
-                    <select class="form-control select2" style="width: 100%;" name="branch_name">
-                      <?php
-
-                      $query = "select branch_name from branches order by branch_name";
-                      $result = mysqli_query($link, $query);
-
-                      //$branch_name = $_POST['branch_name'];
-
-                      while ($row = mysqli_fetch_assoc($result)) { ?>
-                        <option value="<?php echo $row['branch_name']; ?>"><?php echo $row['branch_name']; ?></option>
-                      <?php } ?>
-                    </select>
-                  </div>
-
-                  <div class="form-group">
-                    <label>Product Code</label>
-                    <select class="form-control select2" style="width: 100%;" name="pCode">
-                      <?php
-
-                      $query = "select pCode from prod_code order by pCode";
-                      $result = mysqli_query($link, $query);
-
-                      while ($row = mysqli_fetch_assoc($result)) { ?>
-                        <option value="<?php echo $row['pCode']; ?>"><?php echo $row['pCode']; ?></option>
-                      <?php } ?>
-                    </select>
+                    <label>Series Number</label>
+                    <input type="text" class="form-control" placeholder="i.e PO#, SO#, LAZADA#" name="seriesNum">
                   </div>
 
                   <div class="form-group">
                     <label>Model</label>
-                    <select class="form-control select2" style="width: 100%;" name="model">
-                      <?php
-
-                      $query = "select sup_prod_model from suppliers_products order by sup_prod_model";
-                      $result = mysqli_query($link, $query);
-
-
-                      while ($row = mysqli_fetch_assoc($result)) { ?>
-                        <option value="<?php echo $row['sup_prod_model']; ?>"><?php echo $row['sup_prod_model']; ?></option>
-                      <?php } ?>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label>PO Number</label>
-                    <select class="form-control select2" style="width: 100%;" name="po_number">
-                      <?php
-
-                      $query = "select po_trans_id from po_transactions order by po_trans_id desc";
-                      $result = mysqli_query($link, $query);
-
-
-                      while ($row = mysqli_fetch_assoc($result)) { ?>
-                        <option value="<?php echo $row['po_trans_id']; ?>"><?php echo $row['po_trans_id']; ?></option>
-                      <?php } ?>
-                    </select>
+                    <input type="text" class="form-control" placeholder="Model" name="model">
                   </div>
 
                   <div class="form-group">
                     <label>Quantity</label>
-                    <input type="number" class="form-control" placeholder="Quantity" name="qty">
+                    <input type="number" class="form-control" id="returnedQty" placeholder="Quantity" name="qty" value="1">
                   </div>
 
                   <div class="form-group">
-                    <label>Retail Price</label>
-                    <input type="number" class="form-control" placeholder="Retail Price" name="retail_price">
+                    <label>Amount</label>
+                    <input type="number" class="form-control" id="returnedAmount" placeholder="0.00" name="amount">
                   </div>
 
                   <div class="form-group">
-                    <label>Date Recieve</label>
-                    <input type="date" class="form-control" placeholder="Date Receive" name="date_receive" id="pfDate">
+                    <label>Total Amount</label>
+                    <input type="number" class="form-control" id="returnedTotalAmount" placeholder="0.00" name="totalAmount" disabled>
                   </div>
 
                   <div class="form-group">
-                    <label>Remarks</label>
-                    <input type="text" class="form-control" placeholder="Remarks" name="remarks">
+                    <label>GPL</label>
+                    <input type="number" class="form-control" id="returnedGpl" placeholder="0.00" name="gpl">
+                  </div>
+
+                </div>
+
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Total GPL</label>
+                    <input type="number" class="form-control" id="returnedTotalGpl" placeholder="0.00" name="totalgpl" disabled>
+                  </div>
+
+                  <div class="form-group">
+                    <label>Pickup Date</label>
+                    <input type="date" class="form-control" placeholder="Date" name="pickDate">
+                  </div>
+
+                  <div class="form-group">
+                    <label>Returned Date</label>
+                    <input type="date" class="form-control" placeholder="Returned Date" name="returnDate">
+                  </div>
+
+                  <div class="form-group">
+                    <label>Order Number</label>
+                    <input type="number" class="form-control" placeholder="Order Number" name="orderNum">
+                  </div>
+
+                  <div class="form-group">
+                    <label>Reason</label>
+                    <input type="text" class="form-control" placeholder="Reason" name="reason">
                   </div>
 
                 </div>
