@@ -59,7 +59,7 @@ if(isset($_GET['alert'])){
           <!-- form start -->
           <div class="box-body">
             <div class="row">
-              <table id="example2" class="table table-bordered table-striped">
+              <table id="example1" class="table table-bordered table-striped">
                 <thead>
                   <tr>
                     <th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Returned Stock ID</th>
