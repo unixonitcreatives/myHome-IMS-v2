@@ -154,7 +154,7 @@ $(function () {
   $('#example2').DataTable()
   $('#example1').DataTable({
     'paging'      : true,
-    'lengthChange': false,
+    'lengthChange': true,
     'searching'   : true,
     'ordering'    : true,
     'info'        : true,
@@ -176,7 +176,7 @@ field.value = date.getFullYear().toString() + '-' + (date.getMonth() + 1).toStri
 <!-- script for returned items -->
 <script>
 $(function(){
-  $("#returnedQty,#returnedAmount,#returnedGpl,#returnedTotalGpl").keyup(function(){
+  $("#returnedQty,#returnedAmount,#returnedGpl").keyup(function(){
 
     var totalAmountQty = $('#returnedQty').val() * $('#returnedAmount').val();
     var totalGPL = $('#returnedQty').val() * $('#returnedGpl').val();

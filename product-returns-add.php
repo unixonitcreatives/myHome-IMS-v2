@@ -27,7 +27,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     $r_reason         = test_input($_POST['reason']);
 
     //validation
-    // Validate category
     if(empty($r_seriesNum)){
         $alertMessage = "Please enter a series number";
     }
@@ -132,12 +131,12 @@ function test_input($data) {
                 <div class="col-md-6">
                   <div class="form-group">
                     <label>Series Number</label>
-                    <input type="text" class="form-control" placeholder="i.e PO#, SO#, LAZADA#" name="seriesNum">
+                    <input type="text" class="form-control" placeholder="i.e PO#, SO#, LAZADA#" name="seriesNum" required>
                   </div>
 
                   <div class="form-group">
                     <label>Model</label>
-                    <input type="text" class="form-control" placeholder="Model" name="model">
+                    <input type="text" class="form-control" placeholder="Model" name="model" required>
                   </div>
 
                   <div class="form-group">
@@ -147,45 +146,46 @@ function test_input($data) {
 
                   <div class="form-group">
                     <label>Amount</label>
-                    <input type="number" class="form-control" id="returnedAmount" placeholder="0.00" name="amount">
+                    <input type="number" class="form-control" id="returnedAmount" placeholder="0.00" name="amount" required>
                   </div>
 
                   <div class="form-group">
                     <label>Total Amount</label>
-                    <input type="number" class="form-control" id="returnedTotalAmount" placeholder="0.00" name="totalAmount" disabled>
+                    <input type="number" class="form-control" id="returnedTotalAmount" placeholder="0.00" name="totalAmount" disabled required>
                   </div>
 
                   <div class="form-group">
                     <label>GPL</label>
-                    <input type="number" class="form-control" id="returnedGpl" placeholder="0.00" name="gpl">
+                    <input type="number" class="form-control" id="returnedGpl" placeholder="0.00" name="gpl" required>
                   </div>
 
                 </div>
 
                 <div class="col-md-6">
+
                   <div class="form-group">
                     <label>Total GPL</label>
-                    <input type="number" class="form-control" id="returnedTotalGpl" placeholder="0.00" name="totalgpl" disabled>
+                    <input type="number" class="form-control" id="returnedTotalGpl" placeholder="0.00" name="totalgpl" disabled required>
                   </div>
 
                   <div class="form-group">
                     <label>Pickup Date</label>
-                    <input type="date" class="form-control" placeholder="Date" name="pickDate">
+                    <input type="date" class="form-control" placeholder="Date" name="pickDate" required>
                   </div>
 
                   <div class="form-group">
                     <label>Returned Date</label>
-                    <input type="date" class="form-control" placeholder="Returned Date" name="returnDate">
+                    <input type="date" class="form-control" placeholder="Returned Date" name="returnDate" required>
                   </div>
 
                   <div class="form-group">
                     <label>Order Number</label>
-                    <input type="number" class="form-control" placeholder="Order Number" name="orderNum">
+                    <input type="number" class="form-control" placeholder="Order Number" name="orderNum" required>
                   </div>
 
                   <div class="form-group">
                     <label>Reason</label>
-                    <input type="text" class="form-control" placeholder="Reason" name="reason">
+                    <input type="text" class="form-control" placeholder="Reason" name="reason" required>
                   </div>
 
                 </div>
