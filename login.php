@@ -41,7 +41,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $_SESSION["loggedin"] = true;
     $_SESSION["username"] = $username;
     $_SESSION["usertype"] = "Administrator";
-    header('location: index.php');
+    header('location: dashboard.php');
     exit;
   }
   else
@@ -51,7 +51,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $_SESSION["loggedin"] = true;
     $_SESSION["username"] = $username;
     $_SESSION["usertype"] = "Manager";
-    header('location: index.php');
+    header('location: dashboard.php');
     exit;
 
   }
@@ -60,7 +60,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $_SESSION["loggedin"] = true;
     $_SESSION["username"] = $username;
     $_SESSION["usertype"] = "Accounting";
-    header('location: index.php');
+    header('location: dashboard.php');
     exit;
   }else
   if ($rows['usertype'] == "Sales") {
